@@ -150,14 +150,14 @@ p{margin:0 0 16px}
 /* portrait, right side, duotone green, dissolving into the black */
 .figure{
   position:absolute;right:0;top:0;bottom:0;
-  width:min(46%,620px);z-index:1;pointer-events:none;
-  -webkit-mask-image:linear-gradient(to left,#000 34%,transparent 96%),linear-gradient(to top,transparent 2%,#000 26%);
-  mask-image:linear-gradient(to left,#000 34%,transparent 96%),linear-gradient(to top,transparent 2%,#000 26%);
+  width:min(52%,700px);z-index:1;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to left,#000 18%,rgba(0,0,0,.45) 55%,transparent 92%),linear-gradient(to top,transparent 1%,#000 22%);
+  mask-image:linear-gradient(to left,#000 18%,rgba(0,0,0,.45) 55%,transparent 92%),linear-gradient(to top,transparent 1%,#000 22%);
   -webkit-mask-composite:source-in;mask-composite:intersect;
 }
 .figure img{
   width:100%;height:100%;object-fit:cover;object-position:56% 22%;
-  filter:grayscale(1) contrast(1.22) brightness(.78);
+  filter:grayscale(1) contrast(1.5) brightness(.34);
   display:block;
   animation:drift 26s var(--ease) infinite alternate;
   will-change:transform;
@@ -201,6 +201,18 @@ p{margin:0 0 16px}
     -webkit-mask-image:linear-gradient(to top,transparent 6%,#000 52%);
     mask-image:linear-gradient(to top,transparent 6%,#000 52%);}
 }
+
+/* cursor spotlight — reveals the code layer under the pointer */
+.spot{
+  position:fixed;top:0;left:0;width:520px;height:520px;
+  margin:-260px 0 0 -260px;border-radius:50%;
+  pointer-events:none;z-index:2;opacity:0;
+  background:radial-gradient(circle,rgba(0,255,65,.13),rgba(0,255,65,.05) 42%,transparent 70%);
+  transition:opacity .35s var(--ease);
+  will-change:transform;
+}
+.spot.on{opacity:1}
+@media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){.spot{display:none}}
 
 .stage-inner{position:relative;z-index:3;width:100%;padding-top:clamp(40px,7vw,64px);padding-bottom:clamp(40px,7vw,64px)}
 .greet{
@@ -454,6 +466,7 @@ footer .r{margin-left:auto}
 <!-- ==================== HERO ==================== -->
 <section class="stage" id="top">
   <canvas id="codefall" aria-hidden="true"></canvas>
+  <div class="spot" id="spot" aria-hidden="true"></div>
 
   <div class="figure" aria-hidden="true">
     <img src="assets/degz-desk.jpg" alt="" width="1216" height="1358">
@@ -793,6 +806,36 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     setTimeout(tick, wait);
   }
   tick();
+})();
+
+/* ---------- cursor spotlight ---------- */
+(function(){
+  var spot = document.getElementById('spot'),
+      stage = document.getElementById('top');
+  if (!spot || !stage) return;
+  if (matchMedia('(hover:none)').matches || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+  var tx = 0, ty = 0, cx = 0, cy = 0, active = false, raf = 0;
+
+  stage.addEventListener('mousemove', function(e){
+    tx = e.clientX; ty = e.clientY;
+    if (!active){
+      active = true; cx = tx; cy = ty;
+      spot.classList.add('on');
+      loop();
+    }
+  });
+  stage.addEventListener('mouseleave', function(){
+    active = false;
+    spot.classList.remove('on');
+    cancelAnimationFrame(raf);
+  });
+  function loop(){
+    cx += (tx - cx) * 0.13;          // trailing ease
+    cy += (ty - cy) * 0.13;
+    spot.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+    if (active) raf = requestAnimationFrame(loop);
+  }
 })();
 
 /* ---------- ambient code, typed live ---------- */
