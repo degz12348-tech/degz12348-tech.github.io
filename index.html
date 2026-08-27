@@ -1,500 +1,465 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Degz Arbiz — AI Systems Developer</title>
-<meta name="description" content="AI Systems Developer and automation architect. I build LLM-powered applications and the workflow infrastructure that connects AI to CRMs, marketing platforms, and real business operations.">
+<meta name="description" content="AI Systems Developer building LLM-powered applications, evaluation harnesses, and the automation infrastructure that connects AI to real business operations. Philippines-based, remote with APAC, EU and US overlap.">
+<meta name="theme-color" content="#000000">
+<meta name="author" content="Diego Arbiz Jr.">
 <link rel="canonical" href="https://degz12348-tech.github.io/">
+<meta property="og:type" content="profile">
+<meta property="og:url" content="https://degz12348-tech.github.io/">
 <meta property="og:title" content="Degz Arbiz — AI Systems Developer">
 <meta property="og:description" content="I turn AI from prompt experiments into production systems.">
-<meta property="og:type" content="profile">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* ============================================================
-   TOKENS — light is the base; dark redefines tokens only.
+   Dark-committed terminal palette. Every colour painted
+   explicitly so the page holds on any host ground.
    ============================================================ */
 :root{
-  --paper:#f1f3f5;
-  --surface:#ffffff;
-  --sunk:#e8ebee;
-  --ink:#0e141b;
-  --ink-mut:#4c5866;
-  --ink-dim:#77838f;
-  --rule:#d5dae0;
-  --rule-soft:#e2e6ea;
-  --signal:#b26a0f;
-  --signal-ink:#ffffff;
-  --focus:#b26a0f;
+  --bg-0:#000000;
+  --bg-1:rgba(134,239,172,.035);
+  --bg-2:rgba(134,239,172,.055);
+  --line:rgba(134,239,172,.14);
+  --line-soft:rgba(134,239,172,.08);
 
-  --f-display:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  --f-body:"Newsreader",Georgia,"Times New Roman",serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --fg:#d3dbe4;
+  --fg-strong:#f2f6fa;
+  --fg-dim:#7d8a95;
 
-  --gut:clamp(20px,5vw,40px);
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#0a0e13;
-  --surface:#111721;
-  --sunk:#0d131a;
-  --ink:#e7ecf2;
-  --ink-mut:#96a3b2;
-  --ink-dim:#6b7787;
-  --rule:#1e2733;
-  --rule-soft:#171e28;
-  --signal:#e8a244;
-  --signal-ink:#170f03;
-  --focus:#e8a244;
-}}
-:root[data-theme="dark"]{
-  --paper:#0a0e13;
-  --surface:#111721;
-  --sunk:#0d131a;
-  --ink:#e7ecf2;
-  --ink-mut:#96a3b2;
-  --ink-dim:#6b7787;
-  --rule:#1e2733;
-  --rule-soft:#171e28;
-  --signal:#e8a244;
-  --signal-ink:#170f03;
-  --focus:#e8a244;
+  --accent:#00ff41;
+  --accent-soft:#4ade80;
+  --accent-deep:#15803d;
+  --focus:rgba(0,255,65,.72);
+
+  --font-display:"Gabarito",system-ui,-apple-system,sans-serif;
+  --font-sans:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",SFMono-Regular,Menlo,monospace;
+
+  --content-max:1080px;
+  --gut:clamp(20px,5vw,44px);
+
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-emph:cubic-bezier(.16,1,.3,1);
+  --dur:.22s;
+  --dur-reveal:.64s;
 }
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
   margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--f-body);
-  font-size:17px;
-  line-height:1.62;
+  background:var(--bg-0);
+  color:var(--fg);
+  font-family:var(--font-sans);
+  font-size:16.5px;
+  line-height:1.65;
   -webkit-font-smoothing:antialiased;
-}
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
+  overflow-x:hidden;
 }
 a{color:inherit}
-:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:2px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:3px}
+::selection{background:var(--accent-deep);color:var(--fg-strong)}
 
-.sheet{width:min(880px,100%);margin:0 auto;padding:0 var(--gut)}
+.wrap{width:min(var(--content-max),100%);margin:0 auto;padding:0 var(--gut)}
 
-/* ============================================================
-   TOPBAR
-   ============================================================ */
-.topbar{
+/* ---------- ambient glow behind the hero ---------- */
+.glow{
+  position:fixed;top:-30vh;left:50%;transform:translateX(-50%);
+  width:min(1100px,140vw);height:70vh;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at center,rgba(0,255,65,.10),rgba(0,255,65,.03) 42%,transparent 70%);
+  filter:blur(24px);
+}
+
+/* ---------- nav ---------- */
+nav{
   position:sticky;top:0;z-index:60;
-  background:color-mix(in srgb,var(--paper) 90%,transparent);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--rule);
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line-soft);
 }
-.topbar .sheet{display:flex;align-items:center;gap:18px;height:52px}
-.sig{
-  font-family:var(--f-mono);font-size:12px;font-weight:500;
-  letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+nav .wrap{display:flex;align-items:center;gap:20px;height:56px}
+.brand{
+  font-family:var(--font-mono);font-size:13px;font-weight:500;
+  text-decoration:none;color:var(--fg-strong);letter-spacing:-.01em;
 }
-.sig i{color:var(--signal);font-style:normal}
-.topnav{margin-left:auto;display:flex;align-items:center;gap:20px}
-.topnav a{
-  font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--ink-dim);text-decoration:none;
-  transition:color .15s;
+.brand .p{color:var(--accent)}
+.navlinks{margin-left:auto;display:flex;align-items:center;gap:22px}
+.navlinks a{
+  font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);
+  text-decoration:none;transition:color var(--dur) var(--ease);
 }
-.topnav a:hover{color:var(--ink)}
-.tbtn{
-  font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
-  background:none;border:1px solid var(--rule);color:var(--ink-dim);
-  padding:4px 9px;border-radius:2px;cursor:pointer;transition:color .15s,border-color .15s;
+.navlinks a:hover{color:var(--accent)}
+.navcta{
+  font-family:var(--font-mono);font-size:12px;text-decoration:none;
+  color:var(--accent);border:1px solid var(--line);
+  padding:6px 13px;border-radius:4px;background:var(--bg-1);
+  transition:border-color var(--dur) var(--ease),background var(--dur) var(--ease);
 }
-.tbtn:hover{color:var(--ink);border-color:var(--ink-dim)}
-@media(max-width:700px){.topnav a[data-opt]{display:none}}
+.navcta:hover{border-color:var(--accent);background:var(--bg-2)}
+@media(max-width:720px){.navlinks a[data-opt]{display:none}}
 
-/* ============================================================
-   MASTHEAD
-   ============================================================ */
-.masthead{padding:clamp(44px,8vw,84px) 0 0}
-.avail{
-  display:inline-flex;align-items:center;gap:9px;
-  font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ink-mut);margin-bottom:26px;
+/* ---------- shared section furniture ---------- */
+main{position:relative;z-index:1}
+section{padding:clamp(64px,10vw,104px) 0}
+section + section{border-top:1px solid var(--line-soft)}
+.kicker{
+  font-family:var(--font-mono);font-size:11.5px;color:var(--accent);
+  letter-spacing:.02em;margin:0 0 18px;display:flex;align-items:center;gap:9px;
 }
-.lamp{width:6px;height:6px;border-radius:50%;background:var(--signal);flex:none;position:relative}
-.lamp::after{
-  content:"";position:absolute;inset:-3px;border-radius:50%;
-  background:var(--signal);opacity:.3;animation:lamp 2.6s ease-out infinite;
-}
-@keyframes lamp{0%{transform:scale(.5);opacity:.4}70%,100%{transform:scale(1.7);opacity:0}}
-
-.name{
-  font-family:var(--f-display);font-weight:700;
-  font-size:clamp(2.6rem,9vw,4.5rem);
-  line-height:.98;letter-spacing:-.035em;
-  margin:0 0 6px;text-wrap:balance;
-}
-.role{
-  font-family:var(--f-mono);font-size:clamp(12px,2.4vw,13.5px);
-  letter-spacing:.04em;color:var(--signal);
-  margin:0 0 34px;
-}
-
-/* spec grid — datasheet metadata */
-.spec{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
-}
-.spec div{
-  padding:14px 18px 14px 0;
-  border-right:1px solid var(--rule-soft);
-}
-.spec div:last-child{border-right:0}
-.spec dt{
-  font-family:var(--f-mono);font-size:10px;letter-spacing:.11em;
-  text-transform:uppercase;color:var(--ink-dim);margin:0 0 5px;
-}
-.spec dd{
-  margin:0;font-family:var(--f-mono);font-size:13px;color:var(--ink);
-  overflow-wrap:anywhere;
-}
-.spec dd a{text-decoration:none;border-bottom:1px solid var(--rule);}
-.spec dd a:hover{border-color:var(--signal);color:var(--signal)}
-@media(max-width:640px){.spec div{border-right:0;border-bottom:1px solid var(--rule-soft);padding-right:0}.spec div:last-child{border-bottom:0}}
-
-/* identity block — portrait sits beside the name */
-.idblock{display:flex;gap:clamp(20px,4vw,34px);align-items:flex-start}
-.idtext{min-width:0;flex:1}
-.portrait{
-  flex:none;width:clamp(96px,16vw,132px);aspect-ratio:3/4;
-  border:1px solid var(--rule);border-radius:2px;
-  object-fit:cover;object-position:50% 12%;
-  background:var(--surface);
-}
-@media(max-width:520px){
-  .idblock{flex-direction:column-reverse;align-items:flex-start;gap:20px}
-}
-
-/* project screenshots */
-.shot{
-  margin:18px 0 0;border:1px solid var(--rule);border-radius:2px;
-  overflow:hidden;background:var(--surface);
-}
-.shot img{display:block;width:100%;height:auto}
-.shot figcaption{
-  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;
-  color:var(--ink-dim);padding:9px 13px;border-top:1px solid var(--rule-soft);
-}
-.shots{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
-.shots .shot{margin:0}
-@media(max-width:620px){.shots{grid-template-columns:1fr}}
-
-.thesis{
-  font-size:clamp(1.28rem,3.1vw,1.72rem);
-  line-height:1.42;letter-spacing:-.011em;
-  max-width:34ch;margin:40px 0 0;text-wrap:balance;
-}
-.intro{max-width:63ch;color:var(--ink-mut);margin:20px 0 0}
-
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin:34px 0 0}
-.act{
-  font-family:var(--f-mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;
-  text-decoration:none;padding:11px 18px;border-radius:2px;
-  border:1px solid var(--rule);color:var(--ink);
-  transition:border-color .15s,background .15s,color .15s;
-}
-.act:hover{border-color:var(--ink-dim);background:var(--surface)}
-.act.key{background:var(--signal);border-color:var(--signal);color:var(--signal-ink)}
-.act.key:hover{filter:brightness(1.07);background:var(--signal)}
-
-/* ============================================================
-   SECTION SHELL — mono label + hairline rule to the margin
-   ============================================================ */
-.block{padding:clamp(54px,8vw,80px) 0 0}
-.label{
-  display:flex;align-items:center;gap:16px;
-  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--ink-dim);
-  margin:0 0 30px;
-}
-.label::after{content:"";flex:1;height:1px;background:var(--rule)}
+.kicker::before{content:"//";color:var(--accent-deep)}
 h2{
-  font-family:var(--f-display);font-weight:600;
-  font-size:clamp(1.35rem,3vw,1.75rem);letter-spacing:-.022em;
-  margin:0 0 10px;text-wrap:balance;
+  font-family:var(--font-display);font-weight:600;
+  font-size:clamp(1.7rem,4vw,2.5rem);letter-spacing:-.025em;
+  color:var(--fg-strong);margin:0 0 14px;line-height:1.12;text-wrap:balance;
 }
-h3{font-family:var(--f-display);font-weight:600;font-size:1.02rem;letter-spacing:-.012em;margin:0}
-p{margin:0 0 15px}
-.muted{color:var(--ink-mut)}
+h3{font-family:var(--font-display);font-weight:600;font-size:1.08rem;color:var(--fg-strong);margin:0;letter-spacing:-.012em}
+p{margin:0 0 16px}
+.sub{color:var(--fg-dim);max-width:62ch;margin:0 0 34px}
 
-/* capability rows — parallel, so no numbering */
-.caps{display:grid;gap:0;border-top:1px solid var(--rule-soft)}
-.cap{
-  display:grid;grid-template-columns:minmax(150px,.32fr) 1fr;gap:0 28px;
-  padding:20px 0;border-bottom:1px solid var(--rule-soft);
-}
-.cap h3{padding-top:1px}
-.cap p{margin:0;color:var(--ink-mut);font-size:15.5px;line-height:1.6}
-@media(max-width:620px){.cap{grid-template-columns:1fr;gap:7px}}
-
-/* metrics strip */
-.metrics{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
-  margin-top:6px;
-}
-.metrics div{padding:18px 18px 18px 0;border-right:1px solid var(--rule-soft)}
-.metrics div:last-child{border-right:0}
-.metrics .v{
-  display:block;font-family:var(--f-display);font-weight:700;
-  font-size:1.7rem;letter-spacing:-.03em;line-height:1;
-  font-variant-numeric:tabular-nums;
-}
-.metrics .k{
-  display:block;margin-top:8px;font-family:var(--f-mono);font-size:10px;
-  letter-spacing:.09em;text-transform:uppercase;color:var(--ink-dim);line-height:1.5;
-}
-@media(max-width:620px){.metrics div{border-right:0;border-bottom:1px solid var(--rule-soft);padding-right:0}.metrics div:last-child{border-bottom:0}}
-
-/* work entries — ruled rows, not cards */
-.entries{border-top:1px solid var(--rule-soft)}
-.entry{
-  display:block;text-decoration:none;
-  padding:22px 0;border-bottom:1px solid var(--rule-soft);
-  transition:background .15s;
-}
-a.entry:hover{background:var(--sunk)}
-.entry-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.entry-head .when{
-  margin-left:auto;font-family:var(--f-mono);font-size:11px;
-  letter-spacing:.05em;color:var(--ink-dim);
-}
-.entry p{margin:9px 0 0;color:var(--ink-mut);font-size:15.5px;max-width:70ch}
-.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
-.chip{
-  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.05em;
-  color:var(--ink-mut);border:1px solid var(--rule);
-  padding:3px 8px;border-radius:2px;
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(18px);transition:opacity var(--dur-reveal) var(--ease-emph),transform var(--dur-reveal) var(--ease-emph)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;transition:none}
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
 }
 
-/* timeline — date column, no dots */
-.hist{border-top:1px solid var(--rule-soft)}
+/* ---------- hero ---------- */
+.hero{padding-top:clamp(56px,9vw,92px);padding-bottom:clamp(56px,9vw,92px)}
+.status{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--font-mono);font-size:11.5px;color:var(--accent-soft);
+  background:var(--bg-1);border:1px solid var(--line);
+  padding:6px 14px 6px 11px;border-radius:999px;margin-bottom:28px;
+}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none;position:relative;box-shadow:0 0 8px var(--accent)}
+.dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;background:var(--accent);opacity:.35;animation:ping 2.4s var(--ease) infinite}
+@keyframes ping{0%{transform:scale(.5);opacity:.4}70%,100%{transform:scale(1.9);opacity:0}}
+
+.hero h1{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(2.3rem,6.4vw,4rem);line-height:1.04;
+  letter-spacing:-.035em;color:var(--fg-strong);
+  margin:0 0 22px;max-width:19ch;text-wrap:balance;
+}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lede{font-size:1.06rem;color:var(--fg-dim);max-width:60ch;margin:0 0 30px}
+.idrow{display:flex;gap:clamp(22px,4vw,38px);align-items:flex-start}
+.idcol{flex:1;min-width:0}
+.portrait{
+  flex:none;width:clamp(92px,15vw,124px);aspect-ratio:3/4;
+  border:1px solid var(--line);border-radius:5px;
+  object-fit:cover;object-position:50% 12%;
+  background:var(--bg-1);
+}
+@media(max-width:560px){.idrow{flex-direction:column-reverse;align-items:flex-start;gap:22px}}
+
+.cta{display:flex;flex-wrap:wrap;gap:11px;margin-bottom:34px}
+.btn{
+  font-family:var(--font-mono);font-size:13px;text-decoration:none;
+  padding:11px 20px;border-radius:5px;border:1px solid var(--line);
+  color:var(--fg-strong);background:var(--bg-1);
+  transition:border-color var(--dur) var(--ease),background var(--dur) var(--ease),transform var(--dur) var(--ease);
+}
+.btn:hover{border-color:var(--accent);background:var(--bg-2);transform:translateY(-1px)}
+.btn.key{background:var(--accent);border-color:var(--accent);color:#00160a;font-weight:500}
+.btn.key:hover{background:var(--accent-soft);border-color:var(--accent-soft)}
+
+.facts{
+  display:flex;flex-wrap:wrap;gap:8px 26px;
+  font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);
+}
+.facts b{color:var(--fg);font-weight:400}
+
+/* ---------- dotted-leader proof lines ---------- */
+.leaders{display:flex;flex-direction:column;gap:13px;margin-top:8px}
+.leader{
+  display:flex;align-items:baseline;gap:10px;
+  font-family:var(--font-mono);font-size:13.5px;
+}
+.leader .k{color:var(--accent-soft);white-space:nowrap}
+.leader .fill{flex:1;border-bottom:1px dotted var(--line);transform:translateY(-4px);min-width:18px}
+.leader .v{color:var(--fg);text-align:right}
+@media(max-width:600px){
+  .leader{flex-wrap:wrap;gap:2px 10px}
+  .leader .fill{display:none}
+  .leader .v{text-align:left;color:var(--fg-dim);flex-basis:100%}
+}
+
+/* ---------- panels ---------- */
+.panel{
+  background:var(--bg-1);border:1px solid var(--line-soft);
+  border-radius:8px;padding:24px;
+  transition:border-color var(--dur) var(--ease),background var(--dur) var(--ease);
+}
+.panel:hover{border-color:var(--line);background:var(--bg-2)}
+.grid3{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.panel p{font-size:14.5px;color:var(--fg-dim);margin:10px 0 0;line-height:1.6}
+
+/* ---------- work ---------- */
+.work{display:flex;flex-direction:column;gap:16px}
+.proj{
+  background:var(--bg-1);border:1px solid var(--line-soft);border-radius:8px;
+  padding:26px;transition:border-color var(--dur) var(--ease);
+}
+.proj:hover{border-color:var(--line)}
+.proj-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.proj-head .when{margin-left:auto;font-family:var(--font-mono);font-size:11.5px;color:var(--fg-dim)}
+.proj p{font-size:14.8px;color:var(--fg-dim);margin:0;max-width:74ch}
+.proj p strong{color:var(--fg);font-weight:500}
+.proj code{font-family:var(--font-mono);font-size:.9em;color:var(--accent-soft)}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.tag{
+  font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);
+  border:1px solid var(--line-soft);background:rgba(0,0,0,.4);
+  padding:4px 9px;border-radius:4px;
+}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+@media(max-width:640px){.shots{grid-template-columns:1fr}}
+figure.shot{margin:0;border:1px solid var(--line-soft);border-radius:6px;overflow:hidden;background:#000}
+figure.shot img{display:block;width:100%;height:auto}
+figure.shot figcaption{
+  font-family:var(--font-mono);font-size:10.5px;color:var(--fg-dim);
+  padding:9px 12px;border-top:1px solid var(--line-soft);
+}
+
+/* ---------- history ---------- */
+.hist{display:flex;flex-direction:column}
 .stint{
-  display:grid;grid-template-columns:minmax(140px,.26fr) 1fr;gap:0 28px;
-  padding:24px 0;border-bottom:1px solid var(--rule-soft);
+  display:grid;grid-template-columns:minmax(126px,.2fr) 1fr;gap:0 26px;
+  padding:22px 0;border-bottom:1px solid var(--line-soft);
 }
-.stint .when{
-  font-family:var(--f-mono);font-size:11px;letter-spacing:.04em;
-  color:var(--ink-dim);padding-top:3px;
-}
-.stint .org{
-  font-family:var(--f-mono);font-size:12px;color:var(--signal);
-  margin:5px 0 10px;letter-spacing:.02em;
-}
-.stint ul{margin:0;padding-left:17px;color:var(--ink-mut);font-size:15.5px;line-height:1.6}
+.stint:last-child{border-bottom:0}
+.stint .when{font-family:var(--font-mono);font-size:11.5px;color:var(--fg-dim);padding-top:4px}
+.stint .org{font-family:var(--font-mono);font-size:12.5px;color:var(--accent-soft);margin:6px 0 9px}
+.stint ul{margin:0;padding-left:17px;font-size:14.8px;color:var(--fg-dim);line-height:1.62}
 .stint li{margin-bottom:5px}
-.stint li::marker{color:var(--ink-dim)}
-.stint p.note{margin:0;color:var(--ink-mut);font-size:15.5px}
-@media(max-width:620px){.stint{grid-template-columns:1fr;gap:6px}.stint .when{padding-top:0}}
+.stint li::marker{color:var(--accent-deep)}
+.stint p.note{margin:0;font-size:14.8px;color:var(--fg-dim)}
+@media(max-width:640px){.stint{grid-template-columns:1fr;gap:6px}.stint .when{padding-top:0}}
 
-/* quotes */
-.voices{display:grid;gap:0;border-top:1px solid var(--rule-soft)}
-.voice{padding:22px 0;border-bottom:1px solid var(--rule-soft)}
-.voice blockquote{
-  margin:0 0 10px;font-size:16.5px;line-height:1.55;
-  max-width:64ch;
-}
-.voice blockquote::before{content:"\201C"}
-.voice blockquote::after{content:"\201D"}
-.voice .src{
-  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.07em;
-  text-transform:uppercase;color:var(--ink-dim);
-}
+/* ---------- quotes ---------- */
+.quotes{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(255px,1fr))}
+.quote blockquote{margin:0 0 12px;font-size:14.8px;line-height:1.6;color:var(--fg)}
+.quote blockquote::before{content:"\201C"}
+.quote blockquote::after{content:"\201D"}
+.quote .src{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim)}
 
-/* stack + education share the paired-row pattern */
-.pairs{border-top:1px solid var(--rule-soft)}
-.pair{
-  display:grid;grid-template-columns:minmax(150px,.32fr) 1fr;gap:0 28px;
-  padding:18px 0;border-bottom:1px solid var(--rule-soft);
+/* ---------- stack ---------- */
+.stack{display:flex;flex-direction:column;gap:0}
+.srow{
+  display:grid;grid-template-columns:minmax(126px,.2fr) 1fr;gap:0 26px;
+  padding:17px 0;border-bottom:1px solid var(--line-soft);
 }
-.pair .h{
-  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.11em;
-  text-transform:uppercase;color:var(--ink-dim);padding-top:4px;
-}
-.pair .b{font-size:15.5px;color:var(--ink-mut)}
-.pair .b .deg{color:var(--ink);font-family:var(--f-display);font-weight:600;font-size:1rem}
-@media(max-width:620px){.pair{grid-template-columns:1fr;gap:6px}.pair .h{padding-top:0}}
+.srow:last-child{border-bottom:0}
+.srow .h{font-family:var(--font-mono);font-size:11.5px;color:var(--accent-soft);padding-top:3px}
+.srow .b{font-family:var(--font-mono);font-size:13px;color:var(--fg-dim);line-height:1.75}
+@media(max-width:640px){.srow{grid-template-columns:1fr;gap:5px}.srow .h{padding-top:0}}
 
-/* contact */
-.reach{border-top:1px solid var(--rule-soft);margin-top:26px}
+/* ---------- agent block ---------- */
+.term{
+  background:#0a0c0e;border:1px solid var(--line);border-radius:8px;
+  overflow:hidden;margin-top:8px;
+}
+.term-bar{
+  display:flex;align-items:center;gap:7px;padding:11px 15px;
+  border-bottom:1px solid var(--line-soft);background:rgba(134,239,172,.03);
+}
+.term-bar i{width:9px;height:9px;border-radius:50%;background:var(--line);display:block}
+.term-bar span{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);margin-left:8px}
+.term-body{padding:18px 16px;overflow-x:auto}
+.term-body pre{
+  margin:0;font-family:var(--font-mono);font-size:12.5px;line-height:1.85;
+  color:var(--fg);white-space:pre;
+}
+.term-body .c{color:var(--accent)}
+.term-body .d{color:var(--fg-dim)}
+.surfaces{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.surfaces a{
+  font-family:var(--font-mono);font-size:12px;text-decoration:none;
+  color:var(--accent-soft);border:1px solid var(--line);
+  background:var(--bg-1);padding:6px 12px;border-radius:4px;
+  transition:border-color var(--dur) var(--ease),color var(--dur) var(--ease);
+}
+.surfaces a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ---------- contact ---------- */
+.reach{display:flex;flex-direction:column;margin-top:8px}
 .reach a{
-  display:flex;align-items:baseline;gap:20px;text-decoration:none;
-  padding:15px 0;border-bottom:1px solid var(--rule-soft);
-  font-family:var(--f-mono);font-size:13.5px;transition:background .15s;
+  display:flex;align-items:baseline;gap:18px;text-decoration:none;
+  font-family:var(--font-mono);font-size:13.5px;
+  padding:15px 4px;border-bottom:1px solid var(--line-soft);
+  transition:padding-left var(--dur) var(--ease),color var(--dur) var(--ease);
 }
-.reach a:hover{background:var(--sunk)}
-.reach .k{
-  font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
-  color:var(--ink-dim);width:82px;flex:none;
-}
-.reach .go{margin-left:auto;color:var(--ink-dim)}
-.reach a:hover .go{color:var(--signal)}
+.reach a:hover{padding-left:12px;color:var(--accent)}
+.reach .k{color:var(--fg-dim);width:88px;flex:none;font-size:11.5px}
+.reach .go{margin-left:auto;color:var(--fg-dim)}
+.reach a:hover .go{color:var(--accent)}
 
-.machine{
-  margin-top:30px;padding:20px 22px;
-  background:var(--sunk);border:1px solid var(--rule-soft);border-radius:2px;
-}
-.machine p{margin:0 0 13px;font-size:15px;color:var(--ink-mut)}
-.machine strong{color:var(--ink);font-family:var(--f-display);font-weight:600}
-.machine .fs{display:flex;flex-wrap:wrap;gap:8px}
-.machine a{
-  font-family:var(--f-mono);font-size:12px;color:var(--signal);
-  text-decoration:none;border:1px solid var(--rule);
-  padding:4px 9px;border-radius:2px;background:var(--surface);
-}
-.machine a:hover{border-color:var(--signal)}
-
-.colophon{
-  margin-top:clamp(54px,8vw,80px);padding:22px 0 46px;
-  border-top:1px solid var(--rule);
+footer{
+  border-top:1px solid var(--line-soft);padding:26px 0 44px;
   display:flex;flex-wrap:wrap;gap:10px;
-  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.07em;
-  text-transform:uppercase;color:var(--ink-dim);
+  font-family:var(--font-mono);font-size:11.5px;color:var(--fg-dim);
 }
-.colophon .rt{margin-left:auto}
+footer .r{margin-left:auto}
 </style>
 </head>
 <body>
+<div class="glow" aria-hidden="true"></div>
 
-<header class="topbar">
-  <div class="sheet">
-    <a class="sig" href="#top">Degz&nbsp;Arbiz<i>&nbsp;/</i></a>
-    <nav class="topnav">
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">degz<span class="p">@</span>arbiz</a>
+    <div class="navlinks">
       <a href="#work" data-opt>Work</a>
       <a href="#history" data-opt>History</a>
-      <a href="#teaching" data-opt>Teaching</a>
-      <a href="#contact">Contact</a>
-      <button class="tbtn" id="tt" aria-label="Switch colour theme">Theme</button>
-    </nav>
+      <a href="#stack" data-opt>Stack</a>
+      <a href="#agents" data-opt>Agents</a>
+      <a class="navcta" href="mailto:degz12348@gmail.com">Hire me</a>
+    </div>
   </div>
-</header>
+</nav>
 
-<!-- ============ MASTHEAD ============ -->
 <main>
-<section class="sheet masthead" id="top">
-  <div class="avail"><span class="lamp"></span> Available &mdash; contract &amp; full-time</div>
 
-  <div class="idblock">
-    <div class="idtext">
-      <h1 class="name">Diego&nbsp;&ldquo;Degz&rdquo;<br>Arbiz&nbsp;Jr.</h1>
-      <p class="role">AI Systems Developer &nbsp;/&nbsp; Automation Architect</p>
+<!-- ==================== HERO ==================== -->
+<section class="wrap hero" id="top">
+  <div class="idrow">
+    <div class="idcol">
+      <div class="status"><span class="dot"></span> Available — contract &amp; full-time</div>
+      <h1>AI systems that run in <em>production</em>, not in demos.</h1>
+      <p class="lede">
+        I'm Degz — an AI Systems Developer and automation architect. I build
+        LLM-powered applications, the evaluation harnesses that keep them honest,
+        and the workflow infrastructure connecting them to CRMs, marketing
+        platforms, and the tools a business actually runs on.
+      </p>
     </div>
-    <img class="portrait" src="assets/degz-headshot.jpg"
-         alt="Diego Arbiz Jr." width="385" height="572">
+    <img class="portrait" src="assets/degz-headshot.jpg" alt="Diego Arbiz Jr." width="385" height="572">
   </div>
 
-  <dl class="spec">
-    <div><dt>Based</dt><dd>Calabarzon, PH</dd></div>
-    <div><dt>Working hours</dt><dd>APAC &middot; EU &middot; US</dd></div>
-    <div><dt>Experience</dt><dd>8+ years</dd></div>
-    <div><dt>Contact</dt><dd><a href="mailto:degz12348@gmail.com">degz12348@gmail.com</a></dd></div>
-  </dl>
+  <div class="cta">
+    <a class="btn key" href="mailto:degz12348@gmail.com">Start a conversation</a>
+    <a class="btn" href="#work">See the work</a>
+    <a class="btn" href="/resume.txt">résumé.txt</a>
+  </div>
 
-  <p class="thesis">I turn AI from prompt experiments into production systems.</p>
-
-  <p class="intro">
-    I design LLM-powered applications and the workflow infrastructure around them &mdash;
-    the backend logic, prompt architecture, and API integrations that connect AI models
-    to CRMs, marketing platforms, and the tools a business actually runs on. Eight years
-    in digital systems, SaaS, and business automation before that. I care about
-    reliability and deployment over demos.
-  </p>
-
-  <div class="actions">
-    <a class="act key" href="mailto:degz12348@gmail.com">Get in touch</a>
-    <a class="act" href="#work">Selected work</a>
-    <a class="act" href="/resume.pdf">R&eacute;sum&eacute;</a>
+  <div class="facts">
+    <span><b>Calabarzon, PH</b> · remote</span>
+    <span>overlap <b>APAC · EU · US</b></span>
+    <span><b>8+ yrs</b> digital systems</span>
   </div>
 </section>
 
-<!-- ============ CAPABILITIES ============ -->
-<section class="sheet block" id="capabilities">
-  <p class="label">Capabilities</p>
-  <div class="caps">
-    <div class="cap">
+<!-- ==================== PROOF ==================== -->
+<section class="wrap rv" id="proof">
+  <p class="kicker">proof</p>
+  <h2>Shipped, measured.</h2>
+  <p class="sub">What I've actually built, and where it runs.</p>
+
+  <div class="leaders">
+    <div class="leader"><span class="k">sales-coach-ai</span><span class="fill"></span><span class="v">80 of 285 commits — largest single share</span></div>
+    <div class="leader"><span class="k">packages/ai</span><span class="fill"></span><span class="v">AI pipeline layer, owned</span></div>
+    <div class="leader"><span class="k">real-cue-eval.mts</span><span class="fill"></span><span class="v">scripted coaching quality gate</span></div>
+    <div class="leader"><span class="k">Scale With System</span><span class="fill"></span><span class="v">CRM/marketing SaaS, 2 commercial tiers</span></div>
+    <div class="leader"><span class="k">industries served</span><span class="fill"></span><span class="v">7 — realty, finance, auto, gov, education…</span></div>
+    <div class="leader"><span class="k">live training</span><span class="fill"></span><span class="v">weekly, idea → deployed AI app</span></div>
+  </div>
+</section>
+
+<!-- ==================== WHAT I DO ==================== -->
+<section class="wrap rv" id="what">
+  <p class="kicker">capability</p>
+  <h2>Three things, done properly.</h2>
+  <div class="grid3">
+    <div class="panel">
       <h3>LLM applications</h3>
-      <p>AI-powered apps on Claude and other LLM APIs, with structured input/output contracts, role-based instruction frameworks, and evaluation passes that keep behaviour consistent under real load.</p>
+      <p>Apps on Claude and other LLM APIs, with structured input/output contracts, role-based instruction frameworks, and evaluation passes that hold behaviour steady under real load.</p>
     </div>
-    <div class="cap">
+    <div class="panel">
       <h3>Automation infrastructure</h3>
-      <p>The workflow layer underneath: backend logic, API and webhook integrations, and modular components connecting AI to CRMs, marketing platforms, and operational tooling.</p>
+      <p>The layer underneath — backend logic, API and webhook integrations, and modular components wiring AI into CRMs and operational tooling.</p>
     </div>
-    <div class="cap">
+    <div class="panel">
       <h3>Prompt &amp; system architecture</h3>
-      <p>Constraint-driven prompt design, model behaviour control, and documented architecture &mdash; built so someone else can maintain and extend it.</p>
+      <p>Constraint-driven design, model behaviour control, and documented architecture built so someone else can maintain and extend it.</p>
     </div>
-  </div>
-
-  <div class="metrics">
-    <div><span class="v">8+</span><span class="k">Years in<br>digital systems</span></div>
-    <div><span class="v">6&ndash;7 fig</span><span class="k">Client launches<br>supported</span></div>
-    <div><span class="v">20&ndash;30</span><span class="k">Hours/week saved<br>per client</span></div>
-    <div><span class="v">7</span><span class="k">Industries<br>served</span></div>
   </div>
 </section>
 
-<!-- ============ WORK ============ -->
-<section class="sheet block" id="work">
-  <p class="label">Selected work</p>
-  <div class="entries">
+<!-- ==================== WORK ==================== -->
+<section class="wrap rv" id="work">
+  <p class="kicker">work</p>
+  <h2>Selected builds.</h2>
+  <div class="work">
 
-
-    <div class="entry">
-      <div class="entry-head">
-        <h3>Sales Coach AI &mdash; AI pipeline layer</h3>
-        <span class="when">Apr &ndash; Aug 2026</span>
+    <div class="proj">
+      <div class="proj-head">
+        <h3>Sales Coach AI — AI pipeline layer</h3>
+        <span class="when">Apr – Aug 2026</span>
       </div>
-      <p>Real-time sales coaching over live calls: a TypeScript monorepo with a Fastify API, Next.js client using live tab capture, and a BullMQ worker running Claude pipelines against call audio, backed by Postgres, Redis, and R2. <strong>Built as a team of six; I own the AI layer</strong> &mdash; the coaching pipelines and prompt architecture in <code>packages/ai</code> &mdash; and wrote the cue-evaluation harness that holds coaching output to a scripted quality gate instead of manual review. 80 of 285 commits, the largest single share.</p>
-      <div class="chips"><span class="chip">Claude API</span><span class="chip">TypeScript</span><span class="chip">Fastify</span><span class="chip">Next.js</span><span class="chip">BullMQ</span><span class="chip">Drizzle</span><span class="chip">Docker</span></div>
+      <p>
+        Real-time sales coaching over live calls: a TypeScript monorepo with a Fastify API,
+        Next.js client using live tab capture, and a BullMQ worker running Claude pipelines
+        against call audio, backed by Postgres, Redis and R2.
+        <strong>Built by a team of six; I own the AI layer</strong> — the coaching pipelines
+        and prompt architecture in <code>packages/ai</code> — and wrote the cue-evaluation
+        harness that gates output against a scripted quality bar instead of manual review.
+        80 of 285 commits, the largest single share.
+      </p>
+      <div class="tags"><span class="tag">Claude API</span><span class="tag">TypeScript</span><span class="tag">Prompt architecture</span><span class="tag">LLM eval</span><span class="tag">Fastify</span><span class="tag">Next.js</span><span class="tag">BullMQ</span><span class="tag">Drizzle</span></div>
       <div class="shots">
         <figure class="shot">
-          <img src="assets/salescoach-live.png" alt="Sales Coach AI live coaching view: real-time cue cards surface a competitor battlecard and a price-objection reframe while the prospect transcript streams alongside." width="1440" height="900" loading="lazy">
-          <figcaption>Live coaching &mdash; cues fire against the streaming transcript</figcaption>
+          <img src="assets/salescoach-live.png" alt="Sales Coach AI live coaching view: cue cards surface a competitor battlecard and a price-objection reframe while the prospect transcript streams alongside." width="1440" height="900" loading="lazy">
+          <figcaption>Live coaching — cues fire against the streaming transcript</figcaption>
         </figure>
         <figure class="shot">
           <img src="assets/salescoach-critical.png" alt="Sales Coach AI in critical-only mode, suppressing lower-priority cues during a call." width="1440" height="900" loading="lazy">
-          <figcaption>Critical-only mode &mdash; cue volume tuned per rep</figcaption>
+          <figcaption>Critical-only mode — cue volume tuned per rep</figcaption>
         </figure>
       </div>
     </div>
 
-    <div class="entry">
-      <div class="entry-head">
+    <div class="proj">
+      <div class="proj-head">
         <h3>Scale With System CRM</h3>
         <span class="when">Ongoing</span>
       </div>
-      <p>Built and operate a white-labelled sales and marketing platform for the Philippine market &mdash; CRM and pipeline, appointment scheduling, funnel builder, course portal, unified inbox, and local payment integration. Two commercial tiers with live paying customers.</p>
-      <div class="chips"><span class="chip">GoHighLevel</span><span class="chip">SaaS operations</span><span class="chip">Payments</span><span class="chip">Product</span></div>
+      <p>
+        Built and operate a white-labelled sales and marketing platform for the Philippine
+        market — CRM and pipeline, appointment scheduling, funnel builder, course portal,
+        unified inbox, and local payment integration. Two commercial tiers with live
+        paying customers.
+      </p>
+      <div class="tags"><span class="tag">GoHighLevel</span><span class="tag">SaaS operations</span><span class="tag">Payments</span><span class="tag">Product</span></div>
     </div>
 
   </div>
 </section>
 
-<!-- ============ HISTORY ============ -->
-<section class="sheet block" id="history">
-  <p class="label">History</p>
+<!-- ==================== HISTORY ==================== -->
+<section class="wrap rv" id="history">
+  <p class="kicker">history</p>
+  <h2>Eight years of systems.</h2>
   <div class="hist">
 
     <div class="stint">
-      <div class="when">Oct 2025 &mdash;<br>Present</div>
+      <div class="when">Oct 2025 —<br>Present</div>
       <div>
         <h3>AI Systems Developer</h3>
         <div class="org">Freelance / Self-employed</div>
         <ul>
           <li>Design and build AI-powered applications on Claude and other LLM APIs, translating business requirements into prompt architecture, backend workflows, and scalable AI logic.</li>
           <li>Engineer role-based, constraint-driven instruction frameworks to improve model reliability and consistency.</li>
-          <li>Integrate AI systems with APIs, CRMs, and automation platforms into end-to-end solutions; test and optimise outputs for production accuracy.</li>
+          <li>Integrate AI systems with APIs, CRMs, and automation platforms; test and optimise outputs for production accuracy.</li>
           <li>Architect reusable AI components and modular workflow systems, documented for maintainability.</li>
         </ul>
       </div>
@@ -504,43 +469,42 @@ a.entry:hover{background:var(--sunk)}
       <div class="when">Ongoing</div>
       <div>
         <h3>Co-founder &amp; Systems Lead</h3>
-        <div class="org">Scale With System &mdash; KMH Web And Tech Solutions</div>
+        <div class="org">Scale With System — KMH Web And Tech Solutions</div>
         <ul>
           <li>Co-run a consultancy helping agencies and digital businesses scale through automation, CRM strategy, and AI-enhanced funnel infrastructure.</li>
-          <li>Supported multiple 6&ndash;7 figure client launches with system-driven growth models.</li>
-          <li>Built and operate a commercial CRM/marketing SaaS for the Philippine market across two pricing tiers.</li>
+          <li>Supported multiple 6–7 figure client launches with system-driven growth models.</li>
+          <li>Built and operate a commercial CRM/marketing SaaS across two pricing tiers.</li>
         </ul>
       </div>
     </div>
 
     <div class="stint">
-      <div class="when">Sep 2024 &mdash;<br>Sep 2025</div>
+      <div class="when">Sep 2024 —<br>Sep 2025</div>
       <div>
         <h3>Automation &amp; AI Technical Specialist</h3>
         <div class="org">Freelance / Self-employed</div>
         <ul>
           <li>Built lead-nurturing and sales follow-up automation using GoHighLevel and LLM tooling.</li>
           <li>Developed end-to-end training and recruitment systems; managed membership and onboarding workflows.</li>
-          <li>Implemented marketing automation to streamline internal operations and client communication.</li>
         </ul>
       </div>
     </div>
 
     <div class="stint">
-      <div class="when">Sep 2025 &mdash;<br>Feb 2026</div>
+      <div class="when">Sep 2025 —<br>Feb 2026</div>
       <div>
         <h3>Healthcare Advocate, Tier 2</h3>
         <div class="org">Conduent</div>
         <ul>
-          <li>Tier 2 support for complex healthcare benefits, billing, and prescription drug inquiries &mdash; formularies, medication tiers, and coverage stages, under regulatory compliance requirements.</li>
+          <li>Tier 2 support for complex healthcare benefits, billing, and prescription drug inquiries under regulatory compliance requirements.</li>
         </ul>
       </div>
     </div>
 
     <div class="stint">
-      <div class="when">2020 &mdash;<br>2024</div>
+      <div class="when">2020 —<br>2024</div>
       <div>
-        <h3>Online Business Manager &middot; Ecommerce Copywriter</h3>
+        <h3>Online Business Manager · Ecommerce Copywriter</h3>
         <div class="org">Freelance / Self-employed</div>
         <ul>
           <li>CRM administration, funnel and website builds, and email marketing for coaching, consulting, and debt-relief clients.</li>
@@ -549,147 +513,141 @@ a.entry:hover{background:var(--sunk)}
     </div>
 
     <div class="stint">
-      <div class="when">2019 &mdash;<br>2020</div>
+      <div class="when">2019 —<br>2020</div>
       <div>
-        <h3>Consultant &middot; Customer Coach</h3>
-        <div class="org">Cloudbeds &mdash; remote</div>
+        <h3>Consultant · Customer Coach</h3>
+        <div class="org">Cloudbeds — remote</div>
         <ul>
-          <li>Onboarded and supported hotel properties through SaaS implementation; troubleshot escalated issues and authored documentation for the product knowledge base.</li>
+          <li>Onboarded and supported hotel properties through SaaS implementation; authored documentation for the product knowledge base.</li>
         </ul>
       </div>
     </div>
 
     <div class="stint">
-      <div class="when">2011 &mdash;<br>2018</div>
+      <div class="when">2011 —<br>2018</div>
       <div>
         <h3>Earlier</h3>
-        <div class="org">Open iT &middot; TELUS International &middot; Teleperformance &middot; Radyo Natin</div>
-        <p class="note">Inside sales, technical support, and customer service across enterprise software and BPO &mdash; where the systems-and-process instinct came from. Full detail in the r&eacute;sum&eacute;.</p>
+        <div class="org">Open iT · TELUS International · Teleperformance · Radyo Natin</div>
+        <p class="note">Inside sales, technical support, and customer service across enterprise software and BPO — where the systems-and-process instinct came from. Full detail in the résumé.</p>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- ============ TEACHING ============ -->
-<section class="sheet block" id="teaching">
-  <p class="label">Teaching</p>
-  <h2>Practical AI App Development</h2>
-  <p class="muted" style="max-width:63ch">
-    A free live weekly training taking complete beginners from an idea to a working,
-    deployed AI application: turning a concept into requirements an AI can act on,
-    building with AI coding agents, then running, testing, and iterating on the result.
-    No programming background required.
+<!-- ==================== STACK ==================== -->
+<section class="wrap rv" id="stack">
+  <p class="kicker">stack</p>
+  <h2>Tools I ship with, daily.</h2>
+  <div class="stack">
+    <div class="srow"><div class="h">ai</div><div class="b">Claude API · LLM orchestration · prompt architecture · model behaviour control · evaluation harnesses · AI coding agents</div></div>
+    <div class="srow"><div class="h">automation</div><div class="b">GoHighLevel · HubSpot · n8n · Make · Zapier</div></div>
+    <div class="srow"><div class="h">build</div><div class="b">Python · TypeScript · JavaScript · Node · Fastify · Next.js · REST APIs · webhooks</div></div>
+    <div class="srow"><div class="h">data</div><div class="b">Postgres · Drizzle · Redis · BullMQ</div></div>
+    <div class="srow"><div class="h">infra</div><div class="b">Docker · Railway · Cloudflare R2 · Playwright</div></div>
+  </div>
+</section>
+
+<!-- ==================== TEACHING ==================== -->
+<section class="wrap rv" id="teaching">
+  <p class="kicker">teaching</p>
+  <h2>I teach this, live, every week.</h2>
+  <p class="sub">
+    A free live training taking complete beginners from an idea to a working, deployed
+    AI application — turning a concept into requirements an AI can act on, building with
+    AI coding agents, then running, testing and iterating. No programming background required.
   </p>
-  <div class="chips" style="margin-top:16px">
-    <span class="chip">Live weekly</span>
-    <span class="chip">Non-programmers welcome</span>
-    <span class="chip">Idea &rarr; deployed app</span>
-    <span class="chip">AI coding agents</span>
-  </div>
-  <div class="actions" style="margin-top:24px">
-    <a class="act" href="#">Next session</a>
+  <div class="tags">
+    <span class="tag">Live weekly</span>
+    <span class="tag">Non-programmers welcome</span>
+    <span class="tag">Idea → deployed app</span>
+    <span class="tag">AI coding agents</span>
   </div>
 </section>
 
-<!-- ============ VOICES ============ -->
-<section class="sheet block" id="clients">
-  <p class="label">Client feedback</p>
-  <div class="voices">
-    <div class="voice">
-      <blockquote>They went well beyond the web and funnel work &mdash; taking on responsibilities closer to a project manager.</blockquote>
-      <div class="src">Jonathan E. &mdash; CEO, Step Up To Care</div>
+<!-- ==================== CLIENTS ==================== -->
+<section class="wrap rv" id="clients">
+  <p class="kicker">clients</p>
+  <h2>What they said.</h2>
+  <div class="quotes">
+    <div class="panel quote">
+      <blockquote>They went well beyond the web and funnel work — taking on responsibilities closer to a project manager.</blockquote>
+      <div class="src">Jonathan E. — CEO, Step Up To Care</div>
     </div>
-    <div class="voice">
+    <div class="panel quote">
       <blockquote>I can now take vacations without any worries.</blockquote>
-      <div class="src">Marielle T. &mdash; CEO, Good Diva Marketing</div>
+      <div class="src">Marielle T. — CEO, Good Diva Marketing</div>
     </div>
-    <div class="voice">
+    <div class="panel quote">
       <blockquote>The consultations were valuable enough that I offered to pay before the project even began.</blockquote>
-      <div class="src">Yvonne R. &mdash; CEO, Investahomes Realty</div>
+      <div class="src">Yvonne R. — CEO, Investahomes Realty</div>
     </div>
   </div>
 </section>
 
-<!-- ============ STACK ============ -->
-<section class="sheet block" id="stack">
-  <p class="label">Stack</p>
-  <div class="pairs">
-    <div class="pair">
-      <div class="h">AI</div>
-      <div class="b">Claude API &middot; LLM integration &amp; orchestration &middot; prompt architecture &middot; model behaviour control &middot; output evaluation &middot; AI coding agents</div>
+<!-- ==================== AGENTS ==================== -->
+<section class="wrap rv" id="agents">
+  <p class="kicker">agents</p>
+  <h2>Read me from your agent.</h2>
+  <p class="sub">
+    This site publishes machine-readable surfaces, so automated screeners and AI agents
+    can parse my background without scraping the page.
+  </p>
+
+  <div class="term">
+    <div class="term-bar"><i></i><i></i><i></i><span>bash</span></div>
+    <div class="term-body">
+<pre><span class="d">$</span> <span class="c">curl degz12348-tech.github.io/resume.txt</span>
+
+DIEGO "DEGZ" ARBIZ JR.
+AI Systems Developer / Automation Architect
+Calabarzon, Philippines · remote · APAC / EU / US overlap
+<span class="d">…</span></pre>
     </div>
-    <div class="pair">
-      <div class="h">Automation &amp; CRM</div>
-      <div class="b">GoHighLevel &middot; HubSpot &middot; n8n &middot; Make &middot; Zapier &middot; AI-driven CRM systems</div>
-    </div>
-    <div class="pair">
-      <div class="h">Build</div>
-      <div class="b">Python &middot; JavaScript &middot; REST APIs &middot; webhooks &middot; backend logic design &middot; HTML/CSS</div>
-    </div>
-    <div class="pair">
-      <div class="h">Adjacent</div>
-      <div class="b">SaaS operations &middot; email marketing &middot; funnel design &middot; project management</div>
-    </div>
+  </div>
+
+  <div class="surfaces">
+    <a href="/resume.txt">GET /resume.txt</a>
+    <a href="/resume.json">GET /resume.json</a>
+    <a href="/llms.txt">GET /llms.txt</a>
   </div>
 </section>
 
-<!-- ============ EDUCATION ============ -->
-<section class="sheet block" id="education">
-  <p class="label">Education</p>
-  <div class="pairs">
-    <div class="pair">
-      <div class="h">2016 &mdash; 2017</div>
-      <div class="b"><span class="deg">Master of Business Administration</span><br>Rizal Technological University</div>
-    </div>
-    <div class="pair">
-      <div class="h">2009 &mdash; 2013</div>
-      <div class="b"><span class="deg">BS Business Administration</span><br>Major in Financial Management &middot; Bukidnon State University</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CONTACT ============ -->
-<section class="sheet block" id="contact">
-  <p class="label">Contact</p>
-  <h2>Let&rsquo;s talk about your systems.</h2>
-  <p class="muted" style="max-width:60ch">Open to contract work, fractional AI engineering, and full-time roles. Email is fastest &mdash; I reply within a day.</p>
+<!-- ==================== CONTACT ==================== -->
+<section class="wrap rv" id="contact">
+  <p class="kicker">contact</p>
+  <h2>Hire me.</h2>
+  <p class="sub">Open to contract work, fractional AI engineering, and full-time roles. Email is fastest — I reply within a day.</p>
 
   <div class="reach">
-    <a href="mailto:degz12348@gmail.com"><span class="k">Email</span><span>degz12348@gmail.com</span><span class="go">&#8599;</span></a>
-    <a href="https://www.linkedin.com/in/diegoarbizjr/" target="_blank" rel="noopener"><span class="k">LinkedIn</span><span>/in/diegoarbizjr</span><span class="go">&#8599;</span></a>
-    <a href="https://github.com/degz12348-tech" target="_blank" rel="noopener"><span class="k">GitHub</span><span>@degz12348-tech</span><span class="go">&#8599;</span></a>
-    <a href="https://www.scalewithsystem.com/" target="_blank" rel="noopener"><span class="k">Agency</span><span>scalewithsystem.com</span><span class="go">&#8599;</span></a>
-  </div>
-
-  <div class="machine">
-    <p><strong>For AI agents and recruiting tools.</strong> This site publishes machine-readable surfaces, so automated screeners can parse my background without scraping the page.</p>
-    <div class="fs">
-      <a href="/llms.txt">/llms.txt</a>
-      <a href="/resume.json">/resume.json</a>
-      <a href="/resume.txt">/resume.txt</a>
-    </div>
+    <a href="mailto:degz12348@gmail.com"><span class="k">email</span><span>degz12348@gmail.com</span><span class="go">↗</span></a>
+    <a href="https://www.linkedin.com/in/diegoarbizjr/" target="_blank" rel="noopener"><span class="k">linkedin</span><span>/in/diegoarbizjr</span><span class="go">↗</span></a>
+    <a href="https://github.com/degz12348-tech" target="_blank" rel="noopener"><span class="k">github</span><span>@degz12348-tech</span><span class="go">↗</span></a>
+    <a href="https://www.scalewithsystem.com/" target="_blank" rel="noopener"><span class="k">agency</span><span>scalewithsystem.com</span><span class="go">↗</span></a>
   </div>
 </section>
+
 </main>
 
-<footer class="sheet colophon">
-  <span>&copy; <span id="yr">2026</span> Diego Arbiz Jr.</span>
-  <span class="rt">Archivo &middot; Newsreader &middot; IBM Plex Mono</span>
+<footer class="wrap">
+  <span>© <span id="yr">2026</span> Diego Arbiz Jr.</span>
+  <span class="r">Gabarito · Geist · JetBrains Mono</span>
 </footer>
 
 <script>
+document.getElementById('yr').textContent = new Date().getFullYear();
 (function(){
-  var btn=document.getElementById('tt'),root=document.documentElement;
-  try{var saved=localStorage.getItem('theme');if(saved)root.setAttribute('data-theme',saved);}catch(e){}
-  btn.addEventListener('click',function(){
-    var cur=root.getAttribute('data-theme');
-    if(!cur)cur=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
-    var next=cur==='dark'?'light':'dark';
-    root.setAttribute('data-theme',next);
-    try{localStorage.setItem('theme',next);}catch(e){}
-  });
-  document.getElementById('yr').textContent=new Date().getFullYear();
+  var els = document.querySelectorAll('.rv');
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion:reduce)').matches){
+    els.forEach(function(e){ e.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, {rootMargin:'0px 0px -8% 0px', threshold:0.06});
+  els.forEach(function(e){ io.observe(e); });
 })();
 </script>
 
@@ -700,7 +658,7 @@ a.entry:hover{background:var(--sunk)}
   "name":"Diego Arbiz Jr.",
   "alternateName":"Degz Arbiz",
   "jobTitle":"AI Systems Developer",
-  "description":"AI Systems Developer and automation architect building LLM-powered applications and workflow infrastructure.",
+  "description":"AI Systems Developer and automation architect building LLM-powered applications, evaluation harnesses, and workflow infrastructure.",
   "url":"https://degz12348-tech.github.io",
   "email":"mailto:degz12348@gmail.com",
   "address":{"@type":"PostalAddress","addressRegion":"Calabarzon","addressCountry":"PH"},
@@ -709,8 +667,8 @@ a.entry:hover{background:var(--sunk)}
     {"@type":"CollegeOrUniversity","name":"Rizal Technological University"},
     {"@type":"CollegeOrUniversity","name":"Bukidnon State University"}
   ],
-  "sameAs":["https://www.linkedin.com/in/diegoarbizjr/","https://www.scalewithsystem.com/"],
-  "knowsAbout":["AI systems development","LLM integration","Prompt architecture","Automation infrastructure","Claude API","GoHighLevel","CRM automation","API integration","Python"]
+  "sameAs":["https://www.linkedin.com/in/diegoarbizjr/","https://github.com/degz12348-tech","https://www.scalewithsystem.com/"],
+  "knowsAbout":["AI systems development","LLM integration","Prompt architecture","LLM evaluation","Automation infrastructure","Claude API","GoHighLevel","API integration","TypeScript","Python"]
 }
 </script>
 
