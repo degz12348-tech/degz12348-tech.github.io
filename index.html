@@ -277,31 +277,9 @@ p{margin:0 0 16px}
   0%  {transform:translate3d(0,2px,0) rotate(.08deg)}
   100%{transform:translate3d(-2px,-4px,0) rotate(-.12deg)}
 }
-.figure img.hands-motion{
-  position:absolute;inset:0;z-index:1;opacity:.42;
-  clip-path:polygon(48% 62%,100% 62%,100% 100%,43% 100%);
-  animation:typingHands .38s steps(2,end) infinite;
-  mix-blend-mode:screen;
-}
-@keyframes typingHands{
-  0%,100%{transform:translate3d(-1px,1px,0) skewX(-.08deg)}
-  50%{transform:translate3d(1px,-3px,0) skewX(.12deg)}
-}
-.figure img.head-motion{
-  position:absolute;inset:0;z-index:1;opacity:.28;
-  clip-path:ellipse(15% 25% at 72% 27%);
-  transform-origin:72% 43%;
-  animation:headMove 5.2s var(--ease) infinite alternate;
-  mix-blend-mode:screen;
-}
 .figure canvas.ghostfx{
   position:absolute;inset:0;z-index:2;width:100%;height:100%;
-  pointer-events:none;mix-blend-mode:screen;opacity:.72;
-}
-@keyframes headMove{
-  0%,18%{transform:translate3d(0,1px,0) rotate(.05deg)}
-  62%{transform:translate3d(-2px,-3px,0) rotate(-.28deg)}
-  100%{transform:translate3d(1px,-1px,0) rotate(.16deg)}
+  pointer-events:none;mix-blend-mode:screen;opacity:.94;
 }
 /* periodic scanline sweep travelling down the portrait */
 .figure .sweep{
@@ -317,8 +295,8 @@ p{margin:0 0 16px}
   100%{top:104%;opacity:0}
 }
 @media(prefers-reduced-motion:reduce){
-  .figure img,.figure img.hands-motion,.figure img.head-motion{animation:none;transform:none}
-  .figure img.hands-motion,.figure img.head-motion,.figure canvas.ghostfx{display:none}
+  .figure img{animation:none;transform:none}
+  .figure canvas.ghostfx{display:none}
   .figure .sweep{display:none}
 }
 .figure::after{
@@ -666,8 +644,6 @@ footer .r{margin-left:auto}
 
   <div class="figure" aria-hidden="true">
     <img src="assets/degz-digital-hero-v7.webp" alt="" width="1672" height="941">
-    <img class="head-motion" src="assets/degz-digital-hero-v7.webp" alt="" width="1672" height="941">
-    <img class="hands-motion" src="assets/degz-digital-hero-v7.webp" alt="" width="1672" height="941">
     <canvas class="ghostfx" id="ghostfx"></canvas>
     <span class="sweep"></span>
   </div>
@@ -1108,23 +1084,23 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     particles.push({
       x:w * (shoulder ? (.68 + Math.random()*.25) : (.58 + Math.random()*.24)),
       y:h * (shoulder ? (.16 + Math.random()*.58) : (.63 + Math.random()*.25)),
-      vx:.35 + Math.random()*1.25, vy:(Math.random()-.5)*.18,
-      life:42 + Math.random()*72, age:0,
-      size:Math.random()<.72 ? 1 : (2 + Math.random()*4),
-      streak:Math.random()<.3
+      vx:.45 + Math.random()*1.65, vy:(Math.random()-.5)*.26,
+      life:54 + Math.random()*92, age:0,
+      size:Math.random()<.6 ? (1 + Math.random()*1.5) : (2.5 + Math.random()*5),
+      streak:Math.random()<.46
     });
   }
   function frame(){
     if (!running) return;
     ctx.clearRect(0,0,w,h);
-    var amount = w < 700 ? 2 : 5;
-    for(var n=0;n<amount;n++) if(particles.length<180) spawn();
+    var amount = w < 700 ? 3 : 8;
+    for(var n=0;n<amount;n++) if(particles.length<300) spawn();
     for(var i=particles.length-1;i>=0;i--){
       var p=particles[i]; p.age++; p.x+=p.vx; p.y+=p.vy;
       if(p.age>=p.life){particles.splice(i,1);continue}
-      var a=Math.sin(Math.PI*p.age/p.life)*(.14+Math.random()*.28);
+      var a=Math.sin(Math.PI*p.age/p.life)*(.22+Math.random()*.42);
       ctx.fillStyle='rgba(0,255,65,'+a.toFixed(3)+')';
-      if(p.streak) ctx.fillRect(p.x,p.y,8+p.size*5,1);
+      if(p.streak) ctx.fillRect(p.x,p.y,12+p.size*7,Math.max(1,p.size*.42));
       else ctx.fillRect(p.x,p.y,p.size,p.size);
     }
     raf=requestAnimationFrame(frame);
