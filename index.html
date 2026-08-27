@@ -89,7 +89,7 @@ a{color:inherit}
   overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
 }
 
-.wrap{width:min(var(--content-max),100%);margin:0 auto;padding:0 var(--gut)}
+.wrap{width:min(calc(var(--content-max) + (2 * var(--gut))),100%);margin:0 auto;padding-inline:var(--gut)}
 
 /* ---------- ambient glow behind the hero ---------- */
 .glow{
@@ -130,6 +130,7 @@ nav .wrap{display:flex;align-items:center;gap:20px;height:56px}
 /* ---------- shared section furniture ---------- */
 main{position:relative;z-index:1}
 section{padding:clamp(64px,10vw,104px) 0}
+section[id]{scroll-margin-top:56px}
 section + section{border-top:1px solid var(--line-soft)}
 .kicker{
   font-family:var(--font-mono);font-size:11.5px;color:var(--fg-dim);
@@ -438,7 +439,7 @@ p{margin:0 0 16px}
 .work{display:flex;flex-direction:column;gap:16px}
 .proj{
   background:var(--bg-1);border:1px solid var(--line-soft);border-radius:8px;
-  padding:26px;transition:border-color var(--dur) var(--ease);
+  padding:clamp(18px,3vw,26px);transition:border-color var(--dur) var(--ease);
 }
 .proj:hover{border-color:var(--line)}
 .proj-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:12px}
@@ -461,14 +462,42 @@ p{margin:0 0 16px}
   border:1px solid var(--line-soft);background:rgba(0,0,0,.4);
   padding:4px 9px;border-radius:4px;
 }
-.shots{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
-@media(max-width:640px){.shots{grid-template-columns:1fr}}
-figure.shot{margin:0;border:1px solid var(--line-soft);border-radius:6px;overflow:hidden;background:#000}
+.shot-rail{margin-top:20px}
+.shot-rail-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:10px}
+.shot-rail-head .label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-dim)}
+.rail-controls{display:flex;gap:7px}
+.rail-btn{
+  display:grid;place-items:center;width:32px;height:32px;padding:0;
+  border:1px solid var(--line);border-radius:50%;background:#050708;color:var(--fg);
+  font-family:var(--font-mono);font-size:15px;cursor:pointer;
+  transition:color var(--dur) var(--ease),border-color var(--dur) var(--ease),background var(--dur) var(--ease),transform var(--dur) var(--ease);
+}
+.rail-btn:hover{color:var(--accent);border-color:var(--accent);background:var(--bg-2);transform:scale(1.06)}
+.shots{
+  display:flex;gap:12px;overflow-x:auto;overscroll-behavior-inline:contain;
+  scroll-snap-type:inline mandatory;scroll-behavior:smooth;
+  scrollbar-color:var(--accent-deep) transparent;scrollbar-width:thin;
+  padding:4px 2px 14px;
+}
+.shots::-webkit-scrollbar{height:4px}
+.shots::-webkit-scrollbar-track{background:transparent}
+.shots::-webkit-scrollbar-thumb{background:var(--accent-deep);border-radius:99px}
+figure.shot{
+  flex:0 0 min(78%,680px);scroll-snap-align:start;margin:0;
+  border:1px solid var(--line-soft);border-radius:7px;overflow:hidden;background:#000;
+  transition:transform .32s var(--ease),border-color .32s var(--ease),box-shadow .32s var(--ease);
+}
+figure.shot:hover{transform:translateY(-3px) scale(1.012);border-color:var(--accent-deep);box-shadow:0 14px 36px rgba(0,0,0,.5)}
 figure.shot img{display:block;width:100%;height:auto}
 figure.shot figcaption{
   font-family:var(--font-mono);font-size:10.5px;color:var(--fg-dim);
   padding:9px 12px;border-top:1px solid var(--line-soft);
 }
+@media(max-width:640px){
+  figure.shot{flex-basis:88%}
+  .rail-btn{width:36px;height:36px}
+}
+@media(prefers-reduced-motion:reduce){.shots{scroll-behavior:auto}figure.shot{transition:none}}
 
 /* ---------- history ---------- */
 .hist{display:flex;flex-direction:column}
@@ -717,15 +746,24 @@ footer .r{margin-left:auto}
         <div class="case-fact"><span class="k">Evidence</span><span class="v">80 of 285 commits · 116 AI-layer file changes</span></div>
       </div>
       <div class="tags"><span class="tag">Claude API</span><span class="tag">TypeScript</span><span class="tag">Prompt architecture</span><span class="tag">LLM eval</span><span class="tag">Fastify</span><span class="tag">Next.js</span><span class="tag">BullMQ</span><span class="tag">Drizzle</span></div>
-      <div class="shots">
-        <figure class="shot">
-          <img src="assets/salescoach-live.png" alt="Sales Coach AI live coaching view: cue cards surface a competitor battlecard and a price-objection reframe while the prospect transcript streams alongside." width="1440" height="900" loading="lazy">
-          <figcaption>Live coaching — cues fire against the streaming transcript</figcaption>
-        </figure>
-        <figure class="shot">
-          <img src="assets/salescoach-critical.png" alt="Sales Coach AI in critical-only mode, suppressing lower-priority cues during a call." width="1440" height="900" loading="lazy">
-          <figcaption>Critical-only mode — cue volume tuned per rep</figcaption>
-        </figure>
+      <div class="shot-rail">
+        <div class="shot-rail-head">
+          <span class="label">Product views · scroll to explore</span>
+          <div class="rail-controls" aria-label="Product screenshot controls">
+            <button class="rail-btn" type="button" data-rail-dir="-1" aria-label="Previous screenshot">←</button>
+            <button class="rail-btn" type="button" data-rail-dir="1" aria-label="Next screenshot">→</button>
+          </div>
+        </div>
+        <div class="shots" tabindex="0" aria-label="Sales Coach AI product screenshots">
+          <figure class="shot">
+            <img src="assets/salescoach-live.png" alt="Sales Coach AI live coaching view: cue cards surface a competitor battlecard and a price-objection reframe while the prospect transcript streams alongside." width="1440" height="900" loading="lazy">
+            <figcaption>Live coaching — cues fire against the streaming transcript</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="assets/salescoach-critical.png" alt="Sales Coach AI in critical-only mode, suppressing lower-priority cues during a call." width="1440" height="900" loading="lazy">
+            <figcaption>Critical-only mode — cue volume tuned per rep</figcaption>
+          </figure>
+        </div>
       </div>
     </div>
 
@@ -987,6 +1025,21 @@ Calabarzon, Philippines · remote · APAC / EU / US overlap
 
 <script>
 document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* ---------- horizontal product rails ---------- */
+(function(){
+  document.querySelectorAll('.shot-rail').forEach(function(rail){
+    var track = rail.querySelector('.shots');
+    if (!track) return;
+    rail.querySelectorAll('[data-rail-dir]').forEach(function(button){
+      button.addEventListener('click', function(){
+        var card = track.querySelector('.shot');
+        var step = card ? card.getBoundingClientRect().width + 12 : track.clientWidth * .8;
+        track.scrollBy({left:step * Number(button.dataset.railDir),behavior:'smooth'});
+      });
+    });
+  });
+})();
 
 /* ---------- typewriter ---------- */
 (function(){
