@@ -36,6 +36,7 @@
   --accent:#00ff41;
   --accent-soft:#4ade80;
   --accent-deep:#15803d;
+  --cream:#f5f1ea;
   --focus:rgba(0,255,65,.72);
 
   --font-display:"Gabarito",system-ui,-apple-system,sans-serif;
@@ -132,7 +133,103 @@ p{margin:0 0 16px}
   *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
 }
 
-/* ---------- hero ---------- */
+/* ============================================================
+   HERO — split stage, ambient code, duotone portrait
+   ============================================================ */
+.stage{
+  position:relative;
+  min-height:clamp(560px,86vh,880px);
+  display:flex;align-items:center;
+  overflow:hidden;
+  border-bottom:1px solid var(--line-soft);
+}
+#codefall{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;opacity:.55;
+}
+/* portrait, right side, duotone green, dissolving into the black */
+.figure{
+  position:absolute;right:0;top:0;bottom:0;
+  width:min(46%,620px);z-index:1;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to left,#000 34%,transparent 96%),linear-gradient(to top,transparent 2%,#000 26%);
+  mask-image:linear-gradient(to left,#000 34%,transparent 96%),linear-gradient(to top,transparent 2%,#000 26%);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
+.figure img{
+  width:100%;height:100%;object-fit:cover;object-position:52% 18%;
+  filter:grayscale(1) contrast(1.28) brightness(.72);
+  display:block;
+}
+.figure::after{
+  content:"";position:absolute;inset:0;
+  background:var(--accent);mix-blend-mode:color;opacity:.9;
+}
+.figure::before{
+  content:"";position:absolute;inset:0;z-index:2;
+  background:repeating-linear-gradient(to bottom,rgba(0,0,0,.34) 0 1px,transparent 1px 3px);
+  opacity:.5;
+}
+@media(max-width:900px){
+  .figure{width:62%;opacity:.4}
+}
+@media(max-width:600px){
+  .figure{width:100%;opacity:.22;
+    -webkit-mask-image:linear-gradient(to top,transparent 6%,#000 52%);
+    mask-image:linear-gradient(to top,transparent 6%,#000 52%);}
+}
+
+.stage-inner{position:relative;z-index:3;width:100%;padding-top:clamp(40px,7vw,64px);padding-bottom:clamp(40px,7vw,64px)}
+.greet{
+  font-family:var(--font-display);font-weight:500;
+  font-size:clamp(1.15rem,2.6vw,1.65rem);
+  color:var(--fg);margin:0 0 14px;letter-spacing:-.01em;
+}
+.greet em{font-style:normal;color:var(--accent)}
+.hero h1{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(2.4rem,6.8vw,4.35rem);line-height:1.02;
+  letter-spacing:-.038em;color:var(--cream);
+  margin:0 0 20px;max-width:15ch;text-wrap:balance;
+}
+/* typewriter line */
+.typed{
+  font-family:var(--font-mono);font-size:clamp(12px,2.5vw,15px);
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--fg);margin:0 0 26px;min-height:1.5em;
+}
+.typed .t{color:var(--accent)}
+.caret{
+  display:inline-block;width:.58em;height:1.05em;
+  background:var(--accent);vertical-align:-2px;margin-left:3px;
+  animation:blink 1.05s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+.hero .lede{font-size:1.06rem;color:var(--fg-dim);max-width:52ch;margin:0 0 32px}
+
+/* pill CTAs */
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:22px}
+.pill{
+  font-family:var(--font-sans);font-size:15px;font-weight:500;
+  text-decoration:none;padding:13px 27px;border-radius:999px;
+  border:1px solid var(--line);color:var(--fg-strong);
+  transition:border-color var(--dur) var(--ease),background var(--dur) var(--ease),color var(--dur) var(--ease),transform var(--dur) var(--ease);
+}
+.pill:hover{border-color:var(--accent);background:var(--bg-2);transform:translateY(-1px)}
+.pill.solid{background:var(--cream);border-color:var(--cream);color:#0a0c0e}
+.pill.solid:hover{background:#fff;border-color:#fff;color:#0a0c0e}
+
+.agentpill{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-mono);font-size:12.5px;
+  color:var(--fg);text-decoration:none;
+  border:1px solid var(--line);border-radius:999px;
+  padding:10px 20px;background:rgba(0,0,0,.35);
+  transition:border-color var(--dur) var(--ease),background var(--dur) var(--ease);
+}
+.agentpill:hover{border-color:var(--accent);background:var(--bg-2)}
+.agentpill .lbl{color:var(--accent)}
+
 .hero{padding-top:clamp(56px,9vw,92px);padding-bottom:clamp(56px,9vw,92px)}
 .status{
   display:inline-flex;align-items:center;gap:9px;
@@ -331,31 +428,40 @@ footer .r{margin-left:auto}
 <main>
 
 <!-- ==================== HERO ==================== -->
-<section class="wrap hero" id="top">
-  <div class="idrow">
-    <div class="idcol">
-      <div class="status"><span class="dot"></span> Available — contract &amp; full-time</div>
-      <h1>AI systems that run in <em>production</em>, not in demos.</h1>
-      <p class="lede">
-        I'm Degz — an AI Systems Developer and automation architect. I build
-        LLM-powered applications, the evaluation harnesses that keep them honest,
-        and the workflow infrastructure connecting them to CRMs, marketing
-        platforms, and the tools a business actually runs on.
+<section class="stage" id="top">
+  <canvas id="codefall" aria-hidden="true"></canvas>
+
+  <div class="figure" aria-hidden="true">
+    <img src="assets/degz-headshot.jpg" alt="" width="385" height="572">
+  </div>
+
+  <div class="stage-inner">
+    <div class="wrap hero">
+      <p class="greet">Hello, I'm <em>Degz Arbiz</em></p>
+
+      <h1>AI Systems Developer for LLM apps and automation</h1>
+
+      <p class="typed" aria-live="off">
+        <span class="lead-in">I build</span>
+        <span class="t" id="typeout"></span><span class="caret" aria-hidden="true"></span>
       </p>
+
+      <p class="lede">
+        AI Systems Developer and automation architect. LLM-powered applications,
+        the evaluation harnesses that keep them honest, and the workflow
+        infrastructure that connects them to real business operations.
+        8+ years across digital systems, SaaS and automation.
+      </p>
+
+      <div class="cta">
+        <a class="pill solid" href="mailto:degz12348@gmail.com">Start a conversation</a>
+        <a class="pill" href="#work">See the work</a>
+      </div>
+
+      <a class="agentpill" href="#agents">
+        <span class="dot"></span><span class="lbl">AGENT-READY</span> · curl my résumé ↗
+      </a>
     </div>
-    <img class="portrait" src="assets/degz-headshot.jpg" alt="Diego Arbiz Jr." width="385" height="572">
-  </div>
-
-  <div class="cta">
-    <a class="btn key" href="mailto:degz12348@gmail.com">Start a conversation</a>
-    <a class="btn" href="#work">See the work</a>
-    <a class="btn" href="/resume.txt">résumé.txt</a>
-  </div>
-
-  <div class="facts">
-    <span><b>Calabarzon, PH</b> · remote</span>
-    <span>overlap <b>APAC · EU · US</b></span>
-    <span><b>8+ yrs</b> digital systems</span>
   </div>
 </section>
 
@@ -636,6 +742,102 @@ Calabarzon, Philippines · remote · APAC / EU / US overlap
 
 <script>
 document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* ---------- typewriter ---------- */
+(function(){
+  var el = document.getElementById('typeout');
+  if (!el) return;
+  var phrases = [
+    'AI SYSTEMS THAT RUN IN PRODUCTION',
+    'EVALUATION HARNESSES FOR LLM OUTPUT',
+    'PROMPT ARCHITECTURE THAT HOLDS UP',
+    'AUTOMATION THAT REMOVES MANUAL WORK'
+  ];
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches){
+    el.textContent = phrases[0];
+    return;
+  }
+  var pi = 0, ci = 0, deleting = false;
+  function tick(){
+    var p = phrases[pi];
+    ci += deleting ? -1 : 1;
+    el.textContent = p.slice(0, ci);
+    var wait = deleting ? 26 : 52;
+    if (!deleting && ci === p.length){ deleting = true; wait = 2100; }
+    else if (deleting && ci === 0){ deleting = false; pi = (pi + 1) % phrases.length; wait = 320; }
+    setTimeout(tick, wait);
+  }
+  tick();
+})();
+
+/* ---------- ambient code drift ---------- */
+(function(){
+  var cv = document.getElementById('codefall');
+  if (!cv || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  var ctx = cv.getContext('2d'), w = 0, h = 0, dpr = Math.min(devicePixelRatio || 1, 2);
+
+  var SNIPPETS = [
+    'const pipeline = createCoach({',
+    '  model: "claude-opus-4",',
+    '  cues: ["objection", "competitor"],',
+    '  gate: evalHarness({ minScore: 0.82 })',
+    '});',
+    'await queue.add("transcribe", { callId });',
+    'if (cue.confidence < threshold) skip();',
+    'export async function scoreTurn(turn) {',
+    '  const { verdict } = await judge(turn);',
+    '  return verdict.actionable ? cue : null;',
+    '}',
+    'const { rows } = await db.select().from(calls);',
+    'webhook.verify(sig, secret);',
+    'retry({ attempts: 3, backoff: "expo" })',
+    'crm.upsertContact({ email, stage });',
+    'for await (const chunk of stream) {'
+  ];
+
+  var lines = [];
+  function seed(){
+    lines = [];
+    var count = Math.round((w * h) / 46000);
+    count = Math.max(14, Math.min(count, 52));
+    for (var i = 0; i < count; i++){
+      lines.push({
+        txt: SNIPPETS[(Math.random() * SNIPPETS.length) | 0],
+        x: Math.random() * w,
+        y: Math.random() * h,
+        v: 0.09 + Math.random() * 0.22,
+        a: 0.05 + Math.random() * 0.22,
+        s: 11 + Math.random() * 4
+      });
+    }
+  }
+  function resize(){
+    w = cv.clientWidth; h = cv.clientHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    seed();
+  }
+  function draw(){
+    ctx.clearRect(0, 0, w, h);
+    for (var i = 0; i < lines.length; i++){
+      var l = lines[i];
+      ctx.font = l.s + 'px "JetBrains Mono", monospace';
+      ctx.fillStyle = 'rgba(0,255,65,' + l.a.toFixed(3) + ')';
+      ctx.fillText(l.txt, l.x, l.y);
+      l.y += l.v;
+      if (l.y > h + 20){
+        l.y = -14;
+        l.x = Math.random() * w;
+        l.txt = SNIPPETS[(Math.random() * SNIPPETS.length) | 0];
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  var ro = new ResizeObserver(resize);
+  ro.observe(cv);
+  resize();
+  requestAnimationFrame(draw);
+})();
 (function(){
   var els = document.querySelectorAll('.rv');
   if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion:reduce)').matches){
