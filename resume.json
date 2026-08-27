@@ -1,0 +1,231 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Diego Arbiz Jr.",
+    "label": "AI Systems Developer",
+    "email": "degz12348@gmail.com",
+    "phone": "",
+    "url": "https://degzarbiz.com",
+    "summary": "AI Systems Developer and automation architect focused on building AI-powered applications and scalable workflow infrastructure. 8+ years across digital systems, SaaS environments, and business automation, specialising in turning AI from prompt experimentation into structured, production-ready systems. Designs LLM-powered applications on Claude and API-based platforms, architecting the intelligent workflows, backend logic, and automation that connect AI models with CRMs, marketing platforms, and operational tools. Co-runs Scale With System with his spouse Kat, helping agencies and digital businesses scale through automation, CRM strategy, and AI-enhanced funnel infrastructure.",
+    "location": {
+      "region": "Calabarzon",
+      "countryCode": "PH"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "diegoarbizjr",
+        "url": "https://www.linkedin.com/in/diegoarbizjr/"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Freelance / Self-employed",
+      "position": "AI Systems Developer",
+      "startDate": "2025-10",
+      "highlights": [
+        "Designed and developed AI-powered applications using Claude and other LLM APIs.",
+        "Built structured AI workflows and complex automation systems for real-world business use cases.",
+        "Translated business requirements into scalable AI logic, prompt architecture, and backend workflows.",
+        "Engineered role-based, constraint-driven instruction frameworks to improve model reliability and consistency.",
+        "Integrated AI systems with APIs, CRMs, and automation platforms to create end-to-end solutions.",
+        "Tested, evaluated, and optimised AI outputs for accuracy, clarity, and production-level performance.",
+        "Architected reusable AI components and modular workflow systems for scalability.",
+        "Implemented structured input/output formatting to reduce ambiguity and improve system stability.",
+        "Applied responsible AI principles for ethical, safe, user-centred deployment.",
+        "Documented system architecture, prompt frameworks, and workflow logic for maintainability."
+      ]
+    },
+    {
+      "name": "Scale With System (KMH Web And Tech Solutions)",
+      "url": "https://www.scalewithsystem.com/",
+      "position": "Co-founder & Systems Lead",
+      "startDate": "20XX-XX",
+      "summary": "Consultancy helping agencies and digital businesses scale through automation, CRM strategy, and AI-enhanced funnel infrastructure.",
+      "highlights": [
+        "Supported multiple 6-7 figure client launches by implementing system-driven growth models powered by AI and automation.",
+        "Built and operate a commercial white-labelled CRM and marketing platform for the Philippine market across two pricing tiers, including local payment integration.",
+        "Delivered systems for clients in real estate, insurance and debt relief, auto dealerships, coaching and consulting, education, hospitality, and government agencies."
+      ]
+    },
+    {
+      "name": "Freelance / Self-employed",
+      "position": "Automation and AI - Technical Specialist",
+      "startDate": "2024-09",
+      "endDate": "2025-09",
+      "highlights": [
+        "Managed membership, training, and recruitment systems for the team.",
+        "Implemented marketing automation and AI solutions to improve workflows.",
+        "Built lead-nurturing and sales follow-up automation using GoHighLevel and LLM tooling.",
+        "Developed end-to-end training and recruitment systems.",
+        "Supported internal operations with efficient system setup and process optimisation.",
+        "Ensured consistent client engagement through automated communication."
+      ]
+    },
+    {
+      "name": "Conduent",
+      "position": "Healthcare Advocate, Tier 2",
+      "startDate": "2025-12",
+      "endDate": "2026-02",
+      "highlights": [
+        "Delivered Tier 2 support for complex healthcare benefits, billing, and prescription drug inquiries.",
+        "Provided advanced guidance on formularies, medication tiers, and coverage stages.",
+        "Assisted members in understanding financial responsibility and cost-saving options.",
+        "Maintained regulatory compliance and high-quality member experience standards."
+      ]
+    },
+    {
+      "name": "Conduent",
+      "position": "Healthcare Advocate",
+      "startDate": "2025-09",
+      "endDate": "2026-01",
+      "highlights": [
+        "Educated members on healthcare benefits, billing, and prescription drug coverage.",
+        "Explained premiums, copays, deductibles, and medication costs.",
+        "Supported members with pharmacy benefits, formularies, and cost-saving options."
+      ]
+    },
+    {
+      "name": "Freelance / Self-employed",
+      "position": "Online Business Manager",
+      "startDate": "2022-01",
+      "endDate": "2024-01",
+      "highlights": [
+        "CRM administration, funnel and website builds, and email marketing for coaching, consulting, and debt-relief clients."
+      ]
+    },
+    {
+      "name": "Freelance / Self-employed",
+      "position": "Ecommerce Copywriter",
+      "startDate": "2020-04",
+      "endDate": "2022-01",
+      "location": "Philippines",
+      "highlights": []
+    },
+    {
+      "name": "Cloudbeds",
+      "position": "Consultant",
+      "startDate": "2019-08",
+      "endDate": "2020-05",
+      "location": "Remote",
+      "highlights": []
+    },
+    {
+      "name": "Cloudbeds",
+      "position": "Customer Coach Trainee",
+      "startDate": "2019-04",
+      "endDate": "2019-08",
+      "location": "Remote",
+      "highlights": [
+        "Supported existing hotel-property customers and assisted new accounts through implementation.",
+        "Answered product and service questions via email ticketing; troubleshot and handled escalated issues.",
+        "Contributed tutorials and support articles to the product knowledge base."
+      ]
+    },
+    {
+      "name": "Open iT, Inc.",
+      "position": "Inside Sales Solutions Specialist",
+      "startDate": "2018-05",
+      "endDate": "2018-12",
+      "highlights": [
+        "Sold software solutions into an assigned territory, engaging customers across industries to identify needs and fit.",
+        "Conducted high-level product demos and communicated with line-of-business and IT decision makers.",
+        "Generated leads through phone, email campaigns, and social media; qualified prospects into revenue pipeline.",
+        "Maintained pipeline hygiene and forecasting against daily, weekly, monthly, and quarterly targets."
+      ]
+    },
+    {
+      "name": "TELUS International Philippines",
+      "position": "Technical Support Representative",
+      "startDate": "2016-06",
+      "endDate": "2018-03",
+      "location": "Taguig City",
+      "highlights": [
+        "Provided technical support for email client setup across desktop and mobile platforms.",
+        "Diagnosed internet and cable service issues using tier-4 support tooling; advised on product packages.",
+        "Supported on-site technicians with back-end software troubleshooting."
+      ]
+    },
+    {
+      "name": "Teleperformance Philippines",
+      "position": "Customer Service Representative",
+      "startDate": "2015-06",
+      "endDate": "2016-06",
+      "highlights": [
+        "B2C customer service on the Comcast account: service activation, complaint handling, and troubleshooting of cable boxes and modems."
+      ]
+    },
+    {
+      "name": "NCCC Mall",
+      "position": "Customer Service Associate",
+      "startDate": "2013-01",
+      "endDate": "2014-01",
+      "location": "Davao, Philippines",
+      "highlights": []
+    },
+    {
+      "name": "Radyo Natin",
+      "position": "Radio Disc Jockey",
+      "startDate": "2011-01",
+      "endDate": "2013-01",
+      "location": "Davao del Norte",
+      "highlights": []
+    }
+  ],
+  "projects": [
+    {
+      "name": "Sales Coach AI — AI pipeline layer",
+      "description": "Real-time sales coaching over live calls. TypeScript monorepo with a Fastify API, Next.js client using live tab capture, and a BullMQ worker running Claude pipelines against call audio; Postgres (Drizzle), Redis, and Cloudflare R2 storage, with a Chrome extension as the capture surface. Built by a team of six; I own the AI layer — coaching pipelines and prompt architecture in packages/ai — and wrote the cue-evaluation harness that gates coaching output against a scripted quality bar. 80 of 285 commits (Apr–Aug 2026), the largest single share.",
+      "keywords": ["Claude API", "TypeScript", "Prompt architecture", "LLM evaluation", "Fastify", "Next.js", "BullMQ", "Drizzle"]
+    },
+    {
+      "name": "Scale With System CRM",
+      "description": "White-labelled all-in-one sales and marketing platform for the Philippine market: CRM and pipeline, appointment scheduling, drag-and-drop funnel builder, membership/course portal, unified messaging, and local payment integration. Two commercial pricing tiers.",
+      "keywords": ["GoHighLevel", "SaaS", "CRM", "Payments"],
+      "url": "https://accounts.scalewithsystem.com/"
+    },
+    {
+      "name": "Practical AI App Development",
+      "description": "Free live weekly training taking non-programmers from an idea to a deployed AI application using AI coding agents.",
+      "keywords": ["Teaching", "AI agents", "Developer education"]
+    }
+  ],
+  "skills": [
+    { "name": "AI", "keywords": ["Claude API", "LLM integration & orchestration", "Prompt architecture", "Model behaviour control", "Output evaluation", "AI coding agents"] },
+    { "name": "Automation & CRM", "keywords": ["GoHighLevel", "HubSpot", "n8n", "Make", "Zapier", "AI-driven CRM systems"] },
+    { "name": "Build", "keywords": ["Python", "JavaScript", "REST APIs", "Webhooks", "Backend logic design", "HTML/CSS"] },
+    { "name": "Adjacent", "keywords": ["SaaS operations", "Email marketing", "Funnel design", "Project management", "Technical support"] }
+  ],
+  "certificates": [
+    { "name": "Project Management Simplified" },
+    { "name": "Cybersecurity Awareness: Phishing and Whaling" },
+    { "name": "Delivering Bad News to a Customer" },
+    { "name": "Writing Customer Service Emails" },
+    { "name": "Customer Service Foundations" }
+  ],
+  "education": [
+    {
+      "institution": "Rizal Technological University",
+      "studyType": "Master of Business Administration",
+      "area": "Business Administration",
+      "startDate": "2016",
+      "endDate": "2017"
+    },
+    {
+      "institution": "Bukidnon State University",
+      "studyType": "Bachelor of Science",
+      "area": "Business Administration, Major in Financial Management",
+      "startDate": "2009",
+      "endDate": "2013"
+    }
+  ],
+  "languages": [
+    { "language": "English", "fluency": "Fluent" },
+    { "language": "Filipino", "fluency": "Native speaker" }
+  ],
+  "meta": {
+    "canonical": "https://degzarbiz.com/resume.json",
+    "version": "1.0.0"
+  }
+}

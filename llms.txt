@@ -1,0 +1,70 @@
+# Diego "Degz" Arbiz Jr.
+
+> AI Systems Developer and automation architect. I build LLM-powered applications
+> and the workflow infrastructure that connects AI models to CRMs, marketing
+> platforms, and real business operations.
+
+- Location: Calabarzon, Philippines
+- Remote: yes, overlaps APAC / EU / US hours
+- Status: available for contract and full-time work
+- Email: degz12348@gmail.com
+- LinkedIn: https://www.linkedin.com/in/diegoarbizjr/
+- Experience: 8+ years in digital systems, SaaS, and business automation
+
+## Focus
+
+- AI-powered application development
+- LLM integration and orchestration
+- Automation infrastructure and workflow systems
+- Prompt architecture and model behaviour control
+- API integrations and backend logic design
+- AI-driven CRM and marketing systems
+
+## Current
+
+**AI Systems Developer** (freelance, Oct 2025 – present) — Designs and builds
+AI-powered applications on Claude and other LLM APIs. Translates business
+requirements into prompt architecture, backend workflows, and scalable AI logic;
+engineers role-based, constraint-driven instruction frameworks for model
+reliability; integrates AI with APIs, CRMs, and automation platforms.
+
+**Co-founder, Scale With System** (KMH Web And Tech Solutions) — Consultancy run
+with his spouse Kat, helping agencies and digital businesses scale through
+automation, CRM strategy, and AI-enhanced funnel infrastructure. Supported
+multiple 6–7 figure client launches. Built and operates a commercial CRM and
+marketing SaaS for the Philippine market.
+
+## Background
+
+Automation & AI Technical Specialist (2024–2025) · Online Business Manager and
+ecommerce copywriter (2020–2024) · Consultant and Customer Coach at Cloudbeds
+(2019–2020) · Inside Sales Solutions Specialist at Open iT (2018) · Technical
+Support at TELUS International (2016–2018) · Customer Service at Teleperformance
+(2015–2016).
+
+## Education
+
+- MBA, Rizal Technological University (2016–2017)
+- BS Business Administration, Major in Financial Management, Bukidnon State
+  University (2009–2013)
+
+## Stack
+
+Claude API, LLM orchestration, prompt architecture, AI coding agents, GoHighLevel,
+HubSpot, n8n, Make, Zapier, Python, JavaScript, REST APIs, webhooks, HTML/CSS.
+
+## Teaching
+
+Runs a free live weekly training, *Practical AI App Development*, taking
+non-programmers from an idea to a deployed AI application using AI coding agents.
+
+## Hire me
+
+- Email: degz12348@gmail.com
+- LinkedIn: https://www.linkedin.com/in/diegoarbizjr/
+- Agency: https://www.scalewithsystem.com/
+
+## Machine-readable
+
+- Résumé (JSON Resume schema): /resume.json
+- This file: /llms.txt

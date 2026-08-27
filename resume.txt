@@ -1,0 +1,77 @@
+DIEGO "DEGZ" ARBIZ JR.
+AI Systems Developer / Automation Architect
+Calabarzon, Philippines · remote · APAC / EU / US overlap
+
+  email     degz12348@gmail.com
+  linkedin  linkedin.com/in/diegoarbizjr
+  agency    scalewithsystem.com
+  json      GET /resume.json
+  llms      GET /llms.txt
+
+
+SUMMARY
+
+  I turn AI from prompt experiments into production systems. I design
+  LLM-powered applications and the workflow infrastructure around them:
+  backend logic, prompt architecture, and API integrations connecting AI
+  models to CRMs, marketing platforms, and the tools a business runs on.
+  8+ years in digital systems, SaaS, and business automation.
+
+
+BUILT
+
+  Sales Coach AI ........... Real-time coaching over live calls.
+                             Fastify + Next.js + BullMQ worker, Claude
+                             pipelines on call audio, Postgres/Drizzle,
+                             Redis, R2, Chrome extension.
+                             Team of six; I own the AI layer (packages/ai)
+                             and wrote the cue-evaluation harness gating
+                             coaching output. 80 of 285 commits, Apr-Aug 2026.
+
+  Scale With System CRM .... accounts.scalewithsystem.com
+                             White-labelled sales & marketing platform for
+                             the PH market. CRM, funnels, scheduling, course
+                             portal, unified inbox, local payments. Two tiers.
+
+  # TODO: add one number per line above — portfolios generated, calls
+  # coached, paying customers. Numbers are what make this section work.
+
+
+EXPERIENCE
+
+  2025-10 - now      AI Systems Developer .............. Freelance
+  ongoing            Co-founder & Systems Lead ......... Scale With System
+  2024-09 - 2025-09  Automation & AI Specialist ........ Freelance
+  2025-09 - 2026-02  Healthcare Advocate, Tier 2 ....... Conduent
+  2020    - 2024     Online Business Manager ........... Freelance
+  2019    - 2020     Consultant / Customer Coach ....... Cloudbeds
+  2018               Inside Sales Solutions Specialist . Open iT
+  2016    - 2018     Technical Support Representative .. TELUS International
+  2015    - 2016     Customer Service Representative ... Teleperformance
+
+
+STACK
+
+  ai          Claude API · LLM orchestration · prompt architecture ·
+              model behaviour control · output evaluation · AI coding agents
+  automation  GoHighLevel · HubSpot · n8n · Make · Zapier
+  build       Python · TypeScript · JavaScript · Fastify · Next.js ·
+              Node · REST APIs · webhooks
+  data        Postgres · Drizzle · Redis · BullMQ
+  infra       Docker · Railway · Cloudflare R2 · Playwright
+
+
+TEACHING
+
+  Practical AI App Development — free live weekly training taking
+  non-programmers from an idea to a deployed AI application using AI
+  coding agents.
+
+
+EDUCATION
+
+  2016 - 2017  MBA ................................ Rizal Technological Univ.
+  2009 - 2013  BS Business Admin (Fin. Management) . Bukidnon State Univ.
+
+
+AVAILABLE FOR CONTRACT AND FULL-TIME WORK.

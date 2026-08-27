@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Degz Arbiz — AI Systems Developer</title>
+<meta name="description" content="AI Systems Developer and automation architect. I build LLM-powered applications and the workflow infrastructure that connects AI to CRMs, marketing platforms, and real business operations.">
+<link rel="canonical" href="https://degz12348-tech.github.io/">
+<meta property="og:title" content="Degz Arbiz — AI Systems Developer">
+<meta property="og:description" content="I turn AI from prompt experiments into production systems.">
+<meta property="og:type" content="profile">
+<link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+/* ============================================================
+   TOKENS — light is the base; dark redefines tokens only.
+   ============================================================ */
+:root{
+  --paper:#f1f3f5;
+  --surface:#ffffff;
+  --sunk:#e8ebee;
+  --ink:#0e141b;
+  --ink-mut:#4c5866;
+  --ink-dim:#77838f;
+  --rule:#d5dae0;
+  --rule-soft:#e2e6ea;
+  --signal:#b26a0f;
+  --signal-ink:#ffffff;
+  --focus:#b26a0f;
+
+  --f-display:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --f-body:"Newsreader",Georgia,"Times New Roman",serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --gut:clamp(20px,5vw,40px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0a0e13;
+  --surface:#111721;
+  --sunk:#0d131a;
+  --ink:#e7ecf2;
+  --ink-mut:#96a3b2;
+  --ink-dim:#6b7787;
+  --rule:#1e2733;
+  --rule-soft:#171e28;
+  --signal:#e8a244;
+  --signal-ink:#170f03;
+  --focus:#e8a244;
+}}
+:root[data-theme="dark"]{
+  --paper:#0a0e13;
+  --surface:#111721;
+  --sunk:#0d131a;
+  --ink:#e7ecf2;
+  --ink-mut:#96a3b2;
+  --ink-dim:#6b7787;
+  --rule:#1e2733;
+  --rule-soft:#171e28;
+  --signal:#e8a244;
+  --signal-ink:#170f03;
+  --focus:#e8a244;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:2px}
+
+.sheet{width:min(880px,100%);margin:0 auto;padding:0 var(--gut)}
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  background:color-mix(in srgb,var(--paper) 90%,transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule);
+}
+.topbar .sheet{display:flex;align-items:center;gap:18px;height:52px}
+.sig{
+  font-family:var(--f-mono);font-size:12px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+}
+.sig i{color:var(--signal);font-style:normal}
+.topnav{margin-left:auto;display:flex;align-items:center;gap:20px}
+.topnav a{
+  font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-dim);text-decoration:none;
+  transition:color .15s;
+}
+.topnav a:hover{color:var(--ink)}
+.tbtn{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  background:none;border:1px solid var(--rule);color:var(--ink-dim);
+  padding:4px 9px;border-radius:2px;cursor:pointer;transition:color .15s,border-color .15s;
+}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-dim)}
+@media(max-width:700px){.topnav a[data-opt]{display:none}}
+
+/* ============================================================
+   MASTHEAD
+   ============================================================ */
+.masthead{padding:clamp(44px,8vw,84px) 0 0}
+.avail{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-mut);margin-bottom:26px;
+}
+.lamp{width:6px;height:6px;border-radius:50%;background:var(--signal);flex:none;position:relative}
+.lamp::after{
+  content:"";position:absolute;inset:-3px;border-radius:50%;
+  background:var(--signal);opacity:.3;animation:lamp 2.6s ease-out infinite;
+}
+@keyframes lamp{0%{transform:scale(.5);opacity:.4}70%,100%{transform:scale(1.7);opacity:0}}
+
+.name{
+  font-family:var(--f-display);font-weight:700;
+  font-size:clamp(2.6rem,9vw,4.5rem);
+  line-height:.98;letter-spacing:-.035em;
+  margin:0 0 6px;text-wrap:balance;
+}
+.role{
+  font-family:var(--f-mono);font-size:clamp(12px,2.4vw,13.5px);
+  letter-spacing:.04em;color:var(--signal);
+  margin:0 0 34px;
+}
+
+/* spec grid — datasheet metadata */
+.spec{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+}
+.spec div{
+  padding:14px 18px 14px 0;
+  border-right:1px solid var(--rule-soft);
+}
+.spec div:last-child{border-right:0}
+.spec dt{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ink-dim);margin:0 0 5px;
+}
+.spec dd{
+  margin:0;font-family:var(--f-mono);font-size:13px;color:var(--ink);
+  overflow-wrap:anywhere;
+}
+.spec dd a{text-decoration:none;border-bottom:1px solid var(--rule);}
+.spec dd a:hover{border-color:var(--signal);color:var(--signal)}
+@media(max-width:640px){.spec div{border-right:0;border-bottom:1px solid var(--rule-soft);padding-right:0}.spec div:last-child{border-bottom:0}}
+
+/* identity block — portrait sits beside the name */
+.idblock{display:flex;gap:clamp(20px,4vw,34px);align-items:flex-start}
+.idtext{min-width:0;flex:1}
+.portrait{
+  flex:none;width:clamp(96px,16vw,132px);aspect-ratio:3/4;
+  border:1px solid var(--rule);border-radius:2px;
+  object-fit:cover;object-position:50% 12%;
+  background:var(--surface);
+}
+@media(max-width:520px){
+  .idblock{flex-direction:column-reverse;align-items:flex-start;gap:20px}
+}
+
+/* project screenshots */
+.shot{
+  margin:18px 0 0;border:1px solid var(--rule);border-radius:2px;
+  overflow:hidden;background:var(--surface);
+}
+.shot img{display:block;width:100%;height:auto}
+.shot figcaption{
+  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;
+  color:var(--ink-dim);padding:9px 13px;border-top:1px solid var(--rule-soft);
+}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.shots .shot{margin:0}
+@media(max-width:620px){.shots{grid-template-columns:1fr}}
+
+.thesis{
+  font-size:clamp(1.28rem,3.1vw,1.72rem);
+  line-height:1.42;letter-spacing:-.011em;
+  max-width:34ch;margin:40px 0 0;text-wrap:balance;
+}
+.intro{max-width:63ch;color:var(--ink-mut);margin:20px 0 0}
+
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:34px 0 0}
+.act{
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;
+  text-decoration:none;padding:11px 18px;border-radius:2px;
+  border:1px solid var(--rule);color:var(--ink);
+  transition:border-color .15s,background .15s,color .15s;
+}
+.act:hover{border-color:var(--ink-dim);background:var(--surface)}
+.act.key{background:var(--signal);border-color:var(--signal);color:var(--signal-ink)}
+.act.key:hover{filter:brightness(1.07);background:var(--signal)}
+
+/* ============================================================
+   SECTION SHELL — mono label + hairline rule to the margin
+   ============================================================ */
+.block{padding:clamp(54px,8vw,80px) 0 0}
+.label{
+  display:flex;align-items:center;gap:16px;
+  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-dim);
+  margin:0 0 30px;
+}
+.label::after{content:"";flex:1;height:1px;background:var(--rule)}
+h2{
+  font-family:var(--f-display);font-weight:600;
+  font-size:clamp(1.35rem,3vw,1.75rem);letter-spacing:-.022em;
+  margin:0 0 10px;text-wrap:balance;
+}
+h3{font-family:var(--f-display);font-weight:600;font-size:1.02rem;letter-spacing:-.012em;margin:0}
+p{margin:0 0 15px}
+.muted{color:var(--ink-mut)}
+
+/* capability rows — parallel, so no numbering */
+.caps{display:grid;gap:0;border-top:1px solid var(--rule-soft)}
+.cap{
+  display:grid;grid-template-columns:minmax(150px,.32fr) 1fr;gap:0 28px;
+  padding:20px 0;border-bottom:1px solid var(--rule-soft);
+}
+.cap h3{padding-top:1px}
+.cap p{margin:0;color:var(--ink-mut);font-size:15.5px;line-height:1.6}
+@media(max-width:620px){.cap{grid-template-columns:1fr;gap:7px}}
+
+/* metrics strip */
+.metrics{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  margin-top:6px;
+}
+.metrics div{padding:18px 18px 18px 0;border-right:1px solid var(--rule-soft)}
+.metrics div:last-child{border-right:0}
+.metrics .v{
+  display:block;font-family:var(--f-display);font-weight:700;
+  font-size:1.7rem;letter-spacing:-.03em;line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.metrics .k{
+  display:block;margin-top:8px;font-family:var(--f-mono);font-size:10px;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--ink-dim);line-height:1.5;
+}
+@media(max-width:620px){.metrics div{border-right:0;border-bottom:1px solid var(--rule-soft);padding-right:0}.metrics div:last-child{border-bottom:0}}
+
+/* work entries — ruled rows, not cards */
+.entries{border-top:1px solid var(--rule-soft)}
+.entry{
+  display:block;text-decoration:none;
+  padding:22px 0;border-bottom:1px solid var(--rule-soft);
+  transition:background .15s;
+}
+a.entry:hover{background:var(--sunk)}
+.entry-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.entry-head .when{
+  margin-left:auto;font-family:var(--f-mono);font-size:11px;
+  letter-spacing:.05em;color:var(--ink-dim);
+}
+.entry p{margin:9px 0 0;color:var(--ink-mut);font-size:15.5px;max-width:70ch}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.chip{
+  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.05em;
+  color:var(--ink-mut);border:1px solid var(--rule);
+  padding:3px 8px;border-radius:2px;
+}
+
+/* timeline — date column, no dots */
+.hist{border-top:1px solid var(--rule-soft)}
+.stint{
+  display:grid;grid-template-columns:minmax(140px,.26fr) 1fr;gap:0 28px;
+  padding:24px 0;border-bottom:1px solid var(--rule-soft);
+}
+.stint .when{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.04em;
+  color:var(--ink-dim);padding-top:3px;
+}
+.stint .org{
+  font-family:var(--f-mono);font-size:12px;color:var(--signal);
+  margin:5px 0 10px;letter-spacing:.02em;
+}
+.stint ul{margin:0;padding-left:17px;color:var(--ink-mut);font-size:15.5px;line-height:1.6}
+.stint li{margin-bottom:5px}
+.stint li::marker{color:var(--ink-dim)}
+.stint p.note{margin:0;color:var(--ink-mut);font-size:15.5px}
+@media(max-width:620px){.stint{grid-template-columns:1fr;gap:6px}.stint .when{padding-top:0}}
+
+/* quotes */
+.voices{display:grid;gap:0;border-top:1px solid var(--rule-soft)}
+.voice{padding:22px 0;border-bottom:1px solid var(--rule-soft)}
+.voice blockquote{
+  margin:0 0 10px;font-size:16.5px;line-height:1.55;
+  max-width:64ch;
+}
+.voice blockquote::before{content:"\201C"}
+.voice blockquote::after{content:"\201D"}
+.voice .src{
+  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink-dim);
+}
+
+/* stack + education share the paired-row pattern */
+.pairs{border-top:1px solid var(--rule-soft)}
+.pair{
+  display:grid;grid-template-columns:minmax(150px,.32fr) 1fr;gap:0 28px;
+  padding:18px 0;border-bottom:1px solid var(--rule-soft);
+}
+.pair .h{
+  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ink-dim);padding-top:4px;
+}
+.pair .b{font-size:15.5px;color:var(--ink-mut)}
+.pair .b .deg{color:var(--ink);font-family:var(--f-display);font-weight:600;font-size:1rem}
+@media(max-width:620px){.pair{grid-template-columns:1fr;gap:6px}.pair .h{padding-top:0}}
+
+/* contact */
+.reach{border-top:1px solid var(--rule-soft);margin-top:26px}
+.reach a{
+  display:flex;align-items:baseline;gap:20px;text-decoration:none;
+  padding:15px 0;border-bottom:1px solid var(--rule-soft);
+  font-family:var(--f-mono);font-size:13.5px;transition:background .15s;
+}
+.reach a:hover{background:var(--sunk)}
+.reach .k{
+  font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-dim);width:82px;flex:none;
+}
+.reach .go{margin-left:auto;color:var(--ink-dim)}
+.reach a:hover .go{color:var(--signal)}
+
+.machine{
+  margin-top:30px;padding:20px 22px;
+  background:var(--sunk);border:1px solid var(--rule-soft);border-radius:2px;
+}
+.machine p{margin:0 0 13px;font-size:15px;color:var(--ink-mut)}
+.machine strong{color:var(--ink);font-family:var(--f-display);font-weight:600}
+.machine .fs{display:flex;flex-wrap:wrap;gap:8px}
+.machine a{
+  font-family:var(--f-mono);font-size:12px;color:var(--signal);
+  text-decoration:none;border:1px solid var(--rule);
+  padding:4px 9px;border-radius:2px;background:var(--surface);
+}
+.machine a:hover{border-color:var(--signal)}
+
+.colophon{
+  margin-top:clamp(54px,8vw,80px);padding:22px 0 46px;
+  border-top:1px solid var(--rule);
+  display:flex;flex-wrap:wrap;gap:10px;
+  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink-dim);
+}
+.colophon .rt{margin-left:auto}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="sheet">
+    <a class="sig" href="#top">Degz&nbsp;Arbiz<i>&nbsp;/</i></a>
+    <nav class="topnav">
+      <a href="#work" data-opt>Work</a>
+      <a href="#history" data-opt>History</a>
+      <a href="#teaching" data-opt>Teaching</a>
+      <a href="#contact">Contact</a>
+      <button class="tbtn" id="tt" aria-label="Switch colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ MASTHEAD ============ -->
+<main>
+<section class="sheet masthead" id="top">
+  <div class="avail"><span class="lamp"></span> Available &mdash; contract &amp; full-time</div>
+
+  <div class="idblock">
+    <div class="idtext">
+      <h1 class="name">Diego&nbsp;&ldquo;Degz&rdquo;<br>Arbiz&nbsp;Jr.</h1>
+      <p class="role">AI Systems Developer &nbsp;/&nbsp; Automation Architect</p>
+    </div>
+    <img class="portrait" src="assets/degz-headshot.jpg"
+         alt="Diego Arbiz Jr." width="385" height="572">
+  </div>
+
+  <dl class="spec">
+    <div><dt>Based</dt><dd>Calabarzon, PH</dd></div>
+    <div><dt>Working hours</dt><dd>APAC &middot; EU &middot; US</dd></div>
+    <div><dt>Experience</dt><dd>8+ years</dd></div>
+    <div><dt>Contact</dt><dd><a href="mailto:degz12348@gmail.com">degz12348@gmail.com</a></dd></div>
+  </dl>
+
+  <p class="thesis">I turn AI from prompt experiments into production systems.</p>
+
+  <p class="intro">
+    I design LLM-powered applications and the workflow infrastructure around them &mdash;
+    the backend logic, prompt architecture, and API integrations that connect AI models
+    to CRMs, marketing platforms, and the tools a business actually runs on. Eight years
+    in digital systems, SaaS, and business automation before that. I care about
+    reliability and deployment over demos.
+  </p>
+
+  <div class="actions">
+    <a class="act key" href="mailto:degz12348@gmail.com">Get in touch</a>
+    <a class="act" href="#work">Selected work</a>
+    <a class="act" href="/resume.pdf">R&eacute;sum&eacute;</a>
+  </div>
+</section>
+
+<!-- ============ CAPABILITIES ============ -->
+<section class="sheet block" id="capabilities">
+  <p class="label">Capabilities</p>
+  <div class="caps">
+    <div class="cap">
+      <h3>LLM applications</h3>
+      <p>AI-powered apps on Claude and other LLM APIs, with structured input/output contracts, role-based instruction frameworks, and evaluation passes that keep behaviour consistent under real load.</p>
+    </div>
+    <div class="cap">
+      <h3>Automation infrastructure</h3>
+      <p>The workflow layer underneath: backend logic, API and webhook integrations, and modular components connecting AI to CRMs, marketing platforms, and operational tooling.</p>
+    </div>
+    <div class="cap">
+      <h3>Prompt &amp; system architecture</h3>
+      <p>Constraint-driven prompt design, model behaviour control, and documented architecture &mdash; built so someone else can maintain and extend it.</p>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div><span class="v">8+</span><span class="k">Years in<br>digital systems</span></div>
+    <div><span class="v">6&ndash;7 fig</span><span class="k">Client launches<br>supported</span></div>
+    <div><span class="v">20&ndash;30</span><span class="k">Hours/week saved<br>per client</span></div>
+    <div><span class="v">7</span><span class="k">Industries<br>served</span></div>
+  </div>
+</section>
+
+<!-- ============ WORK ============ -->
+<section class="sheet block" id="work">
+  <p class="label">Selected work</p>
+  <div class="entries">
+
+
+    <div class="entry">
+      <div class="entry-head">
+        <h3>Sales Coach AI &mdash; AI pipeline layer</h3>
+        <span class="when">Apr &ndash; Aug 2026</span>
+      </div>
+      <p>Real-time sales coaching over live calls: a TypeScript monorepo with a Fastify API, Next.js client using live tab capture, and a BullMQ worker running Claude pipelines against call audio, backed by Postgres, Redis, and R2. <strong>Built as a team of six; I own the AI layer</strong> &mdash; the coaching pipelines and prompt architecture in <code>packages/ai</code> &mdash; and wrote the cue-evaluation harness that holds coaching output to a scripted quality gate instead of manual review. 80 of 285 commits, the largest single share.</p>
+      <div class="chips"><span class="chip">Claude API</span><span class="chip">TypeScript</span><span class="chip">Fastify</span><span class="chip">Next.js</span><span class="chip">BullMQ</span><span class="chip">Drizzle</span><span class="chip">Docker</span></div>
+      <div class="shots">
+        <figure class="shot">
+          <img src="assets/salescoach-live.png" alt="Sales Coach AI live coaching view: real-time cue cards surface a competitor battlecard and a price-objection reframe while the prospect transcript streams alongside." width="1440" height="900" loading="lazy">
+          <figcaption>Live coaching &mdash; cues fire against the streaming transcript</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/salescoach-critical.png" alt="Sales Coach AI in critical-only mode, suppressing lower-priority cues during a call." width="1440" height="900" loading="lazy">
+          <figcaption>Critical-only mode &mdash; cue volume tuned per rep</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <h3>Scale With System CRM</h3>
+        <span class="when">Ongoing</span>
+      </div>
+      <p>Built and operate a white-labelled sales and marketing platform for the Philippine market &mdash; CRM and pipeline, appointment scheduling, funnel builder, course portal, unified inbox, and local payment integration. Two commercial tiers with live paying customers.</p>
+      <div class="chips"><span class="chip">GoHighLevel</span><span class="chip">SaaS operations</span><span class="chip">Payments</span><span class="chip">Product</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ HISTORY ============ -->
+<section class="sheet block" id="history">
+  <p class="label">History</p>
+  <div class="hist">
+
+    <div class="stint">
+      <div class="when">Oct 2025 &mdash;<br>Present</div>
+      <div>
+        <h3>AI Systems Developer</h3>
+        <div class="org">Freelance / Self-employed</div>
+        <ul>
+          <li>Design and build AI-powered applications on Claude and other LLM APIs, translating business requirements into prompt architecture, backend workflows, and scalable AI logic.</li>
+          <li>Engineer role-based, constraint-driven instruction frameworks to improve model reliability and consistency.</li>
+          <li>Integrate AI systems with APIs, CRMs, and automation platforms into end-to-end solutions; test and optimise outputs for production accuracy.</li>
+          <li>Architect reusable AI components and modular workflow systems, documented for maintainability.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stint">
+      <div class="when">Ongoing</div>
+      <div>
+        <h3>Co-founder &amp; Systems Lead</h3>
+        <div class="org">Scale With System &mdash; KMH Web And Tech Solutions</div>
+        <ul>
+          <li>Co-run a consultancy helping agencies and digital businesses scale through automation, CRM strategy, and AI-enhanced funnel infrastructure.</li>
+          <li>Supported multiple 6&ndash;7 figure client launches with system-driven growth models.</li>
+          <li>Built and operate a commercial CRM/marketing SaaS for the Philippine market across two pricing tiers.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stint">
+      <div class="when">Sep 2024 &mdash;<br>Sep 2025</div>
+      <div>
+        <h3>Automation &amp; AI Technical Specialist</h3>
+        <div class="org">Freelance / Self-employed</div>
+        <ul>
+          <li>Built lead-nurturing and sales follow-up automation using GoHighLevel and LLM tooling.</li>
+          <li>Developed end-to-end training and recruitment systems; managed membership and onboarding workflows.</li>
+          <li>Implemented marketing automation to streamline internal operations and client communication.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stint">
+      <div class="when">Sep 2025 &mdash;<br>Feb 2026</div>
+      <div>
+        <h3>Healthcare Advocate, Tier 2</h3>
+        <div class="org">Conduent</div>
+        <ul>
+          <li>Tier 2 support for complex healthcare benefits, billing, and prescription drug inquiries &mdash; formularies, medication tiers, and coverage stages, under regulatory compliance requirements.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stint">
+      <div class="when">2020 &mdash;<br>2024</div>
+      <div>
+        <h3>Online Business Manager &middot; Ecommerce Copywriter</h3>
+        <div class="org">Freelance / Self-employed</div>
+        <ul>
+          <li>CRM administration, funnel and website builds, and email marketing for coaching, consulting, and debt-relief clients.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stint">
+      <div class="when">2019 &mdash;<br>2020</div>
+      <div>
+        <h3>Consultant &middot; Customer Coach</h3>
+        <div class="org">Cloudbeds &mdash; remote</div>
+        <ul>
+          <li>Onboarded and supported hotel properties through SaaS implementation; troubleshot escalated issues and authored documentation for the product knowledge base.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stint">
+      <div class="when">2011 &mdash;<br>2018</div>
+      <div>
+        <h3>Earlier</h3>
+        <div class="org">Open iT &middot; TELUS International &middot; Teleperformance &middot; Radyo Natin</div>
+        <p class="note">Inside sales, technical support, and customer service across enterprise software and BPO &mdash; where the systems-and-process instinct came from. Full detail in the r&eacute;sum&eacute;.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ TEACHING ============ -->
+<section class="sheet block" id="teaching">
+  <p class="label">Teaching</p>
+  <h2>Practical AI App Development</h2>
+  <p class="muted" style="max-width:63ch">
+    A free live weekly training taking complete beginners from an idea to a working,
+    deployed AI application: turning a concept into requirements an AI can act on,
+    building with AI coding agents, then running, testing, and iterating on the result.
+    No programming background required.
+  </p>
+  <div class="chips" style="margin-top:16px">
+    <span class="chip">Live weekly</span>
+    <span class="chip">Non-programmers welcome</span>
+    <span class="chip">Idea &rarr; deployed app</span>
+    <span class="chip">AI coding agents</span>
+  </div>
+  <div class="actions" style="margin-top:24px">
+    <a class="act" href="#">Next session</a>
+  </div>
+</section>
+
+<!-- ============ VOICES ============ -->
+<section class="sheet block" id="clients">
+  <p class="label">Client feedback</p>
+  <div class="voices">
+    <div class="voice">
+      <blockquote>They went well beyond the web and funnel work &mdash; taking on responsibilities closer to a project manager.</blockquote>
+      <div class="src">Jonathan E. &mdash; CEO, Step Up To Care</div>
+    </div>
+    <div class="voice">
+      <blockquote>I can now take vacations without any worries.</blockquote>
+      <div class="src">Marielle T. &mdash; CEO, Good Diva Marketing</div>
+    </div>
+    <div class="voice">
+      <blockquote>The consultations were valuable enough that I offered to pay before the project even began.</blockquote>
+      <div class="src">Yvonne R. &mdash; CEO, Investahomes Realty</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STACK ============ -->
+<section class="sheet block" id="stack">
+  <p class="label">Stack</p>
+  <div class="pairs">
+    <div class="pair">
+      <div class="h">AI</div>
+      <div class="b">Claude API &middot; LLM integration &amp; orchestration &middot; prompt architecture &middot; model behaviour control &middot; output evaluation &middot; AI coding agents</div>
+    </div>
+    <div class="pair">
+      <div class="h">Automation &amp; CRM</div>
+      <div class="b">GoHighLevel &middot; HubSpot &middot; n8n &middot; Make &middot; Zapier &middot; AI-driven CRM systems</div>
+    </div>
+    <div class="pair">
+      <div class="h">Build</div>
+      <div class="b">Python &middot; JavaScript &middot; REST APIs &middot; webhooks &middot; backend logic design &middot; HTML/CSS</div>
+    </div>
+    <div class="pair">
+      <div class="h">Adjacent</div>
+      <div class="b">SaaS operations &middot; email marketing &middot; funnel design &middot; project management</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EDUCATION ============ -->
+<section class="sheet block" id="education">
+  <p class="label">Education</p>
+  <div class="pairs">
+    <div class="pair">
+      <div class="h">2016 &mdash; 2017</div>
+      <div class="b"><span class="deg">Master of Business Administration</span><br>Rizal Technological University</div>
+    </div>
+    <div class="pair">
+      <div class="h">2009 &mdash; 2013</div>
+      <div class="b"><span class="deg">BS Business Administration</span><br>Major in Financial Management &middot; Bukidnon State University</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="sheet block" id="contact">
+  <p class="label">Contact</p>
+  <h2>Let&rsquo;s talk about your systems.</h2>
+  <p class="muted" style="max-width:60ch">Open to contract work, fractional AI engineering, and full-time roles. Email is fastest &mdash; I reply within a day.</p>
+
+  <div class="reach">
+    <a href="mailto:degz12348@gmail.com"><span class="k">Email</span><span>degz12348@gmail.com</span><span class="go">&#8599;</span></a>
+    <a href="https://www.linkedin.com/in/diegoarbizjr/" target="_blank" rel="noopener"><span class="k">LinkedIn</span><span>/in/diegoarbizjr</span><span class="go">&#8599;</span></a>
+    <a href="https://github.com/degz12348-tech" target="_blank" rel="noopener"><span class="k">GitHub</span><span>@degz12348-tech</span><span class="go">&#8599;</span></a>
+    <a href="https://www.scalewithsystem.com/" target="_blank" rel="noopener"><span class="k">Agency</span><span>scalewithsystem.com</span><span class="go">&#8599;</span></a>
+  </div>
+
+  <div class="machine">
+    <p><strong>For AI agents and recruiting tools.</strong> This site publishes machine-readable surfaces, so automated screeners can parse my background without scraping the page.</p>
+    <div class="fs">
+      <a href="/llms.txt">/llms.txt</a>
+      <a href="/resume.json">/resume.json</a>
+      <a href="/resume.txt">/resume.txt</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="sheet colophon">
+  <span>&copy; <span id="yr">2026</span> Diego Arbiz Jr.</span>
+  <span class="rt">Archivo &middot; Newsreader &middot; IBM Plex Mono</span>
+</footer>
+
+<script>
+(function(){
+  var btn=document.getElementById('tt'),root=document.documentElement;
+  try{var saved=localStorage.getItem('theme');if(saved)root.setAttribute('data-theme',saved);}catch(e){}
+  btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur)cur=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+    var next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('theme',next);}catch(e){}
+  });
+  document.getElementById('yr').textContent=new Date().getFullYear();
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Person",
+  "name":"Diego Arbiz Jr.",
+  "alternateName":"Degz Arbiz",
+  "jobTitle":"AI Systems Developer",
+  "description":"AI Systems Developer and automation architect building LLM-powered applications and workflow infrastructure.",
+  "url":"https://degz12348-tech.github.io",
+  "email":"mailto:degz12348@gmail.com",
+  "address":{"@type":"PostalAddress","addressRegion":"Calabarzon","addressCountry":"PH"},
+  "worksFor":{"@type":"Organization","name":"Scale With System","url":"https://www.scalewithsystem.com/"},
+  "alumniOf":[
+    {"@type":"CollegeOrUniversity","name":"Rizal Technological University"},
+    {"@type":"CollegeOrUniversity","name":"Bukidnon State University"}
+  ],
+  "sameAs":["https://www.linkedin.com/in/diegoarbizjr/","https://www.scalewithsystem.com/"],
+  "knowsAbout":["AI systems development","LLM integration","Prompt architecture","Automation infrastructure","Claude API","GoHighLevel","CRM automation","API integration","Python"]
+}
+</script>
+
+</body>
+</html>
