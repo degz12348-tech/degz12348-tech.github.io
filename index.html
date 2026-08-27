@@ -159,6 +159,30 @@ p{margin:0 0 16px}
   width:100%;height:100%;object-fit:cover;object-position:52% 18%;
   filter:grayscale(1) contrast(1.28) brightness(.72);
   display:block;
+  animation:drift 26s var(--ease) infinite alternate;
+  will-change:transform;
+}
+/* slow ken-burns so the portrait breathes */
+@keyframes drift{
+  0%  {transform:scale(1.045) translate3d(0,0,0)}
+  100%{transform:scale(1.11) translate3d(-1.6%,-2.2%,0)}
+}
+/* periodic scanline sweep travelling down the portrait */
+.figure .sweep{
+  position:absolute;left:0;right:0;height:26%;z-index:3;
+  background:linear-gradient(to bottom,transparent,rgba(0,255,65,.09) 45%,rgba(0,255,65,.16) 52%,transparent);
+  animation:sweep 7.5s linear infinite;
+  pointer-events:none;
+}
+@keyframes sweep{
+  0%  {top:-30%;opacity:0}
+  8%  {opacity:1}
+  92% {opacity:1}
+  100%{top:104%;opacity:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .figure img{animation:none;transform:scale(1.045)}
+  .figure .sweep{display:none}
 }
 .figure::after{
   content:"";position:absolute;inset:0;
@@ -433,6 +457,7 @@ footer .r{margin-left:auto}
 
   <div class="figure" aria-hidden="true">
     <img src="assets/degz-headshot.jpg" alt="" width="385" height="572">
+    <span class="sweep"></span>
   </div>
 
   <div class="stage-inner">
@@ -770,73 +795,127 @@ document.getElementById('yr').textContent = new Date().getFullYear();
   tick();
 })();
 
-/* ---------- ambient code drift ---------- */
+/* ---------- ambient code, typed live ---------- */
 (function(){
   var cv = document.getElementById('codefall');
   if (!cv || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   var ctx = cv.getContext('2d'), w = 0, h = 0, dpr = Math.min(devicePixelRatio || 1, 2);
 
-  var SNIPPETS = [
-    'const pipeline = createCoach({',
-    '  model: "claude-opus-4",',
-    '  cues: ["objection", "competitor"],',
-    '  gate: evalHarness({ minScore: 0.82 })',
-    '});',
-    'await queue.add("transcribe", { callId });',
-    'if (cue.confidence < threshold) skip();',
-    'export async function scoreTurn(turn) {',
-    '  const { verdict } = await judge(turn);',
-    '  return verdict.actionable ? cue : null;',
-    '}',
-    'const { rows } = await db.select().from(calls);',
-    'webhook.verify(sig, secret);',
-    'retry({ attempts: 3, backoff: "expo" })',
-    'crm.upsertContact({ email, stage });',
-    'for await (const chunk of stream) {'
+  /* each block is a snippet that gets typed out line by line */
+  var BLOCKS = [
+    [ 'export async function coachTurn(turn) {',
+      '  const cues = await pipeline.run(turn);',
+      '  return cues.filter(c => c.score > 0.82);',
+      '}' ],
+    [ 'const gate = evalHarness({',
+      '  fixtures: "real-cue-eval",',
+      '  minScore: 0.82,',
+      '  onFail: block,',
+      '});' ],
+    [ 'await queue.add("transcribe", {',
+      '  callId, priority: "realtime",',
+      '});' ],
+    [ 'for await (const chunk of stream) {',
+      '  emit(parse(chunk));',
+      '}' ],
+    [ 'const { rows } = await db',
+      '  .select().from(calls)',
+      '  .where(eq(calls.orgId, orgId));' ],
+    [ 'crm.upsertContact({',
+      '  email, stage: "qualified",',
+      '});' ],
+    [ 'retry({ attempts: 3,',
+      '  backoff: "exponential" });' ],
+    [ 'if (!webhook.verify(sig, secret))',
+      '  throw new Unauthorized();' ]
   ];
 
-  var lines = [];
-  function seed(){
-    lines = [];
-    var count = Math.round((w * h) / 46000);
-    count = Math.max(14, Math.min(count, 52));
-    for (var i = 0; i < count; i++){
-      lines.push({
-        txt: SNIPPETS[(Math.random() * SNIPPETS.length) | 0],
-        x: Math.random() * w,
-        y: Math.random() * h,
-        v: 0.09 + Math.random() * 0.22,
-        a: 0.05 + Math.random() * 0.22,
-        s: 11 + Math.random() * 4
-      });
-    }
+  var LH = 19, blocks = [];
+
+  function makeBlock(){
+    var src = BLOCKS[(Math.random() * BLOCKS.length) | 0];
+    return {
+      src: src,
+      x: Math.random() * Math.max(60, w - 340),
+      y: 40 + Math.random() * Math.max(60, h - 160),
+      line: 0, ch: 0,
+      alpha: 0,
+      phase: 'typing',
+      hold: 0,
+      speed: 1.1 + Math.random() * 1.9,
+      acc: 0
+    };
   }
+
   function resize(){
     w = cv.clientWidth; h = cv.clientHeight;
     cv.width = w * dpr; cv.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    seed();
+    var want = w < 720 ? 2 : (w < 1200 ? 3 : 5);
+    blocks = [];
+    for (var i = 0; i < want; i++){
+      var b = makeBlock();
+      b.hold = -i * 60;            // stagger the starts
+      blocks.push(b);
+    }
   }
-  function draw(){
+
+  var last = 0;
+  function frame(t){
+    var dt = Math.min(t - last, 60); last = t;
     ctx.clearRect(0, 0, w, h);
-    for (var i = 0; i < lines.length; i++){
-      var l = lines[i];
-      ctx.font = l.s + 'px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(0,255,65,' + l.a.toFixed(3) + ')';
-      ctx.fillText(l.txt, l.x, l.y);
-      l.y += l.v;
-      if (l.y > h + 20){
-        l.y = -14;
-        l.x = Math.random() * w;
-        l.txt = SNIPPETS[(Math.random() * SNIPPETS.length) | 0];
+    ctx.font = '13px "JetBrains Mono", monospace';
+    ctx.textBaseline = 'top';
+
+    for (var i = 0; i < blocks.length; i++){
+      var b = blocks[i];
+
+      if (b.phase === 'typing'){
+        b.alpha = Math.min(b.alpha + dt * 0.004, 0.30);
+        b.acc += dt * 0.06 * b.speed;
+        while (b.acc >= 1 && b.phase === 'typing'){
+          b.acc -= 1;
+          b.ch++;
+          if (b.ch > b.src[b.line].length){
+            b.ch = 0; b.line++;
+            if (b.line >= b.src.length){
+              b.line = b.src.length; b.phase = 'hold'; b.hold = 0;
+            }
+          }
+        }
+      } else if (b.phase === 'hold'){
+        b.hold += dt;
+        if (b.hold > 2200) b.phase = 'fading';
+      } else {
+        b.alpha -= dt * 0.0016;
+        if (b.alpha <= 0){ blocks[i] = makeBlock(); continue; }
+      }
+
+      /* draw completed lines, then the partial one */
+      var upto = Math.min(b.line, b.src.length);
+      for (var L = 0; L < upto; L++){
+        ctx.fillStyle = 'rgba(0,255,65,' + (b.alpha * 0.72).toFixed(3) + ')';
+        ctx.fillText(b.src[L], b.x, b.y + L * LH);
+      }
+      if (b.line < b.src.length){
+        var partial = b.src[b.line].slice(0, b.ch);
+        ctx.fillStyle = 'rgba(0,255,65,' + b.alpha.toFixed(3) + ')';
+        ctx.fillText(partial, b.x, b.y + b.line * LH);
+        /* block caret at the typing head */
+        if (((t / 480) | 0) % 2 === 0){
+          var cw = ctx.measureText(partial).width;
+          ctx.fillStyle = 'rgba(0,255,65,' + (b.alpha * 1.5).toFixed(3) + ')';
+          ctx.fillRect(b.x + cw + 1, b.y + b.line * LH + 2, 7, 13);
+        }
       }
     }
-    requestAnimationFrame(draw);
+    requestAnimationFrame(frame);
   }
+
   var ro = new ResizeObserver(resize);
   ro.observe(cv);
   resize();
-  requestAnimationFrame(draw);
+  requestAnimationFrame(frame);
 })();
 (function(){
   var els = document.querySelectorAll('.rv');
