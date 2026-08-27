@@ -111,10 +111,77 @@ main{position:relative;z-index:1}
 section{padding:clamp(64px,10vw,104px) 0}
 section + section{border-top:1px solid var(--line-soft)}
 .kicker{
-  font-family:var(--font-mono);font-size:11.5px;color:var(--accent);
+  font-family:var(--font-mono);font-size:11.5px;color:var(--fg-dim);
   letter-spacing:.02em;margin:0 0 18px;display:flex;align-items:center;gap:9px;
 }
-.kicker::before{content:"//";color:var(--accent-deep)}
+.kicker b{color:var(--accent);font-weight:400}
+.kicker s{color:var(--accent-deep);text-decoration:none}
+
+/* ---------- offers ---------- */
+.offer-meta{
+  display:flex;flex-wrap:wrap;gap:8px 24px;margin:0 0 28px;
+  font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);
+}
+.offers{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(268px,1fr))}
+.offer{
+  position:relative;display:flex;flex-direction:column;
+  background:var(--bg-1);border:1px solid var(--line-soft);border-radius:9px;
+  padding:24px;text-decoration:none;
+  transition:border-color var(--dur) var(--ease),background var(--dur) var(--ease),transform var(--dur) var(--ease);
+}
+.offer:hover{border-color:var(--accent);background:var(--bg-2);transform:translateY(-2px)}
+.offer .n{
+  font-family:var(--font-mono);font-size:11px;color:var(--accent);
+  margin-bottom:14px;display:block;
+}
+.offer h3{margin-bottom:10px}
+.offer p{font-size:14.4px;color:var(--fg-dim);margin:0 0 16px;line-height:1.6}
+.offer .go{
+  margin-top:auto;font-family:var(--font-mono);font-size:11.5px;
+  color:var(--fg-dim);display:flex;align-items:center;gap:7px;
+}
+.offer:hover .go{color:var(--accent)}
+
+/* ---------- stats grid ---------- */
+.stats{
+  display:grid;gap:1px;background:var(--line-soft);
+  grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+  border:1px solid var(--line-soft);border-radius:9px;overflow:hidden;
+}
+.stat{background:#050708;padding:24px 22px}
+.stat .v{
+  display:block;font-family:var(--font-display);font-weight:700;
+  font-size:clamp(1.9rem,4.4vw,2.7rem);line-height:1;
+  color:var(--cream);letter-spacing:-.035em;font-variant-numeric:tabular-nums;
+}
+.stat .rule{display:block;width:26px;height:1px;background:var(--accent);margin:14px 0 12px}
+.stat .l{
+  display:block;font-family:var(--font-mono);font-size:11.5px;
+  color:var(--fg-dim);line-height:1.5;
+}
+.stats-note{
+  margin:18px 0 0;font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);
+}
+
+/* ---------- faq ---------- */
+.faq{border-top:1px solid var(--line-soft)}
+.faq details{border-bottom:1px solid var(--line-soft)}
+.faq summary{
+  cursor:pointer;list-style:none;padding:19px 0;
+  display:flex;align-items:baseline;gap:14px;
+  font-family:var(--font-display);font-weight:600;font-size:1rem;
+  color:var(--fg-strong);transition:color var(--dur) var(--ease);
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";margin-left:auto;font-family:var(--font-mono);
+  font-size:16px;color:var(--accent);flex:none;line-height:1;
+}
+.faq details[open] summary::after{content:"\2212"}
+.faq summary:hover{color:var(--accent)}
+.faq .a{padding:0 0 20px;font-size:15px;color:var(--fg-dim);max-width:70ch}
+.faq .a p{margin:0 0 12px}
+.faq .a p:last-child{margin:0}
 h2{
   font-family:var(--font-display);font-weight:600;
   font-size:clamp(1.7rem,4vw,2.5rem);letter-spacing:-.025em;
@@ -504,44 +571,82 @@ footer .r{margin-left:auto}
 </section>
 
 <!-- ==================== PROOF ==================== -->
-<section class="wrap rv" id="proof">
-  <p class="kicker">proof</p>
-  <h2>Shipped, measured.</h2>
-  <p class="sub">What I've actually built, and where it runs.</p>
+<section class="wrap rv" id="hire">
+  <p class="kicker"><s>01</s> / <b>Hire me</b></p>
+  <h2>Hire me for</h2>
+  <p class="sub">Scoped engagements, senior execution, no hand-holding. Everything below is something I've shipped in production.</p>
 
-  <div class="leaders">
-    <div class="leader"><span class="k">sales-coach-ai</span><span class="fill"></span><span class="v">80 of 285 commits — largest single share</span></div>
-    <div class="leader"><span class="k">packages/ai</span><span class="fill"></span><span class="v">AI pipeline layer, owned</span></div>
-    <div class="leader"><span class="k">real-cue-eval.mts</span><span class="fill"></span><span class="v">scripted coaching quality gate</span></div>
-    <div class="leader"><span class="k">Scale With System</span><span class="fill"></span><span class="v">CRM/marketing SaaS, 2 commercial tiers</span></div>
-    <div class="leader"><span class="k">industries served</span><span class="fill"></span><span class="v">7 — realty, finance, auto, gov, education…</span></div>
-    <div class="leader"><span class="k">live training</span><span class="fill"></span><span class="v">weekly, idea → deployed AI app</span></div>
+  <div class="offer-meta">
+    <span>Calabarzon, PH · remote worldwide</span>
+    <span>APAC · EU · US overlap</span>
+    <span>Full-time · contract · fixed-scope</span>
+  </div>
+
+  <div class="offers">
+    <a class="offer" href="mailto:degz12348@gmail.com?subject=LLM%20applications">
+      <span class="n">01</span>
+      <h3>LLM applications &amp; agent systems</h3>
+      <p>Apps on Claude and other LLM APIs with structured I/O contracts, role-based instruction frameworks, and evaluation passes that hold behaviour steady under real load.</p>
+      <div class="tags"><span class="tag">agents</span><span class="tag">prompt architecture</span><span class="tag">evals</span></div>
+      <span class="go">view scope →</span>
+    </a>
+
+    <a class="offer" href="mailto:degz12348@gmail.com?subject=Automation%20infrastructure">
+      <span class="n">02</span>
+      <h3>Automation infrastructure</h3>
+      <p>The layer underneath — backend logic, API and webhook integrations, job queues, and modular components wiring AI into CRMs and operational tooling.</p>
+      <div class="tags"><span class="tag">APIs</span><span class="tag">queues</span><span class="tag">CRM</span></div>
+      <span class="go">view scope →</span>
+    </a>
+
+    <a class="offer" href="mailto:degz12348@gmail.com?subject=AI%20enablement">
+      <span class="n">03</span>
+      <h3>AI enablement &amp; training</h3>
+      <p>Getting a team productive with AI coding agents — workflow design, prompt standards, and live training. I run this weekly for complete beginners.</p>
+      <div class="tags"><span class="tag">workshops</span><span class="tag">workflow design</span><span class="tag">standards</span></div>
+      <span class="go">view scope →</span>
+    </a>
   </div>
 </section>
 
-<!-- ==================== WHAT I DO ==================== -->
-<section class="wrap rv" id="what">
-  <p class="kicker">capability</p>
-  <h2>Three things, done properly.</h2>
-  <div class="grid3">
-    <div class="panel">
-      <h3>LLM applications</h3>
-      <p>Apps on Claude and other LLM APIs, with structured input/output contracts, role-based instruction frameworks, and evaluation passes that hold behaviour steady under real load.</p>
+<!-- ==================== STATS ==================== -->
+<section class="wrap rv" id="proof">
+  <p class="kicker"><s>02</s> / <b>Proof in numbers</b></p>
+  <h2>Shipped, measured.</h2>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="v">80</span><span class="rule"></span>
+      <span class="l">commits authored on Sales Coach AI — of 285 total, the largest single share</span>
     </div>
-    <div class="panel">
-      <h3>Automation infrastructure</h3>
-      <p>The layer underneath — backend logic, API and webhook integrations, and modular components wiring AI into CRMs and operational tooling.</p>
+    <div class="stat">
+      <span class="v">116</span><span class="rule"></span>
+      <span class="l">file changes in <code>packages/ai</code>, the layer I own</span>
     </div>
-    <div class="panel">
-      <h3>Prompt &amp; system architecture</h3>
-      <p>Constraint-driven design, model behaviour control, and documented architecture built so someone else can maintain and extend it.</p>
+    <div class="stat">
+      <span class="v">8+</span><span class="rule"></span>
+      <span class="l">years across digital systems, SaaS and automation</span>
+    </div>
+    <div class="stat">
+      <span class="v">7</span><span class="rule"></span>
+      <span class="l">industries served — realty, finance, auto, government, education, hospitality, coaching</span>
+    </div>
+    <div class="stat">
+      <span class="v">2</span><span class="rule"></span>
+      <span class="l">commercial SaaS tiers built and operated</span>
+    </div>
+    <div class="stat">
+      <span class="v">6–7 fig</span><span class="rule"></span>
+      <span class="l">client launches supported with system-driven growth models</span>
     </div>
   </div>
+
+  <p class="stats-note">Free live AI development training, run weekly · co-founder of Scale With System</p>
 </section>
 
 <!-- ==================== WORK ==================== -->
 <section class="wrap rv" id="work">
-  <p class="kicker">work</p>
+  <p class="kicker"><s>03</s> / <b>Work</b></p>
   <h2>Selected builds.</h2>
   <div class="work">
 
@@ -591,7 +696,7 @@ footer .r{margin-left:auto}
 
 <!-- ==================== HISTORY ==================== -->
 <section class="wrap rv" id="history">
-  <p class="kicker">history</p>
+  <p class="kicker"><s>04</s> / <b>History</b></p>
   <h2>Eight years of systems.</h2>
   <div class="hist">
 
@@ -681,7 +786,7 @@ footer .r{margin-left:auto}
 
 <!-- ==================== STACK ==================== -->
 <section class="wrap rv" id="stack">
-  <p class="kicker">stack</p>
+  <p class="kicker"><s>05</s> / <b>Stack</b></p>
   <h2>Tools I ship with, daily.</h2>
   <div class="stack">
     <div class="srow"><div class="h">ai</div><div class="b">Claude API · LLM orchestration · prompt architecture · model behaviour control · evaluation harnesses · AI coding agents</div></div>
@@ -694,7 +799,7 @@ footer .r{margin-left:auto}
 
 <!-- ==================== TEACHING ==================== -->
 <section class="wrap rv" id="teaching">
-  <p class="kicker">teaching</p>
+  <p class="kicker"><s>06</s> / <b>Teaching</b></p>
   <h2>I teach this, live, every week.</h2>
   <p class="sub">
     A free live training taking complete beginners from an idea to a working, deployed
@@ -711,7 +816,7 @@ footer .r{margin-left:auto}
 
 <!-- ==================== CLIENTS ==================== -->
 <section class="wrap rv" id="clients">
-  <p class="kicker">clients</p>
+  <p class="kicker"><s>07</s> / <b>Clients</b></p>
   <h2>What they said.</h2>
   <div class="quotes">
     <div class="panel quote">
@@ -729,9 +834,54 @@ footer .r{margin-left:auto}
   </div>
 </section>
 
+<!-- ==================== FAQ ==================== -->
+<section class="wrap rv" id="faq">
+  <p class="kicker"><s>08</s> / <b>FAQ</b></p>
+  <h2>What teams usually ask.</h2>
+
+  <div class="faq">
+    <details>
+      <summary>What exactly do you own on a project?</summary>
+      <div class="a">
+        <p>The AI layer end to end: prompt architecture, the pipelines that call the model, the integration points into your APIs and CRM, and the evaluation that proves output quality before it ships. On Sales Coach AI that's <code>packages/ai</code> plus the cue-evaluation harness.</p>
+        <p>I work well alongside an existing frontend and platform team — I don't need to own the whole stack to be useful.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>How do you keep LLM output reliable?</summary>
+      <div class="a">
+        <p>Structured input/output contracts, role-based and constraint-driven instruction frameworks, and a scripted evaluation gate rather than eyeballing results. If output quality drops below the bar, the build fails instead of quietly shipping.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Do you work with non-technical teams?</summary>
+      <div class="a">
+        <p>Routinely. Most of my client work has been translating what a business owner wants into something a system can actually do. I also run a free weekly live training taking complete beginners from an idea to a deployed AI app, so explaining this clearly is a practised skill, not an afterthought.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Your background is automation and BPO, not a CS degree. Why hire you for AI?</summary>
+      <div class="a">
+        <p>Because the hard part of production AI is rarely the model. It's knowing which business process is worth automating, what the failure modes cost, and how to integrate with the messy tools a company already runs. Eight years of doing exactly that — CRM systems, funnels, support operations, SaaS onboarding — is why my AI work ships instead of demoing.</p>
+        <p>The engineering is real and inspectable: TypeScript monorepos, job queues, evaluation harnesses, containerised deploys.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>What are you available for?</summary>
+      <div class="a">
+        <p>Contract, fixed-scope, fractional, or full-time. Based in the Philippines and used to working across APAC, EU and US hours. Email is fastest — I reply within a day.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
 <!-- ==================== AGENTS ==================== -->
 <section class="wrap rv" id="agents">
-  <p class="kicker">agents</p>
+  <p class="kicker"><s>09</s> / <b>Agents</b></p>
   <h2>Read me from your agent.</h2>
   <p class="sub">
     This site publishes machine-readable surfaces, so automated screeners and AI agents
@@ -759,9 +909,14 @@ Calabarzon, Philippines · remote · APAC / EU / US overlap
 
 <!-- ==================== CONTACT ==================== -->
 <section class="wrap rv" id="contact">
-  <p class="kicker">contact</p>
-  <h2>Hire me.</h2>
+  <p class="kicker"><s>10</s> / <b>Contact</b></p>
+  <h2>Need someone who ships AI from spec to production?</h2>
   <p class="sub">Open to contract work, fractional AI engineering, and full-time roles. Email is fastest — I reply within a day.</p>
+
+  <div class="cta" style="margin-bottom:8px">
+    <a class="pill solid" href="mailto:degz12348@gmail.com">Start a conversation</a>
+    <a class="pill" href="/resume.txt">Read the résumé</a>
+  </div>
 
   <div class="reach">
     <a href="mailto:degz12348@gmail.com"><span class="k">email</span><span>degz12348@gmail.com</span><span class="go">↗</span></a>
