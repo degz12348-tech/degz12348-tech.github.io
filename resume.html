@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Résumé — Degz Arbiz</title>
+<meta name="description" content="Résumé of Diego 'Degz' Arbiz Jr. — AI Systems Developer and automation architect. 8+ years across digital systems, SaaS and business automation.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://degz12348-tech.github.io/resume.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg-0:#000000; --bg-1:rgba(134,239,172,.035); --bg-2:rgba(134,239,172,.055);
+  --line:rgba(134,239,172,.14); --line-soft:rgba(134,239,172,.08);
+  --fg:#d3dbe4; --fg-strong:#f2f6fa; --fg-dim:#7d8a95;
+  --accent:#00ff41; --accent-soft:#4ade80; --accent-deep:#15803d; --cream:#f5f1ea;
+  --font-display:"Gabarito",system-ui,sans-serif;
+  --font-sans:"Geist",system-ui,-apple-system,sans-serif;
+  --font-mono:"JetBrains Mono",SFMono-Regular,Menlo,monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg-0);color:var(--fg);
+  font-family:var(--font-sans);font-size:15.5px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sheet{max-width:840px;margin:0 auto;padding:0 clamp(20px,5vw,44px)}
+
+/* back bar */
+.bar{border-bottom:1px solid var(--line-soft);position:sticky;top:0;background:rgba(0,0,0,.8);backdrop-filter:blur(14px);z-index:10}
+.bar .sheet{display:flex;align-items:center;gap:18px;height:54px}
+.bar a{font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);text-decoration:none;transition:color .2s var(--ease)}
+.bar a:hover{color:var(--accent)}
+.bar .right{margin-left:auto;display:flex;gap:16px}
+
+/* masthead */
+header.top{padding:clamp(40px,7vw,68px) 0 30px}
+.idrow{display:flex;gap:clamp(20px,4vw,34px);align-items:flex-start;margin-bottom:22px}
+.idcol{flex:1;min-width:0}
+.mug{
+  flex:none;width:clamp(88px,13vw,116px);aspect-ratio:1;
+  border:1px solid var(--line);border-radius:6px;
+  object-fit:cover;object-position:54% 16%;
+  filter:grayscale(1) contrast(1.25) brightness(.92);
+}
+@media(max-width:520px){.idrow{flex-direction:column-reverse;align-items:flex-start;gap:18px}}
+h1{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(2rem,5.6vw,3rem);line-height:1.03;letter-spacing:-.035em;
+  color:var(--cream);margin:0 0 8px;
+}
+.role{font-family:var(--font-mono);font-size:13px;color:var(--accent);margin:0 0 22px}
+.meta{
+  display:grid;gap:1px;background:var(--line-soft);
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  border:1px solid var(--line-soft);border-radius:8px;overflow:hidden;
+}
+.meta div{background:#050708;padding:13px 16px}
+.meta dt{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-dim);margin:0 0 4px}
+.meta dd{margin:0;font-family:var(--font-mono);font-size:12.5px;color:var(--fg-strong);overflow-wrap:anywhere}
+.meta dd a{text-decoration:none;border-bottom:1px solid var(--line)}
+.meta dd a:hover{color:var(--accent);border-color:var(--accent)}
+
+.summary{margin:26px 0 0;color:var(--fg-dim);max-width:68ch}
+
+/* sections */
+section{padding:38px 0 0}
+h2{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 20px;display:flex;align-items:center;gap:14px;font-weight:400;
+}
+h2::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+
+.role-row{
+  display:grid;grid-template-columns:minmax(132px,.2fr) 1fr;gap:0 26px;
+  padding:18px 0;border-bottom:1px solid var(--line-soft);
+}
+.role-row:last-child{border-bottom:0}
+.role-row .when{font-family:var(--font-mono);font-size:11.5px;color:var(--fg-dim);padding-top:3px}
+h3{font-family:var(--font-display);font-weight:600;font-size:1.02rem;color:var(--fg-strong);margin:0}
+.org{font-family:var(--font-mono);font-size:12px;color:var(--accent-soft);margin:5px 0 9px}
+.role-row ul{margin:0;padding-left:17px;font-size:14.5px;color:var(--fg-dim);line-height:1.6}
+.role-row li{margin-bottom:4px}
+.role-row li::marker{color:var(--accent-deep)}
+.role-row p{margin:0;font-size:14.5px;color:var(--fg-dim)}
+code{font-family:var(--font-mono);font-size:.9em;color:var(--accent-soft)}
+@media(max-width:620px){.role-row{grid-template-columns:1fr;gap:5px}.role-row .when{padding-top:0}}
+
+.skills{display:grid;gap:0}
+.skill{display:grid;grid-template-columns:minmax(132px,.2fr) 1fr;gap:0 26px;padding:13px 0;border-bottom:1px solid var(--line-soft)}
+.skill:last-child{border-bottom:0}
+.skill .h{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-dim);padding-top:2px}
+.skill .b{font-family:var(--font-mono);font-size:12.5px;color:var(--fg);line-height:1.75}
+@media(max-width:620px){.skill{grid-template-columns:1fr;gap:4px}.skill .h{padding-top:0}}
+
+.certs{display:flex;flex-wrap:wrap;gap:8px}
+.certs span{
+  font-family:var(--font-mono);font-size:11.5px;color:var(--fg-dim);
+  border:1px solid var(--line-soft);background:var(--bg-1);
+  padding:5px 11px;border-radius:4px;
+}
+
+footer{
+  margin-top:46px;padding:22px 0 48px;border-top:1px solid var(--line-soft);
+  font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);
+  display:flex;flex-wrap:wrap;gap:10px;
+}
+footer .r{margin-left:auto}
+
+/* clean printing / PDF export */
+@media print{
+  :root{--bg-0:#fff;--fg:#222;--fg-strong:#000;--fg-dim:#555;--accent:#0a6b2f;--accent-soft:#0a6b2f;--accent-deep:#0a6b2f;--cream:#000;--line-soft:#ddd;--line:#ccc;--bg-1:#fff}
+  body{font-size:10.5pt;background:#fff;color:#222}
+  .bar{display:none}
+  .meta div{background:#fff;border:0}
+  .meta{border:1px solid #ddd}
+  section{padding-top:20px;break-inside:avoid}
+  .role-row{break-inside:avoid}
+  h1{font-size:22pt}
+  a{text-decoration:none}
+  footer{border-top:1px solid #ddd}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="sheet">
+    <a href="/">← degz<span style="color:var(--accent)">@</span>arbiz</a>
+    <span class="right">
+      <a href="/resume.txt">resume.txt</a>
+      <a href="/resume.json">resume.json</a>
+      <a href="#" onclick="window.print();return false">print / PDF</a>
+    </span>
+  </div>
+</div>
+
+<header class="top sheet">
+  <div class="idrow">
+    <div class="idcol">
+      <h1>Diego “Degz” Arbiz Jr.</h1>
+      <p class="role">AI Systems Developer / Automation Architect</p>
+    </div>
+    <img class="mug" src="assets/degz-desk.jpg" alt="Diego Arbiz Jr." width="1216" height="1358">
+  </div>
+
+  <dl class="meta">
+    <div><dt>Location</dt><dd>Calabarzon, Philippines</dd></div>
+    <div><dt>Remote</dt><dd>APAC · EU · US overlap</dd></div>
+    <div><dt>Email</dt><dd><a href="mailto:degz12348@gmail.com">degz12348@gmail.com</a></dd></div>
+    <div><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/diegoarbizjr/">/in/diegoarbizjr</a></dd></div>
+    <div><dt>GitHub</dt><dd><a href="https://github.com/degz12348-tech">@degz12348-tech</a></dd></div>
+    <div><dt>Status</dt><dd>Open to work</dd></div>
+  </dl>
+
+  <p class="summary">
+    AI Systems Developer and automation architect focused on turning AI from prompt
+    experimentation into structured, production-ready systems. I design LLM-powered
+    applications on Claude and other APIs, build the evaluation harnesses that keep
+    their output honest, and architect the workflows, backend logic and API
+    integrations that connect them to CRMs, marketing platforms and operational
+    tooling. 8+ years across digital systems, SaaS environments and business automation.
+  </p>
+</header>
+
+<main class="sheet">
+
+<section>
+  <h2>Experience</h2>
+
+  <div class="role-row">
+    <div class="when">Oct 2025 —<br>Present</div>
+    <div>
+      <h3>AI Systems Developer</h3>
+      <div class="org">Freelance / Self-employed</div>
+      <ul>
+        <li>Design and develop AI-powered applications using Claude and other LLM APIs.</li>
+        <li>Translate business requirements into scalable AI logic, prompt architecture and backend workflows.</li>
+        <li>Engineer role-based, constraint-driven instruction frameworks to improve model reliability and consistency.</li>
+        <li>Integrate AI systems with APIs, CRMs and automation platforms into end-to-end solutions.</li>
+        <li>Test, evaluate and optimise AI outputs for accuracy and production-level performance.</li>
+        <li>Architect reusable AI components and modular workflow systems, documented for maintainability.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="role-row">
+    <div class="when">Ongoing</div>
+    <div>
+      <h3>Co-founder &amp; Systems Lead</h3>
+      <div class="org">Scale With System — KMH Web And Tech Solutions</div>
+      <ul>
+        <li>Co-run a consultancy helping agencies and digital businesses scale through automation, CRM strategy and AI-enhanced funnel infrastructure.</li>
+        <li>Supported multiple 6–7 figure client launches with system-driven growth models.</li>
+        <li>Built and operate a commercial white-labelled CRM and marketing platform for the Philippine market across two pricing tiers, including local payment integration.</li>
+        <li>Delivered systems for clients across real estate, insurance and debt relief, auto dealerships, coaching, education, hospitality and government.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="role-row">
+    <div class="when">Sep 2024 —<br>Sep 2025</div>
+    <div>
+      <h3>Automation &amp; AI Technical Specialist</h3>
+      <div class="org">Freelance / Self-employed</div>
+      <ul>
+        <li>Built lead-nurturing and sales follow-up automation using GoHighLevel and LLM tooling.</li>
+        <li>Developed end-to-end training and recruitment systems; managed membership and onboarding workflows.</li>
+        <li>Implemented marketing automation to streamline internal operations and client communication.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="role-row">
+    <div class="when">Sep 2025 —<br>Feb 2026</div>
+    <div>
+      <h3>Healthcare Advocate, Tier 2</h3>
+      <div class="org">Conduent</div>
+      <ul>
+        <li>Tier 2 support for complex healthcare benefits, billing and prescription drug inquiries.</li>
+        <li>Advanced guidance on formularies, medication tiers and coverage stages under regulatory compliance requirements.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="role-row">
+    <div class="when">2020 — 2024</div>
+    <div>
+      <h3>Online Business Manager · Ecommerce Copywriter</h3>
+      <div class="org">Freelance / Self-employed</div>
+      <ul>
+        <li>CRM administration, funnel and website builds, and email marketing for coaching, consulting and debt-relief clients.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="role-row">
+    <div class="when">2019 — 2020</div>
+    <div>
+      <h3>Consultant · Customer Coach</h3>
+      <div class="org">Cloudbeds — remote</div>
+      <ul>
+        <li>Onboarded and supported hotel properties through SaaS implementation.</li>
+        <li>Troubleshot escalated issues and authored tutorials for the product knowledge base.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="role-row">
+    <div class="when">2018</div>
+    <div>
+      <h3>Inside Sales Solutions Specialist</h3>
+      <div class="org">Open iT, Inc.</div>
+      <ul>
+        <li>Sold software solutions into an assigned territory; ran high-level demos for line-of-business and IT decision makers.</li>
+        <li>Generated pipeline through outbound campaigns; maintained forecasting against quarterly targets.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="role-row">
+    <div class="when">2011 — 2018</div>
+    <div>
+      <h3>Technical Support &amp; Customer Service</h3>
+      <div class="org">TELUS International · Teleperformance · NCCC Mall · Radyo Natin</div>
+      <p>Technical support across desktop and mobile platforms, B2C service on the Comcast account, and earlier retail and broadcast roles. Full detail on request.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Selected projects</h2>
+
+  <div class="role-row">
+    <div class="when">Apr — Aug<br>2026</div>
+    <div>
+      <h3>Sales Coach AI — AI pipeline layer</h3>
+      <div class="org">TypeScript · Claude API · Fastify · Next.js · BullMQ</div>
+      <ul>
+        <li>Real-time sales coaching over live calls; monorepo with a Fastify API, Next.js client using live tab capture, and a BullMQ worker running Claude pipelines against call audio, backed by Postgres, Redis and R2.</li>
+        <li>Built by a team of six; I own the AI layer — coaching pipelines and prompt architecture in <code>packages/ai</code>.</li>
+        <li>Wrote the cue-evaluation harness gating coaching output against a scripted quality bar rather than manual review.</li>
+        <li>80 of 285 commits — the largest single contribution.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="role-row">
+    <div class="when">Ongoing</div>
+    <div>
+      <h3>Scale With System CRM</h3>
+      <div class="org">GoHighLevel · SaaS operations · payments</div>
+      <ul>
+        <li>White-labelled sales and marketing platform for the Philippine market: CRM and pipeline, scheduling, funnel builder, course portal, unified inbox and local payment integration.</li>
+        <li>Two commercial tiers with live paying customers.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="role-row">
+    <div class="when">Weekly</div>
+    <div>
+      <h3>Practical AI App Development — live training</h3>
+      <div class="org">Teaching · developer education</div>
+      <ul>
+        <li>Free live weekly training taking complete beginners from an idea to a deployed AI application using AI coding agents.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Skills</h2>
+  <div class="skills">
+    <div class="skill"><div class="h">AI</div><div class="b">Claude API · LLM integration &amp; orchestration · prompt architecture · model behaviour control · output evaluation · AI coding agents</div></div>
+    <div class="skill"><div class="h">Automation</div><div class="b">GoHighLevel · HubSpot · n8n · Make · Zapier · AI-driven CRM systems</div></div>
+    <div class="skill"><div class="h">Programming</div><div class="b">Python · TypeScript · JavaScript · Node · Fastify · Next.js · REST APIs · webhooks</div></div>
+    <div class="skill"><div class="h">Data</div><div class="b">Postgres · Drizzle · Redis · BullMQ · SQL</div></div>
+    <div class="skill"><div class="h">Infrastructure</div><div class="b">Docker · Railway · Cloudflare R2 · Playwright · Git</div></div>
+    <div class="skill"><div class="h">Adjacent</div><div class="b">SaaS operations · email marketing · funnel design · project management · UI/UX</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Education</h2>
+  <div class="role-row">
+    <div class="when">2016 — 2017</div>
+    <div><h3>Master of Business Administration</h3><div class="org">Rizal Technological University</div></div>
+  </div>
+  <div class="role-row">
+    <div class="when">2009 — 2013</div>
+    <div><h3>BS Business Administration — Financial Management</h3><div class="org">Bukidnon State University</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Certifications</h2>
+  <div class="certs">
+    <span>Project Management Simplified</span>
+    <span>Cybersecurity Awareness: Phishing and Whaling</span>
+  </div>
+</section>
+
+<section>
+  <h2>Languages</h2>
+  <div class="skills">
+    <div class="skill"><div class="h">English</div><div class="b">Fluent</div></div>
+    <div class="skill"><div class="h">Filipino</div><div class="b">Native</div></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="sheet">
+  <span>© <span id="yr">2026</span> Diego Arbiz Jr.</span>
+  <span class="r">Machine-readable: <a href="/resume.json" style="color:var(--accent-soft)">/resume.json</a> · <a href="/llms.txt" style="color:var(--accent-soft)">/llms.txt</a></span>
+</footer>
+
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
