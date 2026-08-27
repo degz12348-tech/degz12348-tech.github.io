@@ -278,14 +278,26 @@ p{margin:0 0 16px}
   100%{transform:translate3d(-2px,-4px,0) rotate(-.12deg)}
 }
 .figure img.hands-motion{
-  position:absolute;inset:0;z-index:1;opacity:.34;
-  clip-path:polygon(0 58%,100% 58%,100% 100%,0 100%);
-  animation:typingHands .48s steps(2,end) infinite;
+  position:absolute;inset:0;z-index:1;opacity:.42;
+  clip-path:polygon(48% 62%,100% 62%,100% 100%,43% 100%);
+  animation:typingHands .38s steps(2,end) infinite;
   mix-blend-mode:screen;
 }
 @keyframes typingHands{
-  0%,100%{transform:translate3d(0,0,0)}
-  50%{transform:translate3d(1px,-2px,0)}
+  0%,100%{transform:translate3d(-1px,1px,0) skewX(-.08deg)}
+  50%{transform:translate3d(1px,-3px,0) skewX(.12deg)}
+}
+.figure img.head-motion{
+  position:absolute;inset:0;z-index:1;opacity:.28;
+  clip-path:ellipse(15% 25% at 72% 27%);
+  transform-origin:72% 43%;
+  animation:headMove 5.2s var(--ease) infinite alternate;
+  mix-blend-mode:screen;
+}
+@keyframes headMove{
+  0%,18%{transform:translate3d(0,1px,0) rotate(.05deg)}
+  62%{transform:translate3d(-2px,-3px,0) rotate(-.28deg)}
+  100%{transform:translate3d(1px,-1px,0) rotate(.16deg)}
 }
 /* periodic scanline sweep travelling down the portrait */
 .figure .sweep{
@@ -301,8 +313,8 @@ p{margin:0 0 16px}
   100%{top:104%;opacity:0}
 }
 @media(prefers-reduced-motion:reduce){
-  .figure img,.figure img.hands-motion{animation:none;transform:none}
-  .figure img.hands-motion{display:none}
+  .figure img,.figure img.hands-motion,.figure img.head-motion{animation:none;transform:none}
+  .figure img.hands-motion,.figure img.head-motion{display:none}
   .figure .sweep{display:none}
 }
 .figure::after{
@@ -650,6 +662,7 @@ footer .r{margin-left:auto}
 
   <div class="figure" aria-hidden="true">
     <img src="assets/degz-digital-hero-v7.webp" alt="" width="1672" height="941">
+    <img class="head-motion" src="assets/degz-digital-hero-v7.webp" alt="" width="1672" height="941">
     <img class="hands-motion" src="assets/degz-digital-hero-v7.webp" alt="" width="1672" height="941">
     <span class="sweep"></span>
   </div>
