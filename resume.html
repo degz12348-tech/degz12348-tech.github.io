@@ -34,18 +34,19 @@ a{color:inherit}
 /* back bar */
 .bar{border-bottom:1px solid var(--line-soft);position:sticky;top:0;background:rgba(0,0,0,.8);backdrop-filter:blur(14px);z-index:10}
 .bar .sheet{display:flex;align-items:center;gap:18px;height:54px}
-.bar a{font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);text-decoration:none;transition:color .2s var(--ease)}
+.bar a{font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);text-decoration:none;white-space:nowrap;transition:color .2s var(--ease)}
 .bar a:hover{color:var(--accent)}
 .bar .right{margin-left:auto;display:flex;gap:16px}
+@media(max-width:520px){.bar .sheet{gap:10px}.bar .right{gap:12px}.bar [data-secondary]{display:none}}
 
 /* masthead */
 header.top{padding:clamp(40px,7vw,68px) 0 30px}
 .idrow{display:flex;gap:clamp(20px,4vw,34px);align-items:flex-start;margin-bottom:22px}
 .idcol{flex:1;min-width:0}
 .mug{
-  flex:none;width:clamp(88px,13vw,116px);aspect-ratio:1;
+  flex:none;width:clamp(88px,13vw,116px);height:clamp(88px,13vw,116px);aspect-ratio:1;
   border:1px solid var(--line);border-radius:6px;
-  object-fit:cover;object-position:54% 16%;
+  object-fit:cover;object-position:50% 20%;
   filter:grayscale(1) contrast(1.25) brightness(.92);
 }
 @media(max-width:520px){.idrow{flex-direction:column-reverse;align-items:flex-start;gap:18px}}
@@ -122,6 +123,7 @@ footer .r{margin-left:auto}
   section{padding-top:20px;break-inside:avoid}
   .role-row{break-inside:avoid}
   h1{font-size:22pt}
+  .mug{width:72px;height:72px}
   a{text-decoration:none}
   footer{border-top:1px solid #ddd}
 }
@@ -134,7 +136,7 @@ footer .r{margin-left:auto}
     <a href="/">← degz<span style="color:var(--accent)">@</span>arbiz</a>
     <span class="right">
       <a href="/resume.txt">resume.txt</a>
-      <a href="/resume.json">resume.json</a>
+      <a href="/resume.json" data-secondary>resume.json</a>
       <a href="#" onclick="window.print();return false">print / PDF</a>
     </span>
   </div>
@@ -146,7 +148,7 @@ footer .r{margin-left:auto}
       <h1>Diego “Degz” Arbiz Jr.</h1>
       <p class="role">AI Systems Developer / Automation Architect</p>
     </div>
-    <img class="mug" src="assets/degz-desk.jpg" alt="Diego Arbiz Jr." width="1216" height="1358">
+    <img class="mug" src="assets/degz-headshot.jpg" alt="Diego Arbiz Jr." width="385" height="574">
   </div>
 
   <dl class="meta">
