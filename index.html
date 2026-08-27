@@ -294,6 +294,10 @@ p{margin:0 0 16px}
   animation:headMove 5.2s var(--ease) infinite alternate;
   mix-blend-mode:screen;
 }
+.figure canvas.ghostfx{
+  position:absolute;inset:0;z-index:2;width:100%;height:100%;
+  pointer-events:none;mix-blend-mode:screen;opacity:.72;
+}
 @keyframes headMove{
   0%,18%{transform:translate3d(0,1px,0) rotate(.05deg)}
   62%{transform:translate3d(-2px,-3px,0) rotate(-.28deg)}
@@ -314,7 +318,7 @@ p{margin:0 0 16px}
 }
 @media(prefers-reduced-motion:reduce){
   .figure img,.figure img.hands-motion,.figure img.head-motion{animation:none;transform:none}
-  .figure img.hands-motion,.figure img.head-motion{display:none}
+  .figure img.hands-motion,.figure img.head-motion,.figure canvas.ghostfx{display:none}
   .figure .sweep{display:none}
 }
 .figure::after{
@@ -664,6 +668,7 @@ footer .r{margin-left:auto}
     <img src="assets/degz-digital-hero-v7.webp" alt="" width="1672" height="941">
     <img class="head-motion" src="assets/degz-digital-hero-v7.webp" alt="" width="1672" height="941">
     <img class="hands-motion" src="assets/degz-digital-hero-v7.webp" alt="" width="1672" height="941">
+    <canvas class="ghostfx" id="ghostfx"></canvas>
     <span class="sweep"></span>
   </div>
 
@@ -1083,6 +1088,59 @@ Calabarzon, Philippines · remote · APAC / EU / US overlap
 
 <script>
 document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* ---------- live point-cloud ghost ---------- */
+(function(){
+  var cv = document.getElementById('ghostfx');
+  if (!cv || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  var ctx = cv.getContext('2d'), w = 0, h = 0, dpr = Math.min(devicePixelRatio || 1, 2);
+  var particles = [], raf = 0, running = false, onscreen = true;
+
+  function resize(){
+    w = cv.clientWidth; h = cv.clientHeight;
+    cv.width = Math.max(1, Math.round(w * dpr));
+    cv.height = Math.max(1, Math.round(h * dpr));
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    particles = [];
+  }
+  function spawn(){
+    var shoulder = Math.random() < .58;
+    particles.push({
+      x:w * (shoulder ? (.68 + Math.random()*.25) : (.58 + Math.random()*.24)),
+      y:h * (shoulder ? (.16 + Math.random()*.58) : (.63 + Math.random()*.25)),
+      vx:.35 + Math.random()*1.25, vy:(Math.random()-.5)*.18,
+      life:42 + Math.random()*72, age:0,
+      size:Math.random()<.72 ? 1 : (2 + Math.random()*4),
+      streak:Math.random()<.3
+    });
+  }
+  function frame(){
+    if (!running) return;
+    ctx.clearRect(0,0,w,h);
+    var amount = w < 700 ? 2 : 5;
+    for(var n=0;n<amount;n++) if(particles.length<180) spawn();
+    for(var i=particles.length-1;i>=0;i--){
+      var p=particles[i]; p.age++; p.x+=p.vx; p.y+=p.vy;
+      if(p.age>=p.life){particles.splice(i,1);continue}
+      var a=Math.sin(Math.PI*p.age/p.life)*(.14+Math.random()*.28);
+      ctx.fillStyle='rgba(0,255,65,'+a.toFixed(3)+')';
+      if(p.streak) ctx.fillRect(p.x,p.y,8+p.size*5,1);
+      else ctx.fillRect(p.x,p.y,p.size,p.size);
+    }
+    raf=requestAnimationFrame(frame);
+  }
+  function sync(){
+    var should=onscreen&&!document.hidden;
+    if(should&&!running){running=true;raf=requestAnimationFrame(frame)}
+    else if(!should&&running){running=false;cancelAnimationFrame(raf)}
+  }
+  new ResizeObserver(resize).observe(cv);
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(e){onscreen=e[0].isIntersecting;sync()}).observe(cv);
+  }
+  document.addEventListener('visibilitychange',sync);
+  resize();sync();
+})();
 
 /* ---------- horizontal product rails ---------- */
 (function(){
