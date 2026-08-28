@@ -323,9 +323,14 @@ p{margin:0 0 16px}
   .figure img{object-position:right center}
 }
 @media(max-width:600px){
-  .figure{width:132%;right:-16%;opacity:.32;
-    -webkit-mask-image:linear-gradient(to top,transparent 6%,#000 52%);
-    mask-image:linear-gradient(to top,transparent 6%,#000 52%);}
+  .stage{height:1160px;min-height:1160px;align-items:flex-start}
+  .figure{width:165%;right:-30%;top:auto;bottom:0;height:390px;opacity:.82;
+    -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 22%);
+    mask-image:linear-gradient(to right,transparent 0%,#000 22%);}
+  .figure canvas.ghostfx{opacity:.62}
+}
+@media(max-width:420px){
+  .stage{height:1340px;min-height:1340px}
 }
 
 /* cursor spotlight — reveals the code layer under the pointer */
