@@ -323,14 +323,13 @@ p{margin:0 0 16px}
   .figure img{object-position:right center}
 }
 @media(max-width:600px){
-  .stage{height:1070px;min-height:1070px;align-items:flex-start}
-  .figure{width:165%;right:-30%;top:auto;bottom:0;height:390px;opacity:.82;
+  .stage{height:auto;min-height:0;display:flex;flex-direction:column;align-items:stretch}
+  .stage-inner{order:1;padding-bottom:0}
+  .hero{padding-bottom:16px}
+  .figure{position:relative;order:2;flex:none;width:165%;right:auto;top:auto;bottom:auto;height:auto;aspect-ratio:1672/941;margin:-105px 0 0 -65%;opacity:.82;
     -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 22%);
     mask-image:linear-gradient(to right,transparent 0%,#000 22%);}
   .figure canvas.ghostfx{opacity:.62}
-}
-@media(max-width:420px){
-  .stage{height:1250px;min-height:1250px}
 }
 
 /* cursor spotlight — reveals the code layer under the pointer */
