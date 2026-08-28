@@ -79,18 +79,29 @@ body{
   background:#000;color:var(--fg-strong);opacity:1;visibility:visible;
   transition:opacity .38s var(--ease),visibility 0s linear .38s;
 }
+.boot::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,255,65,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.025) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(circle,#000,transparent 68%)}
+.boot::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,transparent 48%,rgba(0,255,65,.08) 50%,transparent 52%);background-size:100% 7px;animation:bootscan 1.8s linear infinite}
 .boot.done{opacity:0;visibility:hidden;pointer-events:none}
-.boot-inner{display:flex;flex-direction:column;align-items:center;gap:18px}
-.boot-mark{font-family:var(--font-display);font-size:23px;font-weight:700;letter-spacing:-.035em}
+.boot-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:14px}
+.boot-mark{font-family:var(--font-display);font-size:23px;font-weight:700;letter-spacing:-.035em;text-shadow:0 0 18px rgba(0,255,65,.28)}
 .boot-mark span{color:var(--accent)}
-.boot-spinner{
-  width:34px;height:34px;border-radius:50%;
-  border:1px solid rgba(0,255,65,.2);border-top-color:var(--accent);
-  box-shadow:0 0 18px rgba(0,255,65,.12);animation:bootspin .72s linear infinite;
-}
+.boot-hud{position:relative;width:76px;height:76px;border:1px solid rgba(0,255,65,.22);border-radius:50%;box-shadow:inset 0 0 18px rgba(0,255,65,.08),0 0 24px rgba(0,255,65,.1)}
+.boot-hud::before{content:"";position:absolute;inset:8px;border:1px dashed rgba(0,255,65,.48);border-radius:50%;animation:bootspin 2.2s linear infinite}
+.boot-hud::after{content:"";position:absolute;inset:19px;border:1px solid rgba(0,255,65,.38);border-left-color:transparent;border-radius:50%;animation:bootspin .8s linear infinite reverse}
+.boot-core{position:absolute;left:50%;top:50%;width:10px;height:10px;transform:translate(-50%,-50%);background:var(--accent);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);box-shadow:0 0 16px var(--accent);animation:bootpulse .7s steps(2,end) infinite}
+.boot-pixel{position:absolute;width:4px;height:4px;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.boot-pixel.p1{left:4px;top:35px;animation:pixelblink .55s steps(2,end) infinite}
+.boot-pixel.p2{right:8px;top:12px;animation:pixelblink .7s steps(2,end) infinite reverse}
+.boot-pixel.p3{right:3px;bottom:17px;animation:pixelblink .9s steps(2,end) infinite}
 .boot-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-dim)}
+.boot-bar{width:132px;height:3px;background:rgba(0,255,65,.12);overflow:hidden}
+.boot-bar::after{content:"";display:block;width:42%;height:100%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:bootbar 1s var(--ease) infinite}
 @keyframes bootspin{to{transform:rotate(1turn)}}
-@media(prefers-reduced-motion:reduce){.boot-spinner{animation:none;border-color:var(--accent)}}
+@keyframes bootpulse{50%{opacity:.35;transform:translate(-50%,-50%) scale(.65)}}
+@keyframes pixelblink{50%{opacity:.12}}
+@keyframes bootbar{from{transform:translateX(-110%)}to{transform:translateX(245%)}}
+@keyframes bootscan{to{background-position:0 14px}}
+@media(prefers-reduced-motion:reduce){.boot::after,.boot-hud::before,.boot-hud::after,.boot-core,.boot-pixel,.boot-bar::after{animation:none}}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:3px}
 ::selection{background:var(--accent-deep);color:var(--fg-strong)}
@@ -634,8 +645,9 @@ footer .r{margin-left:auto}
 <div class="boot" id="boot" role="status" aria-live="polite" aria-label="Loading portfolio">
   <div class="boot-inner">
     <div class="boot-mark">degz<span>@</span>arbiz</div>
-    <div class="boot-spinner" aria-hidden="true"></div>
-    <div class="boot-label">Initializing systems</div>
+    <div class="boot-hud" aria-hidden="true"><span class="boot-core"></span><i class="boot-pixel p1"></i><i class="boot-pixel p2"></i><i class="boot-pixel p3"></i></div>
+    <div class="boot-label">System boot // loading</div>
+    <div class="boot-bar" aria-hidden="true"></div>
   </div>
 </div>
 <a class="skip" href="#main">Skip to main content</a>
