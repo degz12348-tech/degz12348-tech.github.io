@@ -142,6 +142,17 @@ a{color:inherit}
   filter:blur(24px);
 }
 
+/* ---------- page-wide ambient code, behind every section ----------
+   The hero has its own denser #codefall. This one is viewport-fixed and
+   runs at roughly half strength so the hero still reads as the showpiece. */
+#codefield{
+  position:fixed;inset:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;opacity:.62;
+}
+/* Skip it on phones (scroll cost) and whenever motion is unwelcome. */
+@media(max-width:720px){#codefield{display:none}}
+@media(prefers-reduced-motion:reduce){#codefield{display:none}}
+
 /* ---------- nav ---------- */
 nav{
   position:sticky;top:0;z-index:60;
@@ -174,7 +185,30 @@ nav .wrap{display:flex;align-items:center;gap:20px;height:70px}
 main{position:relative;z-index:1}
 section{padding:clamp(58px,7vw,78px) 0}
 section[id]{scroll-margin-top:70px}
-section + section{border-top:1px solid var(--line-soft)}
+
+/* Each section carries its own soft aura, so the green doesn't die with the hero.
+   `isolation` keeps the ::before behind this section's own text but above the
+   body dot-grid; alternating sides stops it reading as a repeated stamp. */
+main > section:not(.stage){position:relative;isolation:isolate}
+main > section:not(.stage)::before{
+  content:"";position:absolute;z-index:-1;pointer-events:none;
+  top:-6%;height:112%;width:min(820px,116%);
+  background:radial-gradient(ellipse at center,rgba(0,255,65,.06),rgba(0,255,65,.02) 46%,transparent 72%);
+  filter:blur(34px);
+}
+main > section:not(.stage):nth-of-type(odd)::before{left:-8%}
+main > section:not(.stage):nth-of-type(even)::before{right:-8%}
+/* Same progressive-enhancement shape as .rv: visible first, animated only under JS.
+   Rides the existing reveal observer, so this needs no script of its own. */
+.js main > section:not(.stage)::before{opacity:0;transition:opacity 1s var(--ease)}
+.js main > section.rv.in::before{opacity:1}
+
+/* Dividers glow at the centre instead of sitting flat. */
+section + section{border-top:0}
+main > section + section::after{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(0,255,65,.05) 12%,rgba(0,255,65,.34) 50%,rgba(0,255,65,.05) 88%,transparent);
+}
 .kicker{
   font-family:var(--font-mono);font-size:11.5px;color:var(--fg-dim);
   letter-spacing:.02em;margin:0 0 18px;display:flex;align-items:center;gap:9px;
@@ -282,7 +316,7 @@ p{margin:0 0 16px}
   height:clamp(660px,calc(100svh - 100px),980px);min-height:660px;padding:0;
   display:flex;align-items:center;
   overflow:hidden;
-  border-bottom:1px solid var(--line-soft);
+  /* No border-bottom: the next section's gradient divider draws this edge. */
   --portrait-parallax:0px;--copy-parallax:0px;--code-parallax:0px;
 }
 #codefall{
@@ -373,6 +407,9 @@ p{margin:0 0 16px}
   will-change:transform;
 }
 .spot.on{opacity:1}
+/* Twin of .spot for everything below the hero. Sits at z-index 0 — behind main —
+   so it lights the page-wide code field without washing over body copy. */
+.spot-page{z-index:0}
 @media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){.spot{display:none}}
 
 .stage-inner{position:relative;z-index:3;width:100%;padding-top:clamp(40px,7vw,64px);padding-bottom:clamp(40px,7vw,64px);transform:translate3d(0,var(--copy-parallax),0);will-change:transform}
@@ -506,28 +543,6 @@ p{margin:0 0 16px}
   padding:clamp(18px,3vw,26px);transition:border-color var(--dur) var(--ease);
 }
 .proj:hover{border-color:var(--line)}
-.tech-orbit{position:absolute;inset:-24px;z-index:3;pointer-events:none;filter:drop-shadow(0 10px 14px rgba(0,0,0,.72))}
-.tech-orb{
-  --orbit-time:13s;position:absolute;left:0;top:0;display:grid;place-items:center;
-  width:40px;height:40px;border:1px solid rgba(0,255,65,.58);border-radius:50%;
-  background:radial-gradient(circle at 28% 22%,rgba(220,255,225,.9) 0 5%,#19c84a 12%,#063d18 40%,#010b04 72%);
-  box-shadow:inset -7px -9px 13px rgba(0,0,0,.72),inset 5px 5px 9px rgba(149,255,174,.25),0 0 18px rgba(0,255,65,.18);
-  font-size:19px;line-height:1;offset-path:ellipse(48% 46% at 50% 50%);offset-rotate:0deg;
-  animation:techOrbit var(--orbit-time) linear infinite,orbFloat 1.9s var(--ease) infinite alternate;
-}
-.tech-orb:nth-child(2){--orbit-time:17s;animation-delay:-5.5s,-.8s}
-.tech-orb:nth-child(3){--orbit-time:21s;animation-delay:-12s,-1.3s}
-.proj:hover .tech-orb{animation-duration:8s,1.25s}
-@keyframes techOrbit{to{offset-distance:100%}}
-@keyframes orbFloat{to{margin-top:-7px;filter:brightness(1.22)}}
-@media(max-width:700px){
-  .tech-orbit{inset:-8px;opacity:.72}
-  .tech-orb{width:31px;height:31px;font-size:14px;offset-path:ellipse(47% 48% at 50% 50%)}
-  .tech-orb:nth-child(3){display:none}
-}
-@media(prefers-reduced-motion:reduce){
-  .tech-orb{animation:none}.tech-orb:nth-child(1){offset-distance:8%}.tech-orb:nth-child(2){offset-distance:54%}.tech-orb:nth-child(3){offset-distance:82%}
-}
 .proj-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:12px}
 .proj-head .when{margin-left:auto;font-family:var(--font-mono);font-size:11.5px;color:var(--fg-dim)}
 .proj p{font-size:14.8px;color:var(--fg-dim);margin:0;max-width:74ch}
@@ -677,6 +692,8 @@ footer .r{margin-left:auto}
 </div>
 <a class="skip" href="#main">Skip to main content</a>
 <div class="glow" aria-hidden="true"></div>
+<canvas id="codefield" aria-hidden="true"></canvas>
+<div class="spot spot-page" id="spotpage" aria-hidden="true"></div>
 
 <div class="ticker" aria-label="Availability and specialties">
   <div class="ticker-track">
@@ -1356,38 +1373,51 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 /* ---------- cursor spotlight ---------- */
 (function(){
   var spot = document.getElementById('spot'),
+      page = document.getElementById('spotpage'),
       stage = document.getElementById('top');
-  if (!spot || !stage) return;
+  if (!spot || !page || !stage) return;
   if (matchMedia('(hover:none)').matches || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
 
-  var tx = 0, ty = 0, cx = 0, cy = 0, active = false, raf = 0;
+  var tx = 0, ty = 0, cx = 0, cy = 0, active = false, raf = 0, heroBottom = 0;
 
-  stage.addEventListener('mousemove', function(e){
+  /* Cached so the frame loop never forces a layout read. */
+  function measure(){ heroBottom = stage.getBoundingClientRect().bottom; }
+  addEventListener('scroll', measure, {passive:true});
+  addEventListener('resize', measure, {passive:true});
+  measure();
+
+  /* Two lights, one pointer. Over the hero we use #spot (z-index 2) so it sits
+     above the portrait; elsewhere #spotpage (z-index 0) lights the page-wide
+     code field from behind the copy. */
+  document.addEventListener('mousemove', function(e){
     tx = e.clientX; ty = e.clientY;
     if (!active){
       active = true; cx = tx; cy = ty;
-      spot.classList.add('on');
       loop();
     }
   });
-  stage.addEventListener('mouseleave', function(){
+  document.addEventListener('mouseleave', function(){
     active = false;
     spot.classList.remove('on');
+    page.classList.remove('on');
     cancelAnimationFrame(raf);
   });
   function loop(){
     cx += (tx - cx) * 0.13;          // trailing ease
     cy += (ty - cy) * 0.13;
-    spot.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+    var xf = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+    spot.style.transform = xf;
+    page.style.transform = xf;
+    var inHero = ty <= heroBottom;
+    spot.classList.toggle('on', inHero);
+    page.classList.toggle('on', !inHero);
     if (active) raf = requestAnimationFrame(loop);
   }
 })();
 
 /* ---------- ambient code, typed live ---------- */
 (function(){
-  var cv = document.getElementById('codefall');
-  if (!cv || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-  var ctx = cv.getContext('2d'), w = 0, h = 0, dpr = Math.min(devicePixelRatio || 1, 2);
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
 
   /* each block is a snippet that gets typed out line by line */
   var BLOCKS = [
@@ -1418,112 +1448,131 @@ document.getElementById('yr').textContent = new Date().getFullYear();
       '  throw new Unauthorized();' ]
   ];
 
-  var LH = 19, blocks = [];
+  var LH = 19;
 
-  function makeBlock(){
-    var src = BLOCKS[(Math.random() * BLOCKS.length) | 0];
-    return {
-      src: src,
-      x: Math.random() * Math.max(60, w - 340),
-      y: 40 + Math.random() * Math.max(60, h - 160),
-      line: 0, ch: 0,
-      alpha: 0,
-      phase: 'typing',
-      hold: 0,
-      speed: 1.1 + Math.random() * 1.9,
-      acc: 0
-    };
-  }
+  /* One typing engine, two canvases: the dense hero field and the calmer
+     page-wide one. opts = {maxAlpha, density, gateOnScreen}. */
+  function makeCodeField(cv, opts){
+    if (!cv) return;
+    var ctx = cv.getContext('2d'), w = 0, h = 0, dpr = Math.min(devicePixelRatio || 1, 2);
+    var maxAlpha = opts.maxAlpha, blocks = [];
 
-  function resize(){
-    w = cv.clientWidth; h = cv.clientHeight;
-    cv.width = w * dpr; cv.height = h * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var want = w < 720 ? 2 : (w < 1200 ? 3 : 5);
-    blocks = [];
-    for (var i = 0; i < want; i++){
-      var b = makeBlock();
-      b.hold = -i * 60;            // stagger the starts
-      blocks.push(b);
+    function makeBlock(){
+      var src = BLOCKS[(Math.random() * BLOCKS.length) | 0];
+      return {
+        src: src,
+        x: Math.random() * Math.max(60, w - 340),
+        y: 40 + Math.random() * Math.max(60, h - 160),
+        line: 0, ch: 0,
+        alpha: 0,
+        phase: 'typing',
+        hold: 0,
+        speed: 1.1 + Math.random() * 1.9,
+        acc: 0
+      };
     }
-  }
 
-  var last = 0, frameId = 0, running = false, onscreen = true;
-  function frame(t){
-    if (!running) return;
-    var dt = Math.min(t - last, 60); last = t;
-    ctx.clearRect(0, 0, w, h);
-    ctx.font = '13px "JetBrains Mono", monospace';
-    ctx.textBaseline = 'top';
+    function resize(){
+      w = cv.clientWidth; h = cv.clientHeight;
+      cv.width = w * dpr; cv.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var want = w < 720 ? 2 : (w < 1200 ? 3 : 5);
+      want = Math.max(1, Math.round(want * opts.density));
+      blocks = [];
+      for (var i = 0; i < want; i++){
+        var b = makeBlock();
+        b.hold = -i * 60;            // stagger the starts
+        blocks.push(b);
+      }
+    }
 
-    for (var i = 0; i < blocks.length; i++){
-      var b = blocks[i];
+    var last = 0, frameId = 0, running = false, onscreen = true;
+    function frame(t){
+      if (!running) return;
+      var dt = Math.min(t - last, 60); last = t;
+      ctx.clearRect(0, 0, w, h);
+      ctx.font = '13px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'top';
 
-      if (b.phase === 'typing'){
-        b.alpha = Math.min(b.alpha + dt * 0.004, 0.30);
-        b.acc += dt * 0.06 * b.speed;
-        while (b.acc >= 1 && b.phase === 'typing'){
-          b.acc -= 1;
-          b.ch++;
-          if (b.ch > b.src[b.line].length){
-            b.ch = 0; b.line++;
-            if (b.line >= b.src.length){
-              b.line = b.src.length; b.phase = 'hold'; b.hold = 0;
+      for (var i = 0; i < blocks.length; i++){
+        var b = blocks[i];
+
+        if (b.phase === 'typing'){
+          b.alpha = Math.min(b.alpha + dt * 0.004, maxAlpha);
+          b.acc += dt * 0.06 * b.speed;
+          while (b.acc >= 1 && b.phase === 'typing'){
+            b.acc -= 1;
+            b.ch++;
+            if (b.ch > b.src[b.line].length){
+              b.ch = 0; b.line++;
+              if (b.line >= b.src.length){
+                b.line = b.src.length; b.phase = 'hold'; b.hold = 0;
+              }
             }
           }
+        } else if (b.phase === 'hold'){
+          b.hold += dt;
+          if (b.hold > 2200) b.phase = 'fading';
+        } else {
+          /* scaled so a dimmer field still fades over the same span of time */
+          b.alpha -= dt * 0.0016 * (maxAlpha / 0.30);
+          if (b.alpha <= 0){ blocks[i] = makeBlock(); continue; }
         }
-      } else if (b.phase === 'hold'){
-        b.hold += dt;
-        if (b.hold > 2200) b.phase = 'fading';
-      } else {
-        b.alpha -= dt * 0.0016;
-        if (b.alpha <= 0){ blocks[i] = makeBlock(); continue; }
-      }
 
-      /* draw completed lines, then the partial one */
-      var upto = Math.min(b.line, b.src.length);
-      for (var L = 0; L < upto; L++){
-        ctx.fillStyle = 'rgba(0,255,65,' + (b.alpha * 0.72).toFixed(3) + ')';
-        ctx.fillText(b.src[L], b.x, b.y + L * LH);
-      }
-      if (b.line < b.src.length){
-        var partial = b.src[b.line].slice(0, b.ch);
-        ctx.fillStyle = 'rgba(0,255,65,' + b.alpha.toFixed(3) + ')';
-        ctx.fillText(partial, b.x, b.y + b.line * LH);
-        /* block caret at the typing head */
-        if (((t / 480) | 0) % 2 === 0){
-          var cw = ctx.measureText(partial).width;
-          ctx.fillStyle = 'rgba(0,255,65,' + (b.alpha * 1.5).toFixed(3) + ')';
-          ctx.fillRect(b.x + cw + 1, b.y + b.line * LH + 2, 7, 13);
+        /* draw completed lines, then the partial one */
+        var upto = Math.min(b.line, b.src.length);
+        for (var L = 0; L < upto; L++){
+          ctx.fillStyle = 'rgba(0,255,65,' + (b.alpha * 0.72).toFixed(3) + ')';
+          ctx.fillText(b.src[L], b.x, b.y + L * LH);
+        }
+        if (b.line < b.src.length){
+          var partial = b.src[b.line].slice(0, b.ch);
+          ctx.fillStyle = 'rgba(0,255,65,' + b.alpha.toFixed(3) + ')';
+          ctx.fillText(partial, b.x, b.y + b.line * LH);
+          /* block caret at the typing head */
+          if (((t / 480) | 0) % 2 === 0){
+            var cw = ctx.measureText(partial).width;
+            ctx.fillStyle = 'rgba(0,255,65,' + (b.alpha * 1.5).toFixed(3) + ')';
+            ctx.fillRect(b.x + cw + 1, b.y + b.line * LH + 2, 7, 13);
+          }
         }
       }
-    }
-    frameId = requestAnimationFrame(frame);
-  }
-
-  function syncAnimation(){
-    var shouldRun = onscreen && !document.hidden;
-    if (shouldRun && !running){
-      running = true;
-      last = performance.now();
       frameId = requestAnimationFrame(frame);
-    } else if (!shouldRun && running){
-      running = false;
-      cancelAnimationFrame(frameId);
     }
+
+    function syncAnimation(){
+      var shouldRun = onscreen && !document.hidden;
+      if (shouldRun && !running){
+        running = true;
+        last = performance.now();
+        frameId = requestAnimationFrame(frame);
+      } else if (!shouldRun && running){
+        running = false;
+        cancelAnimationFrame(frameId);
+      }
+    }
+
+    var ro = new ResizeObserver(resize);
+    ro.observe(cv);
+    /* A viewport-fixed field is always intersecting, so the observer is dead
+       weight there — it pauses on tab-hide only. */
+    if (opts.gateOnScreen && 'IntersectionObserver' in window){
+      new IntersectionObserver(function(entries){
+        onscreen = entries[0].isIntersecting;
+        syncAnimation();
+      }).observe(cv);
+    }
+    document.addEventListener('visibilitychange', syncAnimation);
+    resize();
+    syncAnimation();
   }
 
-  var ro = new ResizeObserver(resize);
-  ro.observe(cv);
-  if ('IntersectionObserver' in window){
-    new IntersectionObserver(function(entries){
-      onscreen = entries[0].isIntersecting;
-      syncAnimation();
-    }).observe(cv);
-  }
-  document.addEventListener('visibilitychange', syncAnimation);
-  resize();
-  syncAnimation();
+  /* hero — unchanged: dense and bright */
+  makeCodeField(document.getElementById('codefall'),
+                {maxAlpha:0.30, density:1, gateOnScreen:true});
+  /* page-wide — about half the weight, so body copy stays readable */
+  makeCodeField(document.getElementById('codefield'),
+                {maxAlpha:0.17, density:0.6, gateOnScreen:false});
 })();
 (function(){
   var els = document.querySelectorAll('.rv');
