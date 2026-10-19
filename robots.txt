@@ -6,5 +6,4 @@ Allow: /
 # /resume.json  - JSON Resume schema
 # /resume.txt   - plain-text resume (curl-friendly)
 
-# REPLACE with your real domain once DNS is pointed.
 Sitemap: https://degz12348-tech.github.io/sitemap.xml

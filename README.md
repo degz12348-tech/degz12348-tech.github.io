@@ -1,4 +1,4 @@
-# degzarbiz.com
+# degz12348-tech.github.io
 
 Personal site for Diego "Degz" Arbiz Jr. — AI Systems Developer.
 Static, no build step, no dependencies. Deploys to GitHub Pages as-is.
@@ -10,7 +10,7 @@ Static, no build step, no dependencies. Deploys to GitHub Pages as-is.
 | `index.html` | The site. Self-contained — all CSS inline, only Google Fonts is external. |
 | `assets/` | Headshot, project screenshots, brand marks. |
 | `resume.json` | [JSON Resume](https://jsonresume.org/) schema. Parsed by recruiting tools. |
-| `resume.txt` | Plain-text résumé. `curl degzarbiz.com/resume.txt` |
+| `resume.txt` | Plain-text résumé. `curl degz12348-tech.github.io/resume.txt` |
 | `llms.txt` | Plain-language summary for AI agents and LLM crawlers. |
 | `robots.txt`, `sitemap.xml` | Search indexing. **Both contain a placeholder domain — update before deploying.** |
 | `preview.html` | Generated artifact build. Not deployed. |
@@ -44,7 +44,7 @@ them through Jekyll.
 
 ## Custom domain
 
-1. Register the domain (`degzarbiz.com` is the one assumed throughout).
+1. Register the domain (none registered yet; the site runs on `degz12348-tech.github.io`).
 2. Add a `CNAME` file at the repo root containing just the domain.
 3. DNS — apex domain, four A records:
    `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
