@@ -14,13 +14,17 @@
 <meta property="og:description" content="I turn AI from prompt experiments into production systems.">
 <meta property="profile:first_name" content="Diego">
 <meta property="profile:last_name" content="Arbiz">
-<meta property="og:image" content="https://degz12348-tech.github.io/assets/degz-desk.jpg">
-<meta property="og:image:alt" content="Degz Arbiz working at a laptop">
+<meta property="og:image" content="https://degz12348-tech.github.io/assets/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Degz Arbiz, AI Systems Developer, rendered as a green hologram typing on a laptop">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Degz Arbiz — AI Systems Developer">
 <meta name="twitter:description" content="LLM applications, evaluation harnesses, and automation infrastructure built for production.">
-<meta name="twitter:image" content="https://degz12348-tech.github.io/assets/degz-desk.jpg">
-<link rel="icon" href="/assets/degz-avatar.png" type="image/png">
+<meta name="twitter:image" content="https://degz12348-tech.github.io/assets/og-card.jpg">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
 <link rel="preload" as="image" href="/assets/degz-digital-hero-v10.webp" type="image/webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -548,6 +552,8 @@ p{margin:0 0 16px}
 .proj p{font-size:14.8px;color:var(--fg-dim);margin:0;max-width:74ch}
 .proj p strong{color:var(--fg);font-weight:500}
 .proj code{font-family:var(--font-mono);font-size:.9em;color:var(--accent-soft)}
+.proj-live{display:inline-block;margin-top:12px;font-family:var(--font-mono);font-size:12.5px;color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor}
+.proj-live:hover{color:var(--fg-strong)}
 .case-facts{
   display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
   margin:20px 0;background:var(--line-soft);border:1px solid var(--line-soft);
@@ -896,11 +902,11 @@ footer .r{margin-left:auto}
         </div>
         <div class="shots" tabindex="0" aria-label="Sales Coach AI product screenshots">
           <figure class="shot">
-            <img src="assets/salescoach-live.png" alt="Sales Coach AI live coaching view: cue cards surface a competitor battlecard and a price-objection reframe while the prospect transcript streams alongside." width="1440" height="900" loading="lazy">
+            <img src="assets/salescoach-live.webp" alt="Sales Coach AI live coaching view: cue cards surface a competitor battlecard and a price-objection reframe while the prospect transcript streams alongside." width="1440" height="900" loading="lazy">
             <figcaption>Live coaching — cues fire against the streaming transcript</figcaption>
           </figure>
           <figure class="shot">
-            <img src="assets/salescoach-critical.png" alt="Sales Coach AI in critical-only mode, suppressing lower-priority cues during a call." width="1440" height="900" loading="lazy">
+            <img src="assets/salescoach-critical.webp" alt="Sales Coach AI in critical-only mode, suppressing lower-priority cues during a call." width="1440" height="900" loading="lazy">
             <figcaption>Critical-only mode — cue volume tuned per rep</figcaption>
           </figure>
         </div>
@@ -941,6 +947,7 @@ footer .r{margin-left:auto}
         sample identities and photographic case studies that show each brand in use.
         Deployed on Vercel, with Google sign-in being added.
       </p>
+      <a class="proj-live" href="https://brandor-phi.vercel.app" target="_blank" rel="noopener">Open the live app ↗</a>
       <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Prisma</span><span class="tag">AI workflow</span><span class="tag">Brand systems</span></div>
       <div class="shot-rail">
         <div class="shot-rail-head">
@@ -952,11 +959,11 @@ footer .r{margin-left:auto}
         </div>
         <div class="shots" tabindex="0" aria-label="BranDoor product screenshots">
           <figure class="shot">
-            <img src="assets/brandor-home.png" alt="BranDoor homepage with its introduction and invitation to explore brand identities." width="1440" height="900" loading="lazy">
+            <img src="assets/brandor-home.webp" alt="BranDoor homepage with its introduction and invitation to explore brand identities." width="1440" height="900" loading="lazy">
             <figcaption>BranDoor — brand identity studio homepage</figcaption>
           </figure>
           <figure class="shot">
-            <img src="assets/brandor-case-study.png" alt="Dayfold sample brand case study showing its wordmark on coffee packaging and a takeaway bag." width="1440" height="900" loading="lazy">
+            <img src="assets/brandor-case-study.webp" alt="Dayfold sample brand case study showing its wordmark on coffee packaging and a takeaway bag." width="1440" height="900" loading="lazy">
             <figcaption>Dayfold — one of thirteen sample brand case studies</figcaption>
           </figure>
         </div>
