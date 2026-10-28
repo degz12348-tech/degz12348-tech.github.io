@@ -177,6 +177,11 @@
       "keywords": ["Next.js", "TypeScript", "Prisma", "Tailwind", "Role-based access", "Internal tools"]
     },
     {
+      "name": "WhatsApp + Slack messaging hub (client project, NDA)",
+      "description": "Command center pulling WhatsApp and Slack conversations into one dashboard with a REST and WebSocket API on Railway. Built the Slack integration (multi-workspace token auth, Events API webhook, channel and DM discovery, history sync), WhatsApp capture fixes and a Playwright UI test suite. 67 of 88 commits (Jun 2026), the largest single share.",
+      "keywords": ["TypeScript", "Slack API", "WebSockets", "Playwright", "Railway"]
+    },
+    {
       "name": "Scale With System CRM",
       "description": "White-labelled all-in-one sales and marketing platform for the Philippine market: CRM and pipeline, appointment scheduling, drag-and-drop funnel builder, membership/course portal, unified messaging, and local payment integration. Two commercial pricing tiers.",
       "keywords": ["GoHighLevel", "SaaS", "CRM", "Payments"],

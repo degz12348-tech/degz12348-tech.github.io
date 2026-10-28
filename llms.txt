@@ -39,6 +39,11 @@ contributor (97 of 158 commits) on a staff-facing internal tool: assessment,
 onboarding, training paths, admin dashboards, role-based admin access, audit
 logs, AI-assisted evaluation. Next.js, TypeScript, Prisma, Tailwind.
 
+**WhatsApp + Slack messaging hub** (client project, NDA, Jun 2026) — Lead
+contributor (67 of 88 commits): built the Slack integration (multi-workspace
+auth, Events API, DM discovery, sync), WhatsApp capture fixes and a Playwright
+UI test suite for a REST/WebSocket messaging command center on Railway.
+
 ## Background
 
 Automation & AI Technical Specialist (2024–2025) · Online Business Manager

@@ -35,6 +35,13 @@ BUILT
                              Tailwind. Lead contributor: 97 of 158 commits,
                              Jan-Aug 2026.
 
+  Messaging hub ............ Client project (NDA). WhatsApp + Slack command
+                             center with REST/WebSocket API on Railway. Built
+                             the Slack integration (multi-workspace auth,
+                             Events API, DM discovery, sync), WhatsApp capture
+                             fixes, Playwright UI tests. 67 of 88 commits,
+                             Jun 2026.
+
   Scale With System CRM .... accounts.scalewithsystem.com
                              White-labelled sales & marketing platform for
                              the PH market. CRM, funnels, scheduling, course
