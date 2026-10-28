@@ -34,6 +34,11 @@ automation, CRM strategy, and AI-enhanced funnel infrastructure. Supported
 multiple 6–7 figure client launches. Built and operates a commercial CRM and
 marketing SaaS for the Philippine market.
 
+**Internal HR & training platform** (client project, NDA, Jan–Aug 2026) — Lead
+contributor (97 of 158 commits) on a staff-facing internal tool: assessment,
+onboarding, training paths, admin dashboards, role-based admin access, audit
+logs, AI-assisted evaluation. Next.js, TypeScript, Prisma, Tailwind.
+
 ## Background
 
 Automation & AI Technical Specialist (2024–2025) · Online Business Manager
@@ -51,7 +56,9 @@ Support at TELUS International (2016–2018) · Customer Service at Teleperforma
 ## Stack
 
 Claude API, LLM orchestration, prompt architecture, AI coding agents, GoHighLevel,
-HubSpot, n8n, Make, Zapier, Python, JavaScript, REST APIs, webhooks, HTML/CSS.
+HubSpot, n8n, Make, Zapier, Python, TypeScript, JavaScript, React, Next.js,
+Tailwind, Node, Fastify, Postgres, Prisma, Drizzle, Redis, BullMQ, Vercel,
+Railway, Docker, REST APIs, webhooks, HTML/CSS.
 
 ## Teaching
 

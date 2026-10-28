@@ -28,6 +28,13 @@ BUILT
                              and wrote the cue-evaluation harness gating
                              coaching output. 80 of 285 commits, Apr-Aug 2026.
 
+  Internal HR platform ..... Client project (NDA). Staff-facing internal
+                             tool: assessment, onboarding, training paths,
+                             admin dashboards, role-based admin access,
+                             audit logs, AI evaluation. Next.js, Prisma,
+                             Tailwind. Lead contributor: 97 of 158 commits,
+                             Jan-Aug 2026.
+
   Scale With System CRM .... accounts.scalewithsystem.com
                              White-labelled sales & marketing platform for
                              the PH market. CRM, funnels, scheduling, course
@@ -52,10 +59,10 @@ STACK
   ai          Claude API · LLM orchestration · prompt architecture ·
               model behaviour control · output evaluation · AI coding agents
   automation  GoHighLevel · HubSpot · n8n · Make · Zapier
-  build       Python · TypeScript · JavaScript · Fastify · Next.js ·
-              Node · REST APIs · webhooks
-  data        Postgres · Drizzle · Redis · BullMQ
-  infra       Docker · Railway · Cloudflare R2 · Playwright
+  build       Python · TypeScript · JavaScript · React · Next.js ·
+              Tailwind · Node · Fastify · REST APIs · webhooks
+  data        Postgres · Prisma · Drizzle · Redis · BullMQ
+  infra       Vercel · Railway · Docker · Cloudflare R2 · Playwright
 
 
 TEACHING

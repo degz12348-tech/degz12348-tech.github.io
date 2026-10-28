@@ -172,6 +172,11 @@
       "keywords": ["Claude API", "TypeScript", "Prompt architecture", "LLM evaluation", "Fastify", "Next.js", "BullMQ", "Drizzle"]
     },
     {
+      "name": "Internal HR & training platform (client project, NDA)",
+      "description": "Staff-facing internal tool: candidate assessment, employee onboarding, training programs and learning paths, admin dashboards, role-based admin access, invitations, audit logs and AI-assisted evaluation. Lead contributor — training-program features, access and progress rules, QA hardening, automated AI-provider checks. 97 of 158 commits (Jan–Aug 2026), the largest single share.",
+      "keywords": ["Next.js", "TypeScript", "Prisma", "Tailwind", "Role-based access", "Internal tools"]
+    },
+    {
       "name": "Scale With System CRM",
       "description": "White-labelled all-in-one sales and marketing platform for the Philippine market: CRM and pipeline, appointment scheduling, drag-and-drop funnel builder, membership/course portal, unified messaging, and local payment integration. Two commercial pricing tiers.",
       "keywords": ["GoHighLevel", "SaaS", "CRM", "Payments"],
@@ -186,7 +191,7 @@
   "skills": [
     { "name": "AI", "keywords": ["Claude API", "LLM integration & orchestration", "Prompt architecture", "Model behaviour control", "Output evaluation", "AI coding agents"] },
     { "name": "Automation & CRM", "keywords": ["GoHighLevel", "HubSpot", "n8n", "Make", "Zapier", "AI-driven CRM systems"] },
-    { "name": "Build", "keywords": ["Python", "JavaScript", "REST APIs", "Webhooks", "Backend logic design", "HTML/CSS"] },
+    { "name": "Build", "keywords": ["Python", "TypeScript", "JavaScript", "React", "Next.js", "Tailwind", "Node", "Prisma", "Vercel", "REST APIs", "Webhooks", "Backend logic design", "HTML/CSS"] },
     { "name": "Adjacent", "keywords": ["SaaS operations", "Email marketing", "Funnel design", "Project management", "Technical support"] }
   ],
   "certificates": [
