@@ -71,8 +71,6 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
   margin:0;
   background-color:var(--bg-0);
-  background-image:radial-gradient(circle,rgba(0,255,65,.105) .75px,transparent .9px);
-  background-size:18px 18px;background-attachment:fixed;
   color:var(--fg);
   font-family:var(--font-sans);
   font-size:16.5px;
@@ -149,10 +147,7 @@ a{color:inherit}
 /* ---------- page-wide ambient code, behind every section ----------
    The hero has its own denser #codefall. This one is viewport-fixed and
    runs at roughly half strength so the hero still reads as the showpiece. */
-#codefield{
-  position:fixed;inset:0;width:100%;height:100%;
-  z-index:0;pointer-events:none;opacity:.62;
-}
+#codefield{display:none}
 /* Skip it on phones (scroll cost) and whenever motion is unwelcome. */
 @media(max-width:720px){#codefield{display:none}}
 @media(prefers-reduced-motion:reduce){#codefield{display:none}}
@@ -325,7 +320,7 @@ p{margin:0 0 16px}
 }
 #codefall{
   position:absolute;inset:0;width:100%;height:100%;
-  z-index:0;pointer-events:none;opacity:.55;
+  z-index:0;pointer-events:none;opacity:.28;
   transform:translate3d(0,var(--code-parallax),0) scale(1.025);
   transform-origin:center;will-change:transform;
 }
@@ -413,7 +408,7 @@ p{margin:0 0 16px}
 .spot.on{opacity:1}
 /* Twin of .spot for everything below the hero. Sits at z-index 0 — behind main —
    so it lights the page-wide code field without washing over body copy. */
-.spot-page{z-index:0}
+.spot-page{z-index:0;display:none}
 @media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){.spot{display:none}}
 
 .stage-inner{position:relative;z-index:3;width:100%;padding-top:clamp(40px,7vw,64px);padding-bottom:clamp(40px,7vw,64px);transform:translate3d(0,var(--copy-parallax),0);will-change:transform}
@@ -697,52 +692,28 @@ html.lenis,html.lenis body{height:auto}
 
 /* WebGL particle "system" behind every section below the hero */
 #system3d{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0}
-.has3d #codefield{opacity:.3}
 
 /* scroll progress, top edge */
 .scroll-line{position:fixed;top:0;left:0;right:0;height:2px;z-index:95;pointer-events:none;
   transform-origin:0 50%;transform:scaleX(0);
   background:linear-gradient(90deg,var(--accent-deep),var(--accent));box-shadow:0 0 12px rgba(0,255,65,.7)}
 
-/* section HUD, bottom-left */
-.hud{position:fixed;right:18px;bottom:18px;z-index:70;display:flex;align-items:center;gap:11px;
-  font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-dim);
-  padding:8px 12px;border:1px solid var(--line-soft);border-radius:4px;background:rgba(0,0,0,.6);
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-  opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease),transform .4s var(--ease);pointer-events:none}
-.hud.on{opacity:1;transform:none}
-.hud b{color:var(--accent);font-weight:400}
-.hud-s{color:var(--fg);min-width:9ch}
-.hud-bar{width:64px;height:2px;background:rgba(0,255,65,.15);position:relative;overflow:hidden}
-.hud-bar i{position:absolute;inset:0;background:var(--accent);transform-origin:0 50%;transform:scaleX(0)}
-.hud-p{min-width:4ch;text-align:right;font-variant-numeric:tabular-nums}
-@media(max-width:720px){.hud{display:none}}
-
-/* cursor ring (fine pointers only) */
-.cursor{position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;z-index:9990;
-  border:1px solid rgba(0,255,65,.55);border-radius:50%;pointer-events:none;opacity:0;
-  transition:width .28s var(--ease),height .28s var(--ease),margin .28s var(--ease),background-color .28s,border-color .28s}
-.cursor::after{content:"";position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
-.cursor.hover{width:66px;height:66px;margin:-33px 0 0 -33px;background-color:rgba(0,255,65,.07);border-color:var(--accent)}
-.cursor.hover::after{opacity:0}
-@media(hover:none),(pointer:coarse){.cursor{display:none}}
-
 /* word-split headings */
 .split-w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
 .split-i{display:inline-block}
 
 /* pointer glare on tilting cards */
-.offer::after,.proj::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+.offer::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
   transition:opacity .35s var(--ease);
   background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(0,255,65,.11),transparent 46%)}
-.offer:hover::after,.proj:hover::after{opacity:1}
+.offer:hover::after{opacity:1}
 
 /* full-bleed outline marquee words that slide with scroll */
 .bigline{position:relative;width:100vw;margin:0 0 clamp(36px,5vw,56px) calc(50% - 50vw);overflow:hidden;pointer-events:none;user-select:none}
 .bigline span{display:block;white-space:nowrap;
   font-family:var(--font-display);font-weight:700;font-size:clamp(3.4rem,11vw,9.5rem);line-height:.95;letter-spacing:-.04em;
-  color:transparent;-webkit-text-stroke:1px rgba(0,255,65,.34);will-change:transform}
-.bigline span em{font-style:normal;color:rgba(0,255,65,.1);-webkit-text-stroke:1px rgba(0,255,65,.6)}
+  color:transparent;-webkit-text-stroke:1px rgba(0,255,65,.18);will-change:transform}
+.bigline span em{font-style:normal;color:transparent;-webkit-text-stroke:1px rgba(0,255,65,.4)}
 </style>
 </head>
 <body>
@@ -1489,7 +1460,7 @@ document.getElementById('yr').textContent = new Date().getFullYear();
   function frame(){
     if (!running) return;
     ctx.clearRect(0,0,w,h);
-    var amount = w < 700 ? 5 : 12;
+    var amount = w < 700 ? 3 : 6;
     for(var n=0;n<amount;n++) if(particles.length<450) spawn();
     for(var i=particles.length-1;i>=0;i--){
       var p=particles[i]; p.age++; p.x+=p.vx; p.y+=p.vy;
@@ -1757,8 +1728,6 @@ document.getElementById('yr').textContent = new Date().getFullYear();
   makeCodeField(document.getElementById('codefall'),
                 {maxAlpha:0.30, density:1, gateOnScreen:true});
   /* page-wide — about half the weight, so body copy stays readable */
-  makeCodeField(document.getElementById('codefield'),
-                {maxAlpha:0.17, density:0.6, gateOnScreen:false});
 })();
 (function(){
   var els = document.querySelectorAll('.rv');
@@ -1882,8 +1851,6 @@ document.getElementById('yr').textContent = new Date().getFullYear();
       scrollTrigger:{trigger:wrap, start:'top bottom', end:'bottom top', scrub:.6}});
   }
   bigline('hire', 'Build <em>·</em> Evaluate <em>·</em> Automate <em>·</em> Ship <em>·</em> Build', 1);
-  bigline('work', 'Selected <em>builds</em> // shipped <em>to</em> production', -1);
-  bigline('contact', 'Let’s <em>build</em> the system <em>·</em> together', 1);
 
   /* ---------- section headings ---------- */
   gsap.utils.toArray('main > section:not(.stage) h2').forEach(function(h){
@@ -1919,32 +1886,15 @@ document.getElementById('yr').textContent = new Date().getFullYear();
         var o = {n:0};
         gsap.to(o, {n:end, duration:1.8, ease:'power3.out', delay:.15,
           onUpdate:function(){ v.textContent = m[1] + Math.round(o.n) + m[3]; }});
-      } else if (v){ scramble(v, 900); }
+      }
     }});
   });
 
-  /* ---------- scroll progress + section HUD ---------- */
+  /* ---------- scroll progress line ---------- */
   var line = document.createElement('div');
   line.className = 'scroll-line'; line.setAttribute('aria-hidden', 'true');
-  var hud = document.createElement('div');
-  hud.className = 'hud'; hud.setAttribute('aria-hidden', 'true');
-  hud.innerHTML = '<b class="hud-n">00</b><span class="hud-s">top</span><span class="hud-bar"><i></i></span><span class="hud-p">0%</span>';
-  document.body.appendChild(line); document.body.appendChild(hud);
-  var hn = hud.querySelector('.hud-n'), hs = hud.querySelector('.hud-s'),
-      hb = hud.querySelector('.hud-bar i'), hp = hud.querySelector('.hud-p');
-  ScrollTrigger.create({start:0, end:'max', onUpdate:function(s){
-    gsap.set([line, hb], {scaleX:s.progress});
-    hp.textContent = Math.round(s.progress * 100) + '%';
-    hud.classList.toggle('on', s.scroll() > innerHeight * .55);
-  }});
-  gsap.utils.toArray('main > section[id]:not(.stage)').forEach(function(sec){
-    var k = sec.querySelector('.kicker');
-    if (!k) return;
-    var num = (k.querySelector('s') || {}).textContent || '', name = (k.querySelector('b') || {}).textContent || '';
-    ScrollTrigger.create({trigger:sec, start:'top 55%', end:'bottom 55%', onToggle:function(s){
-      if (s.isActive){ hn.textContent = num; hs.textContent = name; }
-    }});
-  });
+  document.body.appendChild(line);
+  ScrollTrigger.create({start:0, end:'max', onUpdate:function(s){ gsap.set(line, {scaleX:s.progress}); }});
 
   if (!fine) return;
 
@@ -1962,8 +1912,7 @@ document.getElementById('yr').textContent = new Date().getFullYear();
       });
     });
   }
-  tilt('.offer', 11);
-  tilt('.proj', 2.5);
+  tilt('.offer', 6);
 
   /* ---------- magnetic buttons ---------- */
   document.querySelectorAll('.pill, .navcta, .agentpill, .rail-btn, .surfaces a').forEach(function(b){
@@ -1976,20 +1925,6 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     });
   });
 
-  /* ---------- cursor ring ---------- */
-  var cur = document.createElement('div');
-  cur.className = 'cursor'; cur.setAttribute('aria-hidden', 'true');
-  document.body.appendChild(cur);
-  var qx = gsap.quickTo(cur, 'x', {duration:.35, ease:'power3'}),
-      qy = gsap.quickTo(cur, 'y', {duration:.35, ease:'power3'}), shown = false;
-  addEventListener('pointermove', function(e){
-    qx(e.clientX); qy(e.clientY);
-    if (!shown){ shown = true; cur.style.opacity = 1; }
-  }, {passive:true});
-  document.addEventListener('mouseleave', function(){ shown = false; cur.style.opacity = 0; });
-  document.addEventListener('pointerover', function(e){
-    cur.classList.toggle('hover', !!(e.target.closest && e.target.closest('a, button, summary, .offer')));
-  });
 })();
 </script>
 
@@ -2017,7 +1952,7 @@ async function boot3d(){
   document.documentElement.classList.add('has3d');
 
   const small = innerWidth < 720;
-  const N = small ? 1400 : 2800;
+  const N = small ? 900 : 1700;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, 1, .1, 50);
   camera.position.z = 6.4;
@@ -2059,15 +1994,15 @@ async function boot3d(){
   geo.setAttribute('aRnd', new THREE.BufferAttribute(rnd, 1));
   const mat = new THREE.ShaderMaterial({
     transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
-    uniforms:{uTime:{value:0}, uSize:{value:small ? 8 : 9.5}, uPR:{value:1}, uOpacity:{value:.62}},
+    uniforms:{uTime:{value:0}, uSize:{value:small ? 6.5 : 7.5}, uPR:{value:1}, uOpacity:{value:.5}},
     vertexShader:`
       attribute float aRnd; uniform float uTime, uSize, uPR; varying float vA; varying float vHot;
       void main(){
-        vec3 p = position + .035 * vec3(sin(uTime*.7 + aRnd*40.), cos(uTime*.6 + aRnd*30.), sin(uTime*.5 + aRnd*20.));
+        vec3 p = position + .02 * vec3(sin(uTime*.7 + aRnd*40.), cos(uTime*.6 + aRnd*30.), sin(uTime*.5 + aRnd*20.));
         vec4 mv = modelViewMatrix * vec4(p, 1.);
         gl_Position = projectionMatrix * mv;
-        vA = (.5 + .5 * sin(uTime * 1.7 + aRnd * 60.)) * smoothstep(11., 4.5, -mv.z);
-        vHot = step(.94, aRnd);
+        vA = (.85 + .15 * sin(uTime * .9 + aRnd * 60.)) * smoothstep(11., 4.5, -mv.z);
+        vHot = step(.985, aRnd);
         gl_PointSize = uSize * uPR * (.45 + aRnd * .8) * (6. / -mv.z);
       }`,
     fragmentShader:`
@@ -2107,7 +2042,7 @@ async function boot3d(){
     renderer.setPixelRatio(pr); renderer.setSize(w, h, false);
     mat.uniforms.uPR.value = pr;
     camera.aspect = w / h; camera.updateProjectionMatrix();
-    group.position.x = w > 1100 ? 1.35 : 0;
+    group.position.x = w > 1100 ? 1.9 : 0;
     measure();
   }
   addEventListener('resize', resize, {passive:true});
@@ -2148,8 +2083,8 @@ async function boot3d(){
     }
 
     rmx += (mx - rmx) * .05; rmy += (my - rmy) * .05;
-    group.rotation.y = t * .07 + rmx * .55 + idx * .6;
-    group.rotation.x = rmy * .3;
+    group.rotation.y = t * .04 + rmx * .35 + idx * .6;
+    group.rotation.x = rmy * .18;
     camera.position.z = 6.4 - Math.sin(idx * 1.4) * .45;
 
     if (shown > .004) renderer.render(scene, camera);
