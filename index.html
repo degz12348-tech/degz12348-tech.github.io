@@ -1881,7 +1881,7 @@ function laptopIn(w, h){
   setTimeout(play, 3400);
 
   /* hero copy recedes as you scroll away from it */
-  gsap.to('.hero', {opacity:.1, scale:.955, transformOrigin:'0% 50%', ease:'none',
+  gsap.to('.hero', {opacity:.3, ease:'none',
     scrollTrigger:{trigger:'#top', start:'top top', end:'bottom 15%', scrub:true}});
 
   /* ---------- giant outline words that slide with scroll ---------- */
@@ -2000,6 +2000,10 @@ function laptopIn(w, h){
   var gBr = el('g', null, svg), gNodes = el('g', null, svg), gPk = el('g', null, svg);
   var headGlow = el('circle', 'sp-headglow', svg), head = el('circle', 'sp-head', svg);
   headGlow.setAttribute('r', 9); head.setAttribute('r', 3);
+  /* a small port where the trace leaves the laptop, so the start reads as intentional */
+  var port = el('g', 'sp-node sp-port', svg);
+  el('circle', 'ring', port).setAttribute('r', 7);
+  el('circle', 'core', port).setAttribute('r', 3.2);
 
   /* kicker tags */
   var stages = [];
@@ -2023,6 +2027,7 @@ function laptopIn(w, h){
 
   var LUTx = [], LUTy = [], total = 0, step = 6, mainDocTop = 0, sx = 0;
   var nodes = [], branches = [], gateS = 0, cur = 0, built = false;
+  var entryLen = 0, s0 = 0, s1 = 1;
 
   function sAtY(y){
     for (var i = 0; i < LUTy.length; i++) if (LUTy[i] >= y) return i * step;
@@ -2043,15 +2048,23 @@ function laptopIn(w, h){
 
     /* origin: the laptop in the portrait */
     var fr = fig.getBoundingClientRect(), lp = laptopIn(fr.width, fr.height);
-    var ox = fr.left - mr.left + lp.x, oy = fr.top - mr.top + lp.y;
+    var ox = fr.left - mr.left + lp.x, oy = fr.top - mr.top + lp.y + 30;
     var stage = document.getElementById('top'), y0 = stage.offsetTop + stage.offsetHeight;
 
     var last = stages[stages.length - 1];
     var endY = rel(last.kicker).y + last.kicker.offsetHeight / 2;
-    var d = 'M' + ox.toFixed(1) + ' ' + oy.toFixed(1) +
-            ' C' + ox.toFixed(1) + ' ' + (y0 + 10).toFixed(1) + ' ' + sx + ' ' + (y0 - 60).toFixed(1) + ' ' + sx + ' ' + (y0 + 40).toFixed(1) +
-            ' L' + sx + ' ' + endY.toFixed(1);
+    /* circuit-trace route: down out of the laptop, one rounded corner,
+       a straight run along the hero's bottom edge, a second corner, then
+       straight down the gutter */
+    var r = 26, yH = y0 + 26;
+    ox = Math.max(ox, sx + 2 * r + 20);
+    var f = function(n){ return n.toFixed(1); };
+    var d = 'M' + f(ox) + ' ' + f(oy) +
+            ' V' + f(yH - r) + ' Q' + f(ox) + ' ' + f(yH) + ' ' + f(ox - r) + ' ' + f(yH) +
+            ' H' + f(sx + r) + ' Q' + f(sx) + ' ' + f(yH) + ' ' + f(sx) + ' ' + f(yH + r) +
+            ' V' + f(endY);
     [track, halo, live].forEach(function(p){ p.setAttribute('d', d); });
+    port.setAttribute('transform', 'translate(' + f(ox) + ' ' + f(oy) + ')');
 
     total = live.getTotalLength();
     LUTx = []; LUTy = [];
@@ -2059,6 +2072,17 @@ function laptopIn(w, h){
       var pt = live.getPointAtLength(s); LUTx.push(pt.x); LUTy.push(pt.y);
     }
     [live, halo].forEach(function(p){ p.style.strokeDasharray = total + ' ' + total; });
+
+    /* The entry (laptop -> gutter) is paced by scroll distance, not by y,
+       so the flat run draws evenly instead of snapping across at once.
+       It finishes exactly when the gutter line takes over. */
+    entryLen = total;
+    for (var e = 0; e < LUTx.length; e++){
+      if (LUTx[e] <= sx + .5 && LUTy[e] >= yH + r - .5){ entryLen = e * step; break; }
+    }
+    var lead = innerHeight * .62;
+    s0 = Math.max(0, oy + mainDocTop - lead - 40);
+    s1 = Math.max(s0 + 260, yH + r + mainDocTop - lead);
 
     /* stage nodes + short connectors into each kicker */
     gNodes.textContent = ''; gBr.textContent = ''; nodes = []; branches = [];
@@ -2094,7 +2118,7 @@ function laptopIn(w, h){
   function packet(s){
     var c = el('circle', 'sp-pk', gPk);
     c.setAttribute('r', 2.4);
-    return {s:s, c:c, rej:Math.random() < .22, off:0};
+    return {s:s, c:c, rej:Math.random() < .22, off:0, age:0};
   }
   if (!still) for (var i = 0; i < 9; i++) packets.push(packet(-i * 140));
 
@@ -2107,6 +2131,7 @@ function laptopIn(w, h){
     var drawn = Math.max(0, Math.min(total, cur));
     var off = (total - drawn).toFixed(1);
     live.style.strokeDashoffset = off; halo.style.strokeDashoffset = off;
+    port.classList.toggle('on', drawn > 1);
     var on = drawn > 2 && drawn < total - 2;
     head.style.display = headGlow.style.display = on ? '' : 'none';
     if (on){
@@ -2133,18 +2158,23 @@ function laptopIn(w, h){
         k.c.setAttribute('class', 'sp-pk rej');
         k.c.setAttribute('cx', g[0] - k.off); k.c.setAttribute('cy', g[1] + k.off * .55);
         k.c.style.opacity = a;
-        if (a <= 0){ k.s = 0; k.off = 0; k.rej = Math.random() < .22; k.c.setAttribute('class', 'sp-pk'); }
+        if (a <= 0){ k.s = 0; k.off = 0; k.age = 0; k.rej = Math.random() < .22; k.c.setAttribute('class', 'sp-pk'); }
         return;
       }
       /* recycle into the stretch of line you can actually see */
       var win = innerHeight * 1.3;
-      if (k.s > drawn || k.s < drawn - win - 400){ k.s = Math.max(0, drawn - win) - Math.random() * 260; k.rej = Math.random() < .22; }
-      if (k.s < 0 || drawn < 20){ k.c.style.opacity = 0; return; }
+      k.age += dt;
+      if (k.s > drawn || k.s < drawn - win - 400){
+        var lo = Math.max(entryLen, drawn - win);
+        k.s = lo + Math.random() * Math.max(0, drawn - lo) * .8; k.rej = Math.random() < .22; k.age = 0;
+      }
+      /* packets only ride the gutter line, never the entry trace */
+      if (k.s < entryLen || drawn < entryLen + 20){ k.c.style.opacity = 0; return; }
       var p = pt(k.s), fresh = gateLit && k.s > gateS && k.s < gateS + 40;
       k.c.setAttribute('cx', p[0]); k.c.setAttribute('cy', p[1]);
       k.c.setAttribute('r', fresh ? 3.8 : 2.8);
       k.c.style.fill = fresh ? '#ffffff' : '';
-      k.c.style.opacity = Math.min(1, (drawn - k.s) / 60);
+      k.c.style.opacity = Math.min(1, (drawn - k.s) / 60, (k.s - entryLen) / 80, k.age / 450);
     });
   }
 
@@ -2153,8 +2183,14 @@ function laptopIn(w, h){
     if (!running) return;
     var dt = Math.min(50, t - (last || t)); last = t;
     if (built){
-      var target = sAtY(scrollY - mainDocTop + innerHeight * .62);
-      cur += (target - cur) * .12;
+      var y = scrollY, target;
+      if (y <= s1){
+        var t = Math.max(0, Math.min(1, (y - s0) / (s1 - s0)));
+        target = entryLen * t;
+      } else {
+        target = Math.max(entryLen, sAtY(y - mainDocTop + innerHeight * .62));
+      }
+      cur += (target - cur) * .1;
       paint(dt);
     }
     raf = requestAnimationFrame(frame);
