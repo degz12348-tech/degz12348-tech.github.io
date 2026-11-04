@@ -362,8 +362,8 @@ p{margin:0 0 16px}
   pointer-events:none;
   /* flung off with the streaks as the page scrolls; individual transform
      properties so they don't fight the keyframes */
-  translate:calc(var(--scatter,0) * 55%) calc(var(--scatter,0) * -30%);
-  scale:calc(1 + var(--scatter,0) * .6) calc(1 - var(--scatter,0) * .85);
+  translate:0 calc(var(--scatter,0) * 40%);
+  scale:calc(1 - var(--scatter,0) * .6) calc(1 - var(--scatter,0) * .85);
   filter:opacity(calc(1 - var(--scatter,0)));
 }
 @keyframes sweep{
@@ -695,13 +695,35 @@ html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-stopped{overflow:hidden}
 
-/* WebGL particle "system" behind every section below the hero */
-#system3d{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0}
-
 /* scroll progress, top edge */
 .scroll-line{position:fixed;top:0;left:0;right:0;height:2px;z-index:95;pointer-events:none;
   transform-origin:0 50%;transform:scaleX(0);
   background:linear-gradient(90deg,var(--accent-deep),var(--accent));box-shadow:0 0 12px rgba(0,255,65,.7)}
+
+/* ---------- pipeline spine ----------
+   One circuit line from the laptop in the portrait down the left gutter.
+   Each section is a stage; packets flow through; Proof is the eval gate. */
+.spine{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:0;overflow:visible}
+.sp-track{fill:none;stroke:rgba(0,255,65,.09);stroke-width:1}
+.sp-halo{fill:none;stroke:rgba(0,255,65,.13);stroke-width:7;stroke-linecap:round}
+.sp-live{fill:none;stroke:var(--accent);stroke-width:1.4;stroke-linecap:round}
+.sp-branch{fill:none;stroke:rgba(0,255,65,.12);stroke-width:1;transition:stroke .5s var(--ease)}
+.sp-branch.on{stroke:rgba(0,255,65,.75)}
+.sp-node .core{fill:#000;stroke:rgba(0,255,65,.35);stroke-width:1.2;transition:fill .45s var(--ease),stroke .45s var(--ease)}
+.sp-node.on .core{fill:var(--accent);stroke:var(--accent)}
+.sp-node .ring{fill:none;stroke:var(--accent);stroke-width:1;opacity:0;transform-box:fill-box;transform-origin:center}
+.sp-node.on .ring{animation:spring 1.3s var(--ease) 1}
+@keyframes spring{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(2.4)}}
+.sp-head{fill:#eafff0}
+.sp-headglow{fill:rgba(0,255,65,.22)}
+.sp-pk{fill:#e6ffec;filter:drop-shadow(0 0 4px rgba(0,255,65,.9))}
+.sp-pk.rej{fill:#ffb020;filter:drop-shadow(0 0 4px rgba(255,176,32,.9))}
+
+/* stage tags appended to each kicker, lit when the line reaches them */
+.stage-tag{font-style:normal;color:var(--fg-dim);opacity:.35;transition:opacity .5s var(--ease),color .5s var(--ease)}
+.stage-tag.on{opacity:1;color:var(--accent-soft)}
+.proj{transition:border-color .5s var(--ease),box-shadow .5s var(--ease)}
+.proj.linked{border-color:rgba(0,255,65,.3);box-shadow:inset 2px 0 0 0 rgba(0,255,65,.75)}
 
 /* word-split headings */
 .split-w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
@@ -1437,15 +1459,23 @@ document.getElementById('yr').textContent = new Date().getFullYear();
   new ResizeObserver(resize).observe(cv);resize();
 })();
 
+/* Where the laptop sits inside the portrait, for a box drawn with
+   object-fit:contain + right alignment. The pipeline spine starts here. */
+function laptopIn(w, h){
+  var s = Math.min(w / 1672, h / 941);
+  return {x: w - 1672 * s + .58 * 1672 * s, y: (h - 941 * s) / 2 + .86 * 941 * s};
+}
+
 /* ---------- live point-cloud ghost ---------- */
 (function(){
   var cv = document.getElementById('ghostfx');
   if (!cv || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   var ctx = cv.getContext('2d'), w = 0, h = 0, dpr = Math.min(devicePixelRatio || 1, 2);
   var particles = [], raf = 0, running = false, onscreen = true;
-  /* Scroll scatter: 0 with the page at the top, 1 once the hero is mostly gone.
-     Streaks get flung off the portrait as it rises and fly back in on the way up. */
-  var stage = document.getElementById('top'), stageH = 1, sc = 0;
+  /* Scroll absorb: 0 with the page at the top, 1 once the hero is mostly gone.
+     Streaks get pulled into the laptop (where the pipeline line starts) as you
+     scroll down, and stream back out over the portrait on the way up. */
+  var stage = document.getElementById('top'), stageH = 1, sc = 0, lap = {x:0, y:0};
 
   function resize(){
     w = cv.clientWidth; h = cv.clientHeight;
@@ -1454,12 +1484,11 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     ctx.setTransform(dpr,0,0,dpr,0,0);
     particles = [];
     stageH = stage ? stage.offsetHeight : innerHeight;
+    lap = laptopIn(w, h);
   }
   function spawn(){
     var shoulder = Math.random() < .58;
-    var ang = -1.05 + Math.random() * 1.25, dist = (.45 + Math.random() * .75) * Math.max(w, 600);
     particles.push({
-      sdx:Math.cos(ang) * dist, sdy:Math.sin(ang) * dist,
       x:w * (shoulder ? (.68 + Math.random()*.25) : (.58 + Math.random()*.24)),
       y:h * (shoulder ? (.16 + Math.random()*.58) : (.63 + Math.random()*.25)),
       vx:.65 + Math.random()*2.15, vy:(Math.random()-.5)*.34,
@@ -1471,10 +1500,10 @@ document.getElementById('yr').textContent = new Date().getFullYear();
   function frame(){
     if (!running) return;
     ctx.clearRect(0,0,w,h);
-    var want = Math.max(0, Math.min(1, scrollY / (stageH * 1.05)));
+    var want = Math.max(0, Math.min(1, scrollY / (stageH * .8)));
     sc += (want - sc) * .09;
     if (stage) stage.style.setProperty('--scatter', sc.toFixed(3));
-    var push = 1 - (1 - sc) * (1 - sc), fade = Math.pow(1 - sc, 1.6), stretch = 1 + sc * 2.4;
+    var push = 1 - (1 - sc) * (1 - sc), fade = Math.pow(1 - sc, 1.3), stretch = 1 - sc * .8;
     var amount = (w < 700 ? 3 : 6) * (1 - sc);
     for(var n=0;n<amount;n++) if(particles.length<450 && (n + 1 <= amount || Math.random() < amount - n)) spawn();
     for(var i=particles.length-1;i>=0;i--){
@@ -1482,7 +1511,7 @@ document.getElementById('yr').textContent = new Date().getFullYear();
       if(p.age>=p.life){particles.splice(i,1);continue}
       var a=Math.sin(Math.PI*p.age/p.life)*(.34+Math.random()*.52)*fade;
       if(a<.004)continue;
-      var x=p.x+p.sdx*push, y=p.y+p.sdy*push;
+      var x=p.x+(lap.x-p.x)*push, y=p.y+(lap.y-p.y)*push;
       ctx.fillStyle='rgba(0,255,65,'+a.toFixed(3)+')';
       if(p.streak) ctx.fillRect(x,y,(18+p.size*9)*stretch,Math.max(1.25,p.size*.52));
       else ctx.fillRect(x,y,p.size,p.size);
@@ -1945,176 +1974,206 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 })();
 </script>
 
-<!-- 3D system field: a WebGL point cloud that morphs shape section by section -->
-<script type="module">
-if (!matchMedia('(prefers-reduced-motion:reduce)').matches){
-  const start = () => setTimeout(boot3d, 250);
-  if (document.readyState === 'complete') start(); else addEventListener('load', start, {once:true});
-}
+<!-- ==================== PIPELINE SPINE ==================== -->
+<script>
+(function(){
+  var main = document.getElementById('main'), fig = document.querySelector('.figure');
+  if (!main || !fig || !window.ResizeObserver) return;
+  var still = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var NS = 'http://www.w3.org/2000/svg';
 
-async function boot3d(){
-  let THREE;
-  try { THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js'); }
-  catch (e) { return; }
+  /* stage names: what each section is, as a step in a pipeline */
+  var STAGES = {hire:'input', proof:'eval gate', work:'deploy', history:'context', stack:'toolchain',
+                teaching:'enablement', clients:'feedback', faq:'docs', agents:'api', contact:'output → you'};
+  var GATE = 'proof', OUT = 'contact';
 
-  const canvas = document.createElement('canvas');
-  canvas.id = 'system3d';
-  canvas.setAttribute('aria-hidden', 'true');
-  const field = document.getElementById('codefield');
-  document.body.insertBefore(canvas, field ? field.nextSibling : document.body.firstChild);
+  function el(tag, cls, parent){
+    var e = document.createElementNS(NS, tag);
+    if (cls) e.setAttribute('class', cls);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  var svg = el('svg', 'spine');
+  svg.setAttribute('aria-hidden', 'true');
+  main.insertBefore(svg, main.firstChild);
+  var track = el('path', 'sp-track', svg), halo = el('path', 'sp-halo', svg), live = el('path', 'sp-live', svg);
+  var gBr = el('g', null, svg), gNodes = el('g', null, svg), gPk = el('g', null, svg);
+  var headGlow = el('circle', 'sp-headglow', svg), head = el('circle', 'sp-head', svg);
+  headGlow.setAttribute('r', 9); head.setAttribute('r', 3);
 
-  let renderer;
-  try { renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:false, powerPreference:'low-power'}); }
-  catch (e) { canvas.remove(); return; }
-  document.documentElement.classList.add('has3d');
-
-  const small = innerWidth < 720;
-  const N = small ? 900 : 1700;
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, 1, .1, 50);
-  camera.position.z = 6.4;
-  const group = new THREE.Group();
-  scene.add(group);
-
-  /* ---- shape library: each returns N xyz points ---- */
-  const rnd = new Float32Array(N);
-  for (let i = 0; i < N; i++) rnd[i] = Math.random();
-  const rotX = (p, a) => { const c = Math.cos(a), s = Math.sin(a);
-    for (let i = 0; i < p.length; i += 3){ const y = p[i+1], z = p[i+2]; p[i+1] = y*c - z*s; p[i+2] = y*s + z*c; } return p; };
-
-  function sphere(){ const p = new Float32Array(N*3), g = Math.PI * (3 - Math.sqrt(5));
-    for (let i = 0; i < N; i++){ const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y*y), t = g * i, R = 2.15 + (rnd[i] - .5) * .12;
-      p.set([Math.cos(t) * r * R, y * R, Math.sin(t) * r * R], i*3); } return p; }
-  function wave(){ const p = new Float32Array(N*3), cols = Math.ceil(Math.sqrt(N * 1.8)), rows = Math.ceil(N / cols);
-    for (let i = 0; i < N; i++){ const x = ((i % cols) / (cols - 1) - .5) * 9, y = (Math.floor(i / cols) / (rows - 1) - .5) * 5;
-      p.set([x, y, Math.sin(x * 1.1) * Math.cos(y * 1.3) * .55], i*3); } return rotX(p, -1.05); }
-  function helix(){ const p = new Float32Array(N*3);
-    for (let i = 0; i < N; i++){ const u = (i / N), x = (u - .5) * 8.5, a = u * Math.PI * 9;
-      if (rnd[i] < .78){ const s = i % 2 ? Math.PI : 0; p.set([x, Math.cos(a + s) * 1.05, Math.sin(a + s) * 1.05], i*3); }
-      else { const k = (rnd[i] - .78) / .22 * 2 - 1; p.set([x, Math.cos(a) * 1.05 * k, Math.sin(a) * 1.05 * k], i*3); } }
-    return p; }
-  function torus(){ const p = new Float32Array(N*3);
-    for (let i = 0; i < N; i++){ const u = (i / N) * Math.PI * 2 * 1, v = ((i * 37) % N) / N * Math.PI * 2, R = 2.05, r = .62;
-      p.set([(R + r * Math.cos(v)) * Math.cos(u), (R + r * Math.cos(v)) * Math.sin(u), r * Math.sin(v)], i*3); }
-    return rotX(p, -1.15); }
-  function lattice(){ const p = new Float32Array(N*3), k = Math.ceil(Math.cbrt(N)), s = 3.1;
-    for (let i = 0; i < N; i++){ const x = i % k, y = Math.floor(i / k) % k, z = Math.floor(i / (k * k));
-      p.set([(x / (k - 1) - .5) * s, (y / (k - 1) - .5) * s, (z / (k - 1) - .5) * s], i*3); } return p; }
-  function galaxy(){ const p = new Float32Array(N*3);
-    for (let i = 0; i < N; i++){ const arm = i % 3, r = .15 + Math.pow(rnd[i], .7) * 3.1, a = r * 1.7 + arm * Math.PI * 2 / 3 + (Math.random() - .5) * .35;
-      p.set([Math.cos(a) * r, (Math.random() - .5) * .22 * (3.3 - r), Math.sin(a) * r], i*3); } return rotX(p, .95); }
-  const SHAPES = [sphere(), wave(), helix(), torus(), lattice(), galaxy()];
-
-  const pos = new Float32Array(SHAPES[0]);
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  geo.setAttribute('aRnd', new THREE.BufferAttribute(rnd, 1));
-  const mat = new THREE.ShaderMaterial({
-    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
-    uniforms:{uTime:{value:0}, uSize:{value:small ? 6.5 : 7.5}, uPR:{value:1}, uOpacity:{value:.5}},
-    vertexShader:`
-      attribute float aRnd; uniform float uTime, uSize, uPR; varying float vA; varying float vHot;
-      void main(){
-        vec3 p = position + .02 * vec3(sin(uTime*.7 + aRnd*40.), cos(uTime*.6 + aRnd*30.), sin(uTime*.5 + aRnd*20.));
-        vec4 mv = modelViewMatrix * vec4(p, 1.);
-        gl_Position = projectionMatrix * mv;
-        vA = (.85 + .15 * sin(uTime * .9 + aRnd * 60.)) * smoothstep(11., 4.5, -mv.z);
-        vHot = step(.985, aRnd);
-        gl_PointSize = uSize * uPR * (.45 + aRnd * .8) * (6. / -mv.z);
-      }`,
-    fragmentShader:`
-      uniform float uOpacity; varying float vA; varying float vHot;
-      void main(){
-        float d = length(gl_PointCoord - .5); if (d > .5) discard;
-        float a = smoothstep(.5, 0., d); a *= a;
-        vec3 c = mix(vec3(0., 1., .255), vec3(.85, 1., .88), vHot);
-        gl_FragColor = vec4(c, a * (.35 + .65 * vA) * uOpacity);
-      }`
+  /* kicker tags */
+  var stages = [];
+  Object.keys(STAGES).forEach(function(id){
+    var sec = document.getElementById(id), k = sec && sec.querySelector('.kicker');
+    if (!k) return;
+    var tag = document.createElement('i');
+    tag.className = 'stage-tag';
+    tag.textContent = '› ' + STAGES[id];
+    k.appendChild(tag);
+    stages.push({id:id, kicker:k, tag:tag});
   });
-  group.add(new THREE.Points(geo, mat));
+  var projs = [].slice.call(document.querySelectorAll('#work .proj'));
 
-  /* ---- scroll → shape index (float). Hero = sphere, then cycle per section ---- */
-  const sections = [...document.querySelectorAll('main > section')];
-  let anchors = [], heroH = 1;
-  function measure(){
-    const y = scrollY;
-    anchors = sections.map(s => s.getBoundingClientRect().top + y - innerHeight * .45);
-    heroH = sections[0] ? sections[0].offsetHeight : innerHeight;
+  /* offsets inside main, ignoring transforms (reveal tweens move things) */
+  function rel(node){
+    var x = 0, y = 0;
+    while (node && node !== main){ x += node.offsetLeft; y += node.offsetTop; node = node.offsetParent; }
+    return {x:x, y:y};
   }
-  function shapeAt(i){ return Math.max(0, i - 1) % SHAPES.length; }
-  function scrollIndex(){
-    const y = scrollY;
-    for (let i = 0; i < anchors.length - 1; i++){
-      if (y < anchors[i + 1]){
-        const t = Math.max(0, Math.min(1, (y - anchors[i]) / (anchors[i + 1] - anchors[i])));
-        return i + t;
-      }
+
+  var LUTx = [], LUTy = [], total = 0, step = 6, mainDocTop = 0, sx = 0;
+  var nodes = [], branches = [], gateS = 0, cur = 0, built = false;
+
+  function sAtY(y){
+    for (var i = 0; i < LUTy.length; i++) if (LUTy[i] >= y) return i * step;
+    return total;
+  }
+
+  function layout(){
+    var mr = main.getBoundingClientRect();
+    mainDocTop = mr.top + scrollY;
+    var W = main.clientWidth, H = main.scrollHeight;
+    svg.setAttribute('width', W); svg.setAttribute('height', H);
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.style.height = H + 'px';
+
+    var hire = document.getElementById('hire');
+    var contentLeft = rel(hire).x + parseFloat(getComputedStyle(hire).paddingLeft);
+    sx = Math.max(9, contentLeft - (innerWidth < 720 ? 11 : 34));
+
+    /* origin: the laptop in the portrait */
+    var fr = fig.getBoundingClientRect(), lp = laptopIn(fr.width, fr.height);
+    var ox = fr.left - mr.left + lp.x, oy = fr.top - mr.top + lp.y;
+    var stage = document.getElementById('top'), y0 = stage.offsetTop + stage.offsetHeight;
+
+    var last = stages[stages.length - 1];
+    var endY = rel(last.kicker).y + last.kicker.offsetHeight / 2;
+    var d = 'M' + ox.toFixed(1) + ' ' + oy.toFixed(1) +
+            ' C' + ox.toFixed(1) + ' ' + (y0 + 10).toFixed(1) + ' ' + sx + ' ' + (y0 - 60).toFixed(1) + ' ' + sx + ' ' + (y0 + 40).toFixed(1) +
+            ' L' + sx + ' ' + endY.toFixed(1);
+    [track, halo, live].forEach(function(p){ p.setAttribute('d', d); });
+
+    total = live.getTotalLength();
+    LUTx = []; LUTy = [];
+    for (var s = 0; s <= total; s += step){
+      var pt = live.getPointAtLength(s); LUTx.push(pt.x); LUTy.push(pt.y);
     }
-    return anchors.length - 1;
+    [live, halo].forEach(function(p){ p.style.strokeDasharray = total + ' ' + total; });
+
+    /* stage nodes + short connectors into each kicker */
+    gNodes.textContent = ''; gBr.textContent = ''; nodes = []; branches = [];
+    stages.forEach(function(st){
+      var k = rel(st.kicker), y = k.y + st.kicker.offsetHeight / 2;
+      var g = el('g', 'sp-node', gNodes);
+      g.setAttribute('transform', 'translate(' + sx + ' ' + y.toFixed(1) + ')');
+      el('circle', 'ring', g).setAttribute('r', 7);
+      var core;
+      if (st.id === GATE){ core = el('rect', 'core', g); core.setAttribute('x', -4.5); core.setAttribute('y', -4.5);
+        core.setAttribute('width', 9); core.setAttribute('height', 9); core.setAttribute('transform', 'rotate(45)'); }
+      else if (st.id === OUT){ core = el('path', 'core', g); core.setAttribute('d', 'M-5 -5 L6 0 L-5 5 Z'); }
+      else { core = el('circle', 'core', g); core.setAttribute('r', 4); }
+      var c = el('path', 'sp-branch', gBr);
+      c.setAttribute('d', 'M' + (sx + 7) + ' ' + y.toFixed(1) + ' H' + (k.x - 8).toFixed(1));
+      var s = sAtY(y);
+      nodes.push({s:s, g:g, tag:st.tag, conn:c});
+      if (st.id === GATE) gateS = s;
+    });
+    /* Work: the line branches into every project card */
+    projs.forEach(function(pj){
+      var r = rel(pj), y = r.y + 34;
+      var b = el('path', 'sp-branch', gBr);
+      b.setAttribute('d', 'M' + sx + ' ' + y.toFixed(1) + ' H' + (r.x - 1).toFixed(1));
+      branches.push({s:sAtY(y), path:b, card:pj});
+    });
+    built = true;
+    if (still){ cur = total; paint(0); }
   }
 
-  function resize(){
-    const w = innerWidth, h = innerHeight;
-    const pr = Math.min(devicePixelRatio || 1, small ? 1.5 : 1.75);
-    renderer.setPixelRatio(pr); renderer.setSize(w, h, false);
-    mat.uniforms.uPR.value = pr;
-    camera.aspect = w / h; camera.updateProjectionMatrix();
-    group.position.x = w > 1100 ? 1.9 : 0;
-    measure();
+  /* ---- packets ---- */
+  var packets = [];
+  function packet(s){
+    var c = el('circle', 'sp-pk', gPk);
+    c.setAttribute('r', 2.4);
+    return {s:s, c:c, rej:Math.random() < .22, off:0};
   }
-  addEventListener('resize', resize, {passive:true});
-  new ResizeObserver(measure).observe(document.querySelector('main'));
-  resize();
+  if (!still) for (var i = 0; i < 9; i++) packets.push(packet(-i * 140));
 
-  let mx = 0, my = 0, rmx = 0, rmy = 0;
-  addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; }, {passive:true});
+  function pt(s){
+    var i = Math.max(0, Math.min(LUTx.length - 1, Math.round(s / step)));
+    return [LUTx[i], LUTy[i]];
+  }
 
-  let shown = 0, idx = 0, lastKey = -1, running = false, raf = 0;
-  const clock = new THREE.Clock();
-  function frame(){
+  function paint(dt){
+    var drawn = Math.max(0, Math.min(total, cur));
+    var off = (total - drawn).toFixed(1);
+    live.style.strokeDashoffset = off; halo.style.strokeDashoffset = off;
+    var on = drawn > 2 && drawn < total - 2;
+    head.style.display = headGlow.style.display = on ? '' : 'none';
+    if (on){
+      var p = pt(drawn);
+      head.setAttribute('cx', p[0]); head.setAttribute('cy', p[1]);
+      headGlow.setAttribute('cx', p[0]); headGlow.setAttribute('cy', p[1]);
+    }
+    nodes.forEach(function(n){
+      var lit = drawn >= n.s - 2;
+      n.g.classList.toggle('on', lit); n.tag.classList.toggle('on', lit); n.conn.classList.toggle('on', lit);
+    });
+    branches.forEach(function(b){
+      var lit = drawn >= b.s - 2;
+      b.path.classList.toggle('on', lit); b.card.classList.toggle('linked', lit);
+    });
+
+    /* packets ride the lit part; past the gate a few get rejected and drop away */
+    var gateLit = drawn > gateS + 4;
+    packets.forEach(function(k){
+      k.s += dt * .26;
+      if (k.rej && gateLit && k.s >= gateS){
+        k.s = gateS; k.off += dt * .05;
+        var g = pt(gateS), a = Math.max(0, 1 - k.off / 46);
+        k.c.setAttribute('class', 'sp-pk rej');
+        k.c.setAttribute('cx', g[0] - k.off); k.c.setAttribute('cy', g[1] + k.off * .55);
+        k.c.style.opacity = a;
+        if (a <= 0){ k.s = 0; k.off = 0; k.rej = Math.random() < .22; k.c.setAttribute('class', 'sp-pk'); }
+        return;
+      }
+      /* recycle into the stretch of line you can actually see */
+      var win = innerHeight * 1.3;
+      if (k.s > drawn || k.s < drawn - win - 400){ k.s = Math.max(0, drawn - win) - Math.random() * 260; k.rej = Math.random() < .22; }
+      if (k.s < 0 || drawn < 20){ k.c.style.opacity = 0; return; }
+      var p = pt(k.s), fresh = gateLit && k.s > gateS && k.s < gateS + 40;
+      k.c.setAttribute('cx', p[0]); k.c.setAttribute('cy', p[1]);
+      k.c.setAttribute('r', fresh ? 3.8 : 2.8);
+      k.c.style.fill = fresh ? '#ffffff' : '';
+      k.c.style.opacity = Math.min(1, (drawn - k.s) / 60);
+    });
+  }
+
+  var last = 0, raf = 0, running = false;
+  function frame(t){
     if (!running) return;
-    const t = clock.getElapsedTime();
-    mat.uniforms.uTime.value = t;
-
-    /* fade in once the hero is mostly scrolled away */
-    const want = Math.max(0, Math.min(1, (scrollY - heroH * .35) / (heroH * .45)));
-    shown += (want - shown) * .08;
-    canvas.style.opacity = shown.toFixed(3);
-
-    const target = scrollIndex();
-    idx += (target - idx) * .07;
-    const i0 = Math.floor(idx), f = idx - i0;
-    const key = Math.round(idx * 1000);
-    if (key !== lastKey){
-      lastKey = key;
-      const A = SHAPES[shapeAt(i0)], B = SHAPES[shapeAt(i0 + 1)];
-      for (let i = 0; i < N; i++){
-        let m = Math.max(0, Math.min(1, f * 1.6 - rnd[i] * .6));
-        m = m * m * (3 - 2 * m);
-        const j = i * 3;
-        pos[j]   = A[j]   + (B[j]   - A[j])   * m;
-        pos[j+1] = A[j+1] + (B[j+1] - A[j+1]) * m;
-        pos[j+2] = A[j+2] + (B[j+2] - A[j+2]) * m;
-      }
-      geo.attributes.position.needsUpdate = true;
+    var dt = Math.min(50, t - (last || t)); last = t;
+    if (built){
+      var target = sAtY(scrollY - mainDocTop + innerHeight * .62);
+      cur += (target - cur) * .12;
+      paint(dt);
     }
-
-    rmx += (mx - rmx) * .05; rmy += (my - rmy) * .05;
-    group.rotation.y = t * .04 + rmx * .35 + idx * .6;
-    group.rotation.x = rmy * .18;
-    camera.position.z = 6.4 - Math.sin(idx * 1.4) * .45;
-
-    if (shown > .004) renderer.render(scene, camera);
     raf = requestAnimationFrame(frame);
   }
   function sync(){
-    const go = !document.hidden;
-    if (go && !running){ running = true; clock.start(); raf = requestAnimationFrame(frame); }
+    var go = !document.hidden && !still;
+    if (go && !running){ running = true; last = 0; raf = requestAnimationFrame(frame); }
     else if (!go && running){ running = false; cancelAnimationFrame(raf); }
   }
+
+  var pending = 0;
+  function relayout(){ cancelAnimationFrame(pending); pending = requestAnimationFrame(layout); }
+  new ResizeObserver(relayout).observe(main);
+  addEventListener('resize', relayout, {passive:true});
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+  addEventListener('load', relayout, {once:true});
   document.addEventListener('visibilitychange', sync);
-  sync();
-}
+  layout(); sync();
+})();
 </script>
 
 <script type="application/ld+json">
