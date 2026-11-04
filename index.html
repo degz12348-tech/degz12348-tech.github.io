@@ -360,6 +360,11 @@ p{margin:0 0 16px}
   background:linear-gradient(to bottom,transparent,rgba(0,255,65,.09) 45%,rgba(0,255,65,.16) 52%,transparent);
   animation:sweep 7.5s linear infinite;
   pointer-events:none;
+  /* flung off with the streaks as the page scrolls; individual transform
+     properties so they don't fight the keyframes */
+  translate:calc(var(--scatter,0) * 55%) calc(var(--scatter,0) * -30%);
+  scale:calc(1 + var(--scatter,0) * .6) calc(1 - var(--scatter,0) * .85);
+  filter:opacity(calc(1 - var(--scatter,0)));
 }
 @keyframes sweep{
   0%  {top:-30%;opacity:0}
@@ -1438,6 +1443,9 @@ document.getElementById('yr').textContent = new Date().getFullYear();
   if (!cv || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   var ctx = cv.getContext('2d'), w = 0, h = 0, dpr = Math.min(devicePixelRatio || 1, 2);
   var particles = [], raf = 0, running = false, onscreen = true;
+  /* Scroll scatter: 0 with the page at the top, 1 once the hero is mostly gone.
+     Streaks get flung off the portrait as it rises and fly back in on the way up. */
+  var stage = document.getElementById('top'), stageH = 1, sc = 0;
 
   function resize(){
     w = cv.clientWidth; h = cv.clientHeight;
@@ -1445,10 +1453,13 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     cv.height = Math.max(1, Math.round(h * dpr));
     ctx.setTransform(dpr,0,0,dpr,0,0);
     particles = [];
+    stageH = stage ? stage.offsetHeight : innerHeight;
   }
   function spawn(){
     var shoulder = Math.random() < .58;
+    var ang = -1.05 + Math.random() * 1.25, dist = (.45 + Math.random() * .75) * Math.max(w, 600);
     particles.push({
+      sdx:Math.cos(ang) * dist, sdy:Math.sin(ang) * dist,
       x:w * (shoulder ? (.68 + Math.random()*.25) : (.58 + Math.random()*.24)),
       y:h * (shoulder ? (.16 + Math.random()*.58) : (.63 + Math.random()*.25)),
       vx:.65 + Math.random()*2.15, vy:(Math.random()-.5)*.34,
@@ -1460,15 +1471,21 @@ document.getElementById('yr').textContent = new Date().getFullYear();
   function frame(){
     if (!running) return;
     ctx.clearRect(0,0,w,h);
-    var amount = w < 700 ? 3 : 6;
-    for(var n=0;n<amount;n++) if(particles.length<450) spawn();
+    var want = Math.max(0, Math.min(1, scrollY / (stageH * 1.05)));
+    sc += (want - sc) * .09;
+    if (stage) stage.style.setProperty('--scatter', sc.toFixed(3));
+    var push = 1 - (1 - sc) * (1 - sc), fade = Math.pow(1 - sc, 1.6), stretch = 1 + sc * 2.4;
+    var amount = (w < 700 ? 3 : 6) * (1 - sc);
+    for(var n=0;n<amount;n++) if(particles.length<450 && (n + 1 <= amount || Math.random() < amount - n)) spawn();
     for(var i=particles.length-1;i>=0;i--){
       var p=particles[i]; p.age++; p.x+=p.vx; p.y+=p.vy;
       if(p.age>=p.life){particles.splice(i,1);continue}
-      var a=Math.sin(Math.PI*p.age/p.life)*(.34+Math.random()*.52);
+      var a=Math.sin(Math.PI*p.age/p.life)*(.34+Math.random()*.52)*fade;
+      if(a<.004)continue;
+      var x=p.x+p.sdx*push, y=p.y+p.sdy*push;
       ctx.fillStyle='rgba(0,255,65,'+a.toFixed(3)+')';
-      if(p.streak) ctx.fillRect(p.x,p.y,18+p.size*9,Math.max(1.25,p.size*.52));
-      else ctx.fillRect(p.x,p.y,p.size,p.size);
+      if(p.streak) ctx.fillRect(x,y,(18+p.size*9)*stretch,Math.max(1.25,p.size*.52));
+      else ctx.fillRect(x,y,p.size,p.size);
     }
     raf=requestAnimationFrame(frame);
   }
