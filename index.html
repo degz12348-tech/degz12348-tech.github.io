@@ -152,7 +152,7 @@ a{color:inherit}
 /* ---------- ambient glow behind the hero ---------- */
 .glow{
   position:fixed;top:-30vh;left:50%;transform:translateX(-50%);
-  width:min(1100px,140vw);height:70vh;pointer-events:none;z-index:0;
+  width:min(1100px,100vw);height:70vh;pointer-events:none;z-index:0;
   background:radial-gradient(ellipse at center,rgba(0,255,65,.10),rgba(0,255,65,.03) 42%,transparent 70%);
   filter:blur(24px);
 }
@@ -194,7 +194,7 @@ nav .wrap{display:flex;align-items:center;gap:20px;height:70px}
 @media(max-width:720px){.navlinks a[data-opt]{display:none}}
 
 /* ---------- shared section furniture ---------- */
-main{position:relative;z-index:1}
+main{position:relative;z-index:1;overflow-x:hidden;overflow-x:clip}  /* section glows must not widen the page on iOS */
 section{padding:clamp(58px,7vw,78px) 0}
 section[id]{scroll-margin-top:70px}
 
@@ -1869,9 +1869,11 @@ function laptopIn(w, h){
     })(start);
   }
   /* Hide now, reveal in staggered batches as each group scrolls in. */
+  var risen = [];
   function rise(sel, from){
     var els = gsap.utils.toArray(sel);
     if (!els.length) return;
+    risen.push.apply(risen, els);
     from = Object.assign({opacity:0, y:46}, from);
     var to = {opacity:1, x:0, y:0, rotationX:0, rotationY:0, scale:1,
       duration:1.05, ease:'expo.out', stagger:.085, overwrite:'auto'};
@@ -1879,7 +1881,7 @@ function laptopIn(w, h){
     gsap.set(els, from);
     ScrollTrigger.batch(els, {
       start:'top 92%', once:true,
-      onEnter:function(batch){ gsap.to(batch, to); }
+      onEnter:function(batch){ batch.forEach(function(e){ e.__in = true; }); gsap.to(batch, to); }
     });
   }
 
@@ -1946,6 +1948,16 @@ function laptopIn(w, h){
   rise('figure.shot', {y:0, x:60, clipPath:'inset(0% 0% 0% 100%)'});
   rise('.stint, .srow', {y:0, x:-40});
   rise('.panel, .faq details, .term, .reach a, .surfaces a, #teaching .cta, #contact .cta', {y:36});
+  /* items that sit too close to the bottom of the page never cross the
+     reveal line on tall screens; reveal whatever is left at the end */
+  ScrollTrigger.create({start:0, end:'max', onUpdate:function(s){
+    if (s.progress < .97) return;
+    var left = risen.filter(function(e){ return !e.__in; });
+    if (!left.length) return;
+    left.forEach(function(e){ e.__in = true; });
+    gsap.to(left, {opacity:1, x:0, y:0, rotationX:0, rotationY:0, scale:1, clipPath:'inset(0% 0% 0% 0%)',
+      duration:.9, ease:'expo.out', stagger:.05, overwrite:'auto', clearProps:'clipPath'});
+  }});
 
   /* rule lines draw in, numeric stats count up, word stats decode */
   gsap.utils.toArray('.stat').forEach(function(s){
