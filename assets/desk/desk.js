@@ -7,6 +7,9 @@
    ============================================================ */
 
 const D = document.documentElement;
+/* phones/tablets: lighter render, portrait framing, bigger screen text, taps */
+const TOUCH = matchMedia('(pointer:coarse)').matches;
+const MOBILE = TOUCH || innerWidth < 900;
 const ROOT_URL = new URL('./', import.meta.url).href;
 
 /* ---------------- overlay (built first so Escape / Skip always work) ---------------- */
@@ -18,7 +21,7 @@ root.innerHTML = `
   <canvas class="desk-gl" tabindex="0" aria-label="Desk. Press Enter to continue."></canvas>
   <button type="button" class="desk-skip">Skip to portfolio</button>
   <div class="desk-load" aria-live="polite">booting desk <b>0%</b></div>
-  <div class="desk-cta" aria-hidden="true">click anywhere<span>_</span></div>`;
+  <div class="desk-cta" aria-hidden="true">${TOUCH ? 'tap anywhere' : 'click anywhere'}<span>_</span></div>`;
 document.body.appendChild(root);
 const canvas = root.querySelector('.desk-gl');
 const loadEl = root.querySelector('.desk-load');
@@ -58,7 +61,15 @@ window.__deskReady = true;
 const SCR = {w: 1024, h: 626};
 const scr = document.createElement('canvas'); scr.width = SCR.w; scr.height = SCR.h;
 const sx = scr.getContext('2d');
-const LINES = [
+const LINES = MOBILE ? [
+  ['dim', 'booting...'],
+  ['kv', 'name', 'Degz Arbiz'],
+  ['kv', 'role', 'AI Systems Developer'],
+  ['kv', 'builds', 'LLM · evals · automation'],
+  ['kv', 'years', '8+ SaaS & automation'],
+  ['kv', 'status', 'open to AI roles'],
+  ['cmd', '$ ', 'open portfolio']
+] : [
   ['dim', 'booting portfolio...'],
   ['', ''],
   ['kv', 'profile', 'Degz Arbiz'],
@@ -70,8 +81,12 @@ const LINES = [
   ['', ''],
   ['cmd', 'degz@arbiz:~$ ', 'open portfolio']
 ];
+/* text sizes on the 1024px screen texture; phones get much larger type */
+const TL = MOBILE ? {font:42, lh:55, y0:88, pad:9, head:26, headY:30, rule:62, caretW:22, caretH:42, btnFont:46, btn:{w:440, h:94}}
+                  : {font:24, lh:38, y0:92, pad:16, head:18, headY:34, rule:66, caretW:13, caretH:25, btnFont:28, btn:{w:300, h:66}};
+const KEYLEN = 2 + TL.pad;
 function lineText(l){
-  if (l[0] === 'kv') return '› ' + (l[1] + ' ').padEnd(16, '.') + ' ' + l[2];
+  if (l[0] === 'kv') return '› ' + (l[1] + ' ').padEnd(TL.pad, '.') + ' ' + l[2];
   if (l[0] === 'cmd') return l[1] + l[2];
   return l[1];
 }
@@ -79,7 +94,7 @@ const FULL = LINES.map(lineText);
 const TOTAL = FULL.reduce((a, s) => a + s.length + 1, 0);
 /* screen modes: standby (room view) | boot (typing, then START) | open (flying in) */
 let screenMode = 'standby', typed = 0, typeAcc = 0, hover = false, blink = true, dirty = true;
-const BTN = {w: 300, h: 66, y: SCR.h - 116};   // START button, in screen pixels
+const BTN = {w: TL.btn.w, h: TL.btn.h, y: SCR.h - TL.btn.h - (MOBILE ? 34 : 50)};   // START button, in screen pixels
 
 function drawScreen(){
   const g = sx, W = SCR.w, H = SCR.h, mono = '"JetBrains Mono", Consolas, monospace';
@@ -98,17 +113,17 @@ function drawScreen(){
     g.fillText(sub + (blink ? ' ▌' : '  '), W / 2, H / 2 + 32);
     g.textAlign = 'left'; g.shadowBlur = 0;
   } else {
-    g.font = '18px ' + mono; g.fillStyle = '#1f9a45';
-    g.fillText('DEGZ-OS v1.0  ·  portfolio.sys', 56, 34);
-    g.fillStyle = '#00ff41'; g.textAlign = 'right'; g.fillText('● online', W - 56, 34); g.textAlign = 'left';
-    g.fillStyle = 'rgba(0,255,65,.25)'; g.fillRect(56, 66, W - 112, 1);
+    g.font = TL.head + 'px ' + mono; g.fillStyle = '#1f9a45';
+    g.fillText(MOBILE ? 'DEGZ-OS v1.0' : 'DEGZ-OS v1.0  ·  portfolio.sys', 56, TL.headY);
+    g.fillStyle = '#00ff41'; g.textAlign = 'right'; g.fillText('● online', W - 56, TL.headY); g.textAlign = 'left';
+    g.fillStyle = 'rgba(0,255,65,.25)'; g.fillRect(56, TL.rule, W - 112, 1);
 
-    g.font = '24px ' + mono; g.shadowColor = 'rgba(0,255,65,.55)'; g.shadowBlur = 8;
-    let left = typed, y = 92, lastX = 56, lastY = y;
+    g.font = TL.font + 'px ' + mono; g.shadowColor = 'rgba(0,255,65,.55)'; g.shadowBlur = 8;
+    let left = typed, y = TL.y0, lastX = 56, lastY = y;
     for (let i = 0; i < LINES.length && left >= 0; i++){
       const full = FULL[i], part = full.slice(0, Math.min(full.length, left)), kind = LINES[i][0];
       if (kind === 'kv'){
-        const k = 18;
+        const k = KEYLEN;
         g.fillStyle = '#1fbf50'; g.fillText(part.slice(0, k), 56, y);
         g.fillStyle = '#d9ffe3'; g.fillText(part.slice(k), 56 + g.measureText(full.slice(0, k)).width, y);
       } else if (kind === 'cmd'){
@@ -117,18 +132,18 @@ function drawScreen(){
         g.fillStyle = '#ffffff'; g.fillText(part.slice(p.length), 56 + g.measureText(p).width, y);
       } else { g.fillStyle = kind === 'dim' ? '#1f9a45' : '#00ff41'; g.fillText(part, 56, y); }
       lastX = 56 + g.measureText(part).width; lastY = y;
-      left -= full.length + 1; y += 38;
+      left -= full.length + 1; y += TL.lh;
     }
     const done = typed >= TOTAL;
-    if (blink || !done){ g.fillStyle = '#00ff41'; g.fillRect(lastX + 4, lastY + 3, 13, 25); }
+    if (blink || !done){ g.fillStyle = '#00ff41'; g.fillRect(lastX + 4, lastY + 3, TL.caretW, TL.caretH); }
     if (done){
       const bx = (W - BTN.w) / 2, by = BTN.y;
       g.shadowBlur = hover ? 26 : 14; g.shadowColor = 'rgba(0,255,65,.85)';
       g.fillStyle = hover ? '#00ff41' : 'rgba(0,255,65,.08)'; g.fillRect(bx, by, BTN.w, BTN.h);
       g.strokeStyle = '#00ff41'; g.lineWidth = 2; g.strokeRect(bx, by, BTN.w, BTN.h);
-      g.font = '700 28px ' + mono; g.textAlign = 'center';
+      g.font = '700 ' + TL.btnFont + 'px ' + mono; g.textAlign = 'center'; g.textBaseline = 'middle';
       g.fillStyle = hover ? '#001a08' : '#00ff41';
-      g.fillText('[ START ]', W / 2, by + 18);
+      g.fillText('[ START ]', W / 2, by + BTN.h / 2 + 2); g.textBaseline = 'top';
       g.textAlign = 'left';
     }
     g.shadowBlur = 0;
@@ -155,11 +170,11 @@ async function main(){
   let renderer;
   try { renderer = new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance'}); }
   catch (e) { leave(true); return; }
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, MOBILE ? 1.5 : 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = !MOBILE;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const scene = new THREE.Scene();
@@ -250,7 +265,7 @@ async function main(){
   scene.add(moon, moon.target);
 
   /* dust floating in the lamp and screen light */
-  const DUST = 200, dPos = new Float32Array(DUST * 3), dSeed = new Float32Array(DUST);
+  const DUST = MOBILE ? 90 : 200, dPos = new Float32Array(DUST * 3), dSeed = new Float32Array(DUST);
   for (let i = 0; i < DUST; i++){
     dPos[i*3] = -.75 + Math.random() * 1.4; dPos[i*3+1] = .2 + Math.random() * .9; dPos[i*3+2] = -.33 + Math.random() * .95;
     dSeed[i] = Math.random() * 100;
@@ -278,7 +293,7 @@ async function main(){
   const ORB = {yaw:47 * deg, pitch:17 * deg, r:2.35};          // wide side view
   const ORB0 = {yaw:-35 * deg, pitch:42 * deg, r:3.6};         // opening swing starts here
   const orbit = (yaw, pitch, r) => V(C.x + r * Math.cos(pitch) * Math.sin(yaw), C.y + r * Math.sin(pitch), C.z + r * Math.cos(pitch) * Math.cos(yaw));
-  const ROOM = {pos:orbit(ORB.yaw, ORB.pitch, ORB.r), look:C.clone()};
+  const roomShot = () => ({pos:orbit(ORB.yaw, ORB.pitch, ORB.r), look:C.clone()});
   const tanHalf = () => Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
   function monitorShot(){   // face the monitor, screen ~75% of the view
     const t = tanHalf();
@@ -295,7 +310,12 @@ async function main(){
     const w = innerWidth, h = innerHeight;
     renderer.setSize(w, h, false); composer.setSize(w, h);
     bloom.resolution.set(w, h);
-    camera.aspect = w / h; camera.updateProjectionMatrix();
+    camera.aspect = w / h;
+    const tall = camera.aspect < 1;
+    camera.fov = tall ? 52 : 38;
+    ORB.r = tall ? 2.05 : 2.35; ORB0.r = tall ? 3.4 : 3.6;
+    C.y = tall ? .5 : .42;
+    camera.updateProjectionMatrix();
   }
   addEventListener('resize', resize, {passive:true}); resize();
 
@@ -321,10 +341,16 @@ async function main(){
     if (state === 'room') advance();
     else if (state === 'monitor'){
       if (typed < TOTAL){ typed = TOTAL; dirty = true; return; }   // skip the typing
-      if (onStart(e)) advance();
+      if (TOUCH || onStart(e)) advance();
     }
   });
   root.addEventListener('wheel', e => { if (state === 'room' && e.deltaY > 18) advance(); }, {passive:true});
+  let ty0 = null;
+  root.addEventListener('touchstart', e => { ty0 = e.touches[0].clientY; }, {passive:true});
+  root.addEventListener('touchend', e => {
+    if (ty0 !== null && state === 'room' && ty0 - e.changedTouches[0].clientY > 40) advance();
+    ty0 = null;
+  }, {passive:true});
 
   /* ---- moves ---- */
   const camPos = new THREE.Vector3(), camLook = new THREE.Vector3();
@@ -370,7 +396,7 @@ async function main(){
     requestAnimationFrame(() => root.classList.remove('out'));
     setTimeout(() => {
       screenMode = 'standby'; dirty = true;
-      moveTo(ROOM, 2600, () => { state = 'room'; setStage('room'); roomT0 = performance.now(); }, V(SCREEN.cx + .7, SCREEN.cy + .35, SCREEN.z + 1.1));
+      moveTo(roomShot(), 2600, () => { state = 'room'; setStage('room'); roomT0 = performance.now(); }, V(SCREEN.cx + .7, SCREEN.cy + .35, SCREEN.z + 1.1));
     }, 450);
   };
 

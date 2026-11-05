@@ -37,7 +37,7 @@
    motion, ?nodesk, or a second visit in the same tab session. */
 (function(){try{
   var d=document.documentElement,q=function(m){return matchMedia(m).matches};
-  var able=q('(hover:hover) and (pointer:fine)')&&innerWidth>=900&&!q('(prefers-reduced-motion:reduce)');
+  var able=!q('(prefers-reduced-motion:reduce)');
   if(!able)return;
   d.classList.add('desk-capable');
   var seen=false;try{seen=sessionStorage.getItem('desk-seen')==='1'}catch(e){}
@@ -716,7 +716,7 @@ html.lenis,html.lenis body{height:auto}
 /* ---------- 3D desk front door ---------- */
 html.desk-on,html.desk-on body{overflow:hidden}
 html.desk-on body::before{content:"";position:fixed;inset:0;z-index:10000;background:#000}
-#desk{position:fixed;inset:0;z-index:10001;background:#000;opacity:1;transition:opacity .7s var(--ease)}
+#desk{position:fixed;inset:0;z-index:10001;background:#000;opacity:1;transition:opacity .7s var(--ease);touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 #desk.out{opacity:0;pointer-events:none}
 #desk.fast{transition-duration:.3s}
 #desk.hidden{display:none}
