@@ -383,7 +383,7 @@ async function main(){
     const dt = Math.min(60, now - last); last = now;
 
     if (screenMode === 'boot' && typed < TOTAL){
-      typeAcc += dt * .05;
+      typeAcc += dt * .16;
       while (typeAcc >= 1 && typed < TOTAL){ typeAcc -= 1; typed++; }
       dirty = true;
     }
