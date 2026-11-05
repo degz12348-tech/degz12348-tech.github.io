@@ -17,7 +17,8 @@ root.setAttribute('aria-label', 'Interactive 3D desk intro. Press Escape or use 
 root.innerHTML = `
   <canvas class="desk-gl" tabindex="0" aria-label="Monitor. Press Enter to open the portfolio."></canvas>
   <button type="button" class="desk-skip">Skip to portfolio</button>
-  <div class="desk-load" aria-live="polite">booting desk <b>0%</b></div>`;
+  <div class="desk-load" aria-live="polite">booting desk <b>0%</b></div>
+  <div class="desk-cta" aria-hidden="true">click anywhere<span>_</span></div>`;
 document.body.appendChild(root);
 const canvas = root.querySelector('.desk-gl');
 const btnSkip = root.querySelector('.desk-skip');
@@ -263,8 +264,8 @@ async function main(){
   composer.addPass(new OutputPass());
 
   /* camera rig */
-  const HOME = {pos:new THREE.Vector3(.2, .64, .62), look:new THREE.Vector3(0, .53, -.21)};
-  const INTRO = {pos:new THREE.Vector3(.55, .86, 1.45)};
+  const HOME = {pos:new THREE.Vector3(.46, .78, 1.28), look:new THREE.Vector3(-.02, .48, -.24)};
+  const INTRO = {pos:new THREE.Vector3(.85, 1.02, 2.05)};
   const camPos = new THREE.Vector3(), camLook = new THREE.Vector3();
   let mx = 0, my = 0, smx = 0, smy = 0;
 
@@ -288,9 +289,9 @@ async function main(){
     if (state !== 'idle'){ return; }
     ray.setFromCamera(ndc, camera);
     const h = ray.intersectObject(screenMesh).length > 0;
-    if (h !== hover){ hover = h; dirty = true; canvas.style.cursor = h ? 'pointer' : ''; }
+    if (h !== hover){ hover = h; dirty = true; }
   });
-  canvas.addEventListener('click', () => { if (state === 'idle') enter(); });
+  root.addEventListener('click', e => { if (state === 'idle' && !e.target.closest('.desk-skip')) enter(); });
   root.addEventListener('wheel', e => { if (state === 'idle' && e.deltaY > 18) enter(); }, {passive:true});
 
   /* fly-in / fly-out */
@@ -354,7 +355,7 @@ async function main(){
       const it = Math.min(1, (now - introT0) / 2600), e = easeOut(it);
       const base = new THREE.Vector3().lerpVectors(INTRO.pos, HOME.pos, e);
       const breathe = Math.sin(now / 2400) * .006;
-      camPos.set(base.x + smx * .07, base.y - smy * .035 + breathe, base.z);
+      camPos.set(base.x + smx * .12, base.y - smy * .06 + breathe, base.z);
       camera.position.copy(camPos);
     } else camera.position.copy(camPos);
     camera.lookAt(camLook);
