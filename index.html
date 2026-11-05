@@ -722,21 +722,9 @@ html.desk-on body::before{content:"";position:fixed;inset:0;z-index:10000;backgr
 #desk.hidden{display:none}
 #desk .desk-gl{position:absolute;inset:0;width:100%;height:100%;display:block;outline:none;opacity:0;transition:opacity 1.2s var(--ease)}
 #desk.ready .desk-gl{opacity:1}
-.desk-brand{position:absolute;left:28px;top:22px;font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.035em;color:var(--fg-strong);pointer-events:none}
-.desk-brand span{color:var(--accent)}
-.desk-actions{position:absolute;right:24px;top:20px;display:flex;gap:10px}
-.desk-btn{font-family:var(--font-mono);font-size:12px;color:var(--fg);background:rgba(0,0,0,.55);border:1px solid var(--line);border-radius:4px;padding:8px 14px;cursor:pointer;
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:border-color var(--dur) var(--ease),color var(--dur) var(--ease)}
-.desk-btn:hover{border-color:var(--accent);color:var(--accent)}
-.desk-skip{color:var(--accent)}
-.desk-hint{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;
-  font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-dim);
-  opacity:0;transition:opacity .8s var(--ease) 1.6s;pointer-events:none;white-space:nowrap}
-.desk-hint i{width:14px;height:22px;border:1px solid var(--fg-dim);border-radius:8px;position:relative}
-.desk-hint i::after{content:"";position:absolute;left:50%;top:4px;width:2px;height:5px;margin-left:-1px;background:var(--accent);border-radius:2px;animation:deskwheel 1.6s var(--ease) infinite}
-@keyframes deskwheel{0%{opacity:0;transform:translateY(-2px)}40%{opacity:1}100%{opacity:0;transform:translateY(7px)}}
-#desk.ready .desk-hint{opacity:1}
-#desk.flying .desk-hint,#desk.flying .desk-actions,#desk.flying .desk-brand{opacity:0;transition:opacity .3s}
+#desk .desk-skip{position:absolute;left:16px;top:16px;font-family:var(--font-mono);font-size:12px;color:var(--accent);background:#000;
+  border:1px solid var(--accent);border-radius:4px;padding:8px 14px;opacity:0;pointer-events:none}
+#desk .desk-skip:focus-visible{opacity:1;pointer-events:auto}
 .desk-load{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-dim);transition:opacity .4s}
 .desk-load b{color:var(--accent);font-weight:400}
 .desk-load.done{opacity:0}

@@ -16,17 +16,11 @@ root.setAttribute('role', 'dialog');
 root.setAttribute('aria-label', 'Interactive 3D desk intro. Press Escape or use Skip to go straight to the portfolio.');
 root.innerHTML = `
   <canvas class="desk-gl" tabindex="0" aria-label="Monitor. Press Enter to open the portfolio."></canvas>
-  <div class="desk-brand">degz<span>@</span>arbiz</div>
-  <div class="desk-actions">
-    <button type="button" class="desk-btn desk-sound" aria-pressed="false">sound: off</button>
-    <button type="button" class="desk-btn desk-skip">Skip to portfolio &rarr;</button>
-  </div>
-  <div class="desk-hint" aria-hidden="true"><i></i>click the screen &nbsp;&middot;&nbsp; or scroll</div>
+  <button type="button" class="desk-skip">Skip to portfolio</button>
   <div class="desk-load" aria-live="polite">booting desk <b>0%</b></div>`;
 document.body.appendChild(root);
 const canvas = root.querySelector('.desk-gl');
 const btnSkip = root.querySelector('.desk-skip');
-const btnSound = root.querySelector('.desk-sound');
 const loadEl = root.querySelector('.desk-load');
 const loadPct = loadEl.querySelector('b');
 
@@ -56,57 +50,7 @@ addEventListener('keydown', e => {
 });
 window.__deskReady = true;
 
-/* ---------------- sound (off by default) ---------------- */
-const Sound = (() => {
-  let ctx = null, master = null, on = false;
-  try { on = localStorage.getItem('desk-sound') === '1'; } catch (e) {}
-  function ensure(){
-    if (ctx) return;
-    ctx = new (window.AudioContext || window.webkitAudioContext)();
-    master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
-    // room hum: low sines + soft filtered noise
-    [[55, .018], [110, .006]].forEach(([f, g]) => {
-      const o = ctx.createOscillator(), v = ctx.createGain();
-      o.frequency.value = f; v.gain.value = g; o.connect(v); v.connect(master); o.start();
-    });
-    const n = noise(2), lp = ctx.createBiquadFilter(), v = ctx.createGain();
-    lp.type = 'lowpass'; lp.frequency.value = 380; v.gain.value = .05;
-    n.loop = true; n.connect(lp); lp.connect(v); v.connect(master); n.start();
-  }
-  function noise(sec){
-    const b = ctx.createBuffer(1, ctx.sampleRate * sec, ctx.sampleRate), d = b.getChannelData(0);
-    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-    const s = ctx.createBufferSource(); s.buffer = b; return s;
-  }
-  function set(v){
-    on = v;
-    try { localStorage.setItem('desk-sound', v ? '1' : '0'); } catch (e) {}
-    btnSound.textContent = 'sound: ' + (v ? 'on' : 'off');
-    btnSound.setAttribute('aria-pressed', String(v));
-    if (v){ ensure(); ctx.resume(); master.gain.setTargetAtTime(1, ctx.currentTime, .3); }
-    else if (ctx){ master.gain.setTargetAtTime(0, ctx.currentTime, .15); }
-  }
-  function click(){
-    if (!on || !ctx) return;
-    const s = noise(.04), bp = ctx.createBiquadFilter(), g = ctx.createGain(), t = ctx.currentTime;
-    bp.type = 'bandpass'; bp.frequency.value = 1800 + Math.random() * 2200; bp.Q.value = 1.4;
-    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.07 + Math.random() * .05, t + .004);
-    g.gain.exponentialRampToValueAtTime(.0001, t + .035);
-    s.connect(bp); bp.connect(g); g.connect(master); s.start(t); s.stop(t + .05);
-  }
-  function whoosh(){
-    if (!on || !ctx) return;
-    const s = noise(2), lp = ctx.createBiquadFilter(), g = ctx.createGain(), t = ctx.currentTime;
-    lp.type = 'lowpass'; lp.frequency.setValueAtTime(200, t); lp.frequency.exponentialRampToValueAtTime(2400, t + 1.6);
-    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.12, t + 1.2); g.gain.exponentialRampToValueAtTime(.0001, t + 1.9);
-    s.connect(lp); lp.connect(g); g.connect(master); s.start(t); s.stop(t + 2);
-  }
-  btnSound.addEventListener('click', () => set(!on));
-  if (on){ btnSound.textContent = 'sound: on'; btnSound.setAttribute('aria-pressed', 'true');
-    /* browsers need a gesture before audio; arm on first interaction */
-    addEventListener('pointerdown', () => set(true), {once:true}); }
-  return {click, whoosh, get on(){ return on; }};
-})();
+const Sound = {click(){}, whoosh(){}};
 
 /* ---------------- the terminal on the monitor ---------------- */
 const SCR = {w: 1024, h: 626};
@@ -256,7 +200,7 @@ async function main(){
   manager.onProgress = (_u, done, total) => { loadPct.textContent = Math.round(done / total * 100) + '%'; };
   const loader = new GLTFLoader(manager);
   const NAMES = ['desk','computerScreen','computerKeyboard','computerMouse','chairDesk','lampRoundTable','plantSmall1',
-                 'pottedPlant','books','speakerSmall','bookcaseOpenLow','rugRectangle','floorFull','wall','wallWindow'];
+                 'pottedPlant','books','bookcaseOpenLow','rugRectangle','floorFull','wall','wallWindow'];
   let models = {};
   try {
     const got = await Promise.all(NAMES.map(n => loader.loadAsync(ROOT_URL + n + '.glb')));
@@ -319,8 +263,8 @@ async function main(){
   composer.addPass(new OutputPass());
 
   /* camera rig */
-  const HOME = {pos:new THREE.Vector3(.5, .8, 1.4), look:new THREE.Vector3(-.02, .47, -.24)};
-  const INTRO = {pos:new THREE.Vector3(.9, 1.05, 2.1)};
+  const HOME = {pos:new THREE.Vector3(.2, .64, .62), look:new THREE.Vector3(0, .53, -.21)};
+  const INTRO = {pos:new THREE.Vector3(.55, .86, 1.45)};
   const camPos = new THREE.Vector3(), camLook = new THREE.Vector3();
   let mx = 0, my = 0, smx = 0, smy = 0;
 
@@ -410,7 +354,7 @@ async function main(){
       const it = Math.min(1, (now - introT0) / 2600), e = easeOut(it);
       const base = new THREE.Vector3().lerpVectors(INTRO.pos, HOME.pos, e);
       const breathe = Math.sin(now / 2400) * .006;
-      camPos.set(base.x + smx * .16, base.y - smy * .08 + breathe, base.z);
+      camPos.set(base.x + smx * .07, base.y - smy * .035 + breathe, base.z);
       camera.position.copy(camPos);
     } else camera.position.copy(camPos);
     camera.lookAt(camLook);
