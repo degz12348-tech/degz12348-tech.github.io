@@ -31,6 +31,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <script>document.documentElement.classList.add('js')</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script>
+/* 3D desk front door: desktop + mouse only, not for deep links, reduced
+   motion, ?nodesk, or a second visit in the same tab session. */
+(function(){try{
+  var d=document.documentElement,q=function(m){return matchMedia(m).matches};
+  var able=q('(hover:hover) and (pointer:fine)')&&innerWidth>=900&&!q('(prefers-reduced-motion:reduce)');
+  if(!able)return;
+  d.classList.add('desk-capable');
+  var seen=false;try{seen=sessionStorage.getItem('desk-seen')==='1'}catch(e){}
+  if(!seen&&!location.hash&&!/[?&]nodesk/.test(location.search))d.classList.add('desk-on');
+}catch(e){}})();
+</script>
 <style>
 /* ============================================================
    Dark-committed terminal palette. Every colour painted
@@ -700,6 +713,36 @@ html.lenis,html.lenis body{height:auto}
   transform-origin:0 50%;transform:scaleX(0);
   background:linear-gradient(90deg,var(--accent-deep),var(--accent));box-shadow:0 0 12px rgba(0,255,65,.7)}
 
+/* ---------- 3D desk front door ---------- */
+html.desk-on,html.desk-on body{overflow:hidden}
+html.desk-on body::before{content:"";position:fixed;inset:0;z-index:10000;background:#000}
+#desk{position:fixed;inset:0;z-index:10001;background:#000;opacity:1;transition:opacity .7s var(--ease)}
+#desk.out{opacity:0;pointer-events:none}
+#desk.fast{transition-duration:.3s}
+#desk.hidden{display:none}
+#desk .desk-gl{position:absolute;inset:0;width:100%;height:100%;display:block;outline:none;opacity:0;transition:opacity 1.2s var(--ease)}
+#desk.ready .desk-gl{opacity:1}
+.desk-brand{position:absolute;left:28px;top:22px;font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.035em;color:var(--fg-strong);pointer-events:none}
+.desk-brand span{color:var(--accent)}
+.desk-actions{position:absolute;right:24px;top:20px;display:flex;gap:10px}
+.desk-btn{font-family:var(--font-mono);font-size:12px;color:var(--fg);background:rgba(0,0,0,.55);border:1px solid var(--line);border-radius:4px;padding:8px 14px;cursor:pointer;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:border-color var(--dur) var(--ease),color var(--dur) var(--ease)}
+.desk-btn:hover{border-color:var(--accent);color:var(--accent)}
+.desk-skip{color:var(--accent)}
+.desk-hint{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-dim);
+  opacity:0;transition:opacity .8s var(--ease) 1.6s;pointer-events:none;white-space:nowrap}
+.desk-hint i{width:14px;height:22px;border:1px solid var(--fg-dim);border-radius:8px;position:relative}
+.desk-hint i::after{content:"";position:absolute;left:50%;top:4px;width:2px;height:5px;margin-left:-1px;background:var(--accent);border-radius:2px;animation:deskwheel 1.6s var(--ease) infinite}
+@keyframes deskwheel{0%{opacity:0;transform:translateY(-2px)}40%{opacity:1}100%{opacity:0;transform:translateY(7px)}}
+#desk.ready .desk-hint{opacity:1}
+#desk.flying .desk-hint,#desk.flying .desk-actions,#desk.flying .desk-brand{opacity:0;transition:opacity .3s}
+.desk-load{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-dim);transition:opacity .4s}
+.desk-load b{color:var(--accent);font-weight:400}
+.desk-load.done{opacity:0}
+.navlinks a[data-desk]{display:none}
+html.desk-capable .navlinks a[data-desk]{display:inline}
+
 /* ---------- pipeline spine ----------
    One circuit line from the laptop in the portrait down the left gutter.
    Each section is a stage; packets flow through; Proof is the eval gate. */
@@ -780,6 +823,7 @@ html.lenis,html.lenis body{height:auto}
   <div class="wrap">
     <a class="brand" href="#top">degz<span class="p">@</span>arbiz</a>
     <div class="navlinks">
+      <a href="#" data-desk data-opt>Desk</a>
       <a href="#work" data-opt>Work</a>
       <a href="#history" data-opt>History</a>
       <a href="#stack" data-opt>Stack</a>
@@ -1805,6 +1849,9 @@ function laptopIn(w, h){
   if (window.Lenis){
     var lenis = new Lenis({lerp:.1, smoothWheel:true});
     lenis.on('scroll', ScrollTrigger.update);
+    if (document.documentElement.classList.contains('desk-on')) lenis.stop();
+    addEventListener('desk:enter', function(){ lenis.stop(); });
+    addEventListener('desk:exit', function(){ lenis.start(); ScrollTrigger.refresh(); });
     gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
     gsap.ticker.lagSmoothing(0);
     document.addEventListener('click', function(e){
@@ -1874,11 +1921,16 @@ function laptopIn(w, h){
        .from('.agentpill', {opacity:0, y:12}, .9);
   var boot = document.getElementById('boot'), played = false;
   function play(){ if (!played){ played = true; intro.play(); } }
-  if (!boot || boot.classList.contains('done')) play();
-  else new MutationObserver(function(m, o){
-    if (boot.classList.contains('done')){ o.disconnect(); play(); }
-  }).observe(boot, {attributes:true, attributeFilter:['class']});
-  setTimeout(play, 3400);
+  function arm(){
+    if (!boot || boot.classList.contains('done')) play();
+    else new MutationObserver(function(m, o){
+      if (boot.classList.contains('done')){ o.disconnect(); play(); }
+    }).observe(boot, {attributes:true, attributeFilter:['class']});
+    setTimeout(play, 3400);
+  }
+  /* with the 3D desk up, hold the hero intro until the camera flies in */
+  if (document.documentElement.classList.contains('desk-on')) addEventListener('desk:exit', arm, {once:true});
+  else arm();
 
   /* hero copy recedes as you scroll away from it */
   gsap.to('.hero', {opacity:.3, ease:'none',
@@ -1971,6 +2023,40 @@ function laptopIn(w, h){
     });
   });
 
+})();
+</script>
+
+<!-- ==================== 3D DESK LOADER ==================== -->
+<script>
+(function(){
+  var d = document.documentElement;
+  if (!d.classList.contains('desk-capable')) return;
+  var loading = false;
+  function bail(){
+    if (!d.classList.contains('desk-on')) return;
+    d.classList.remove('desk-on');
+    var r = document.getElementById('desk'); if (r) r.remove();
+    dispatchEvent(new Event('desk:exit'));
+  }
+  function load(){
+    if (loading) return; loading = true;
+    var s = document.createElement('script');
+    s.type = 'module'; s.src = 'assets/desk/desk.js';
+    s.onerror = bail;
+    document.body.appendChild(s);
+  }
+  if (d.classList.contains('desk-on')){
+    load();
+    /* never leave anyone stuck behind a black screen */
+    setTimeout(function(){ if (!window.__deskReady) bail(); }, 9000);
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('[data-desk]');
+    if (!a) return;
+    e.preventDefault();
+    if (window.openDesk) window.openDesk();
+    else { window.__deskMode = 'return'; d.classList.add('desk-on'); dispatchEvent(new Event('desk:enter')); load(); }
+  });
 })();
 </script>
 
