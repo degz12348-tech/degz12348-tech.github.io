@@ -167,7 +167,7 @@
   ],
   "projects": [
     {
-      "name": "Sales Coach AI — AI pipeline layer",
+      "name": "Real-time AI sales-coaching platform (client project, NDA)",
       "description": "Real-time sales coaching over live calls. TypeScript monorepo with a Fastify API, Next.js client using live tab capture, and a BullMQ worker running Claude pipelines against call audio; Postgres (Drizzle), Redis, and Cloudflare R2 storage, with a Chrome extension as the capture surface. Built by a team of six; I own the AI layer — coaching pipelines and prompt architecture in packages/ai — and wrote the cue-evaluation harness that gates coaching output against a scripted quality bar. 80 of 285 commits (Apr–Aug 2026), the largest single share.",
       "keywords": ["Claude API", "TypeScript", "Prompt architecture", "LLM evaluation", "Fastify", "Next.js", "BullMQ", "Drizzle"]
     },

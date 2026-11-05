@@ -20,7 +20,8 @@ SUMMARY
 
 BUILT
 
-  Sales Coach AI ........... Real-time coaching over live calls.
+  AI sales-coaching platform (client, NDA)
+                             Real-time coaching over live calls.
                              Fastify + Next.js + BullMQ worker, Claude
                              pipelines on call audio, Postgres/Drizzle,
                              Redis, R2, Chrome extension.
