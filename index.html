@@ -312,6 +312,18 @@ p{margin:0 0 16px}
   *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
 }
 
+.hero-stats{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;max-width:640px;margin:0 0 28px;
+  background:var(--line-soft);border:1px solid var(--line-soft);border-radius:9px;overflow:hidden;
+}
+.hero-stats .hs{background:rgba(5,7,8,.82);padding:14px 14px 13px;backdrop-filter:blur(6px)}
+.hero-stats .v{display:block;font-family:var(--font-display);font-weight:700;font-size:clamp(1.35rem,2.4vw,1.7rem);
+  line-height:1;color:var(--fg-strong);letter-spacing:-.03em}
+.hero-stats .hs:first-child .v{color:var(--accent)}
+.hero-stats .l{display:block;margin-top:8px;font-family:var(--font-mono);font-size:10.5px;line-height:1.45;color:var(--fg-dim)}
+@media(max-width:640px){.hero-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.proj-title{flex:1 1 420px;min-width:0}
+.proj-title .proj-name{display:block;margin-bottom:6px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.04em;color:var(--accent)}
 .hero-proof{
   display:flex;flex-wrap:wrap;gap:8px 20px;margin:0 0 26px;
   font-family:var(--font-mono);font-size:11.5px;color:var(--fg-dim);
@@ -864,10 +876,11 @@ html.desk-capable .navlinks a[data-desk]{display:inline}
         automation.
       </p>
 
-      <div class="hero-proof" aria-label="Selected proof points">
-        <span><strong>Live SaaS</strong> with paying customers</span>
-        <span><strong>AI layer</strong> owned on a six-person team</span>
-        <span><strong>Remote</strong> APAC · EU · US overlap</span>
+      <div class="hero-stats" aria-label="Results at a glance">
+        <div class="hs"><span class="v">6–7 fig</span><span class="l">client launches supported</span></div>
+        <div class="hs"><span class="v">2</span><span class="l">SaaS tiers with live paying customers</span></div>
+        <div class="hs"><span class="v">#1</span><span class="l">contributor, owning the AI layer on a 6-person team</span></div>
+        <div class="hs"><span class="v">8+</span><span class="l">years in systems, SaaS &amp; automation</span></div>
       </div>
 
       <div class="cta">
@@ -882,97 +895,15 @@ html.desk-capable .navlinks a[data-desk]{display:inline}
   </div>
 </section>
 
-<!-- ==================== PROOF ==================== -->
-<section class="wrap rv" id="hire">
-  <p class="kicker"><s>01</s> / <b>Hire me</b></p>
-  <h2>Hire me for</h2>
-  <p class="sub">Scoped engagements, senior execution, no hand-holding. Everything below is work I do for clients today.</p>
-
-  <div class="offer-meta">
-    <span>Calabarzon, PH · remote worldwide</span>
-    <span>APAC · EU · US overlap</span>
-    <span>Full-time · contract · fixed-scope</span>
-  </div>
-
-  <div class="offers">
-    <a class="offer" href="mailto:degz12348@gmail.com?subject=LLM%20applications">
-      <span class="n">01</span>
-      <h3>LLM applications &amp; agent systems</h3>
-      <p>Apps on Claude and other LLM APIs with structured I/O contracts, role-based instruction frameworks, and evaluation passes that hold behaviour steady under real load.</p>
-      <div class="tags"><span class="tag">agents</span><span class="tag">prompt architecture</span><span class="tag">evals</span></div>
-      <span class="go">ask about this →</span>
-    </a>
-
-    <a class="offer" href="mailto:degz12348@gmail.com?subject=Automation%20infrastructure">
-      <span class="n">02</span>
-      <h3>Automation infrastructure</h3>
-      <p>The layer underneath — backend logic, API and webhook integrations, job queues, and modular components wiring AI into CRMs and operational tooling.</p>
-      <div class="tags"><span class="tag">APIs</span><span class="tag">queues</span><span class="tag">CRM</span></div>
-      <span class="go">ask about this →</span>
-    </a>
-
-    <a class="offer" href="mailto:degz12348@gmail.com?subject=AI%20enablement">
-      <span class="n">03</span>
-      <h3>AI enablement &amp; training</h3>
-      <p>Getting a team productive with AI coding agents — workflow design, prompt standards, and live training. I run this weekly for complete beginners.</p>
-      <div class="tags"><span class="tag">workshops</span><span class="tag">workflow design</span><span class="tag">standards</span></div>
-      <span class="go">ask about this →</span>
-    </a>
-
-    <a class="offer" href="mailto:degz12348@gmail.com?subject=Internal%20tools">
-      <span class="n">04</span>
-      <h3>Internal tools &amp; dashboards</h3>
-      <p>Lightweight staff apps built around how your team already works — admin dashboards, role-based access, Google Workspace sign-in, and cheap hosting with a handoff guide your team can follow.</p>
-      <div class="tags"><span class="tag">dashboards</span><span class="tag">access control</span><span class="tag">deploy &amp; docs</span></div>
-      <span class="go">ask about this →</span>
-    </a>
-  </div>
-</section>
-
-<!-- ==================== STATS ==================== -->
-<section class="wrap rv" id="proof">
-  <p class="kicker"><s>02</s> / <b>Proof in numbers</b></p>
-  <h2>Shipped, measured.</h2>
-
-  <div class="stats">
-    <div class="stat">
-      <span class="v">6–7 fig</span><span class="rule"></span>
-      <span class="l">client launches supported with system-driven growth models</span>
-    </div>
-    <div class="stat">
-      <span class="v">2</span><span class="rule"></span>
-      <span class="l">commercial SaaS tiers built and operated, with live paying customers</span>
-    </div>
-    <div class="stat">
-      <span class="v">7</span><span class="rule"></span>
-      <span class="l">industries served — realty, finance, auto, government, education, hospitality, coaching</span>
-    </div>
-    <div class="stat">
-      <span class="v">8+</span><span class="rule"></span>
-      <span class="l">years across digital systems, SaaS and automation</span>
-    </div>
-    <div class="stat">
-      <span class="v">#1</span><span class="rule"></span>
-      <span class="l">contributor on a real-time AI sales-coaching platform — 80 of 285 commits, owning the AI layer</span>
-    </div>
-    <div class="stat">
-      <span class="v">Weekly</span><span class="rule"></span>
-      <span class="l">free live AI development training for complete beginners</span>
-    </div>
-  </div>
-
-  <p class="stats-note">Co-founder of Scale With System</p>
-</section>
-
 <!-- ==================== WORK ==================== -->
 <section class="wrap rv" id="work">
-  <p class="kicker"><s>03</s> / <b>Work</b></p>
-  <h2>Selected builds.</h2>
+  <p class="kicker"><s>01</s> / <b>Work</b></p>
+  <h2>Results, then how.</h2>
   <div class="work">
 
     <div class="proj">
       <div class="proj-head">
-        <h3>Real-time AI sales-coaching platform — client project</h3>
+        <div class="proj-title"><span class="proj-name">Real-time AI sales-coaching platform · client project</span><h3>Owned the AI layer of a live sales-coaching platform — #1 contributor, 80 of 285 commits</h3></div>
         <span class="when">Apr – Aug 2026</span>
       </div>
       <p>
@@ -994,89 +925,7 @@ html.desk-capable .navlinks a[data-desk]{display:inline}
 
     <div class="proj">
       <div class="proj-head">
-        <h3>Internal HR &amp; training platform — client project</h3>
-        <span class="when">Jan – Aug 2026</span>
-      </div>
-      <p>
-        A staff-facing internal tool covering candidate assessment,
-        employee onboarding, training programs and learning paths, with admin dashboards,
-        role-based admin access, email invitations, audit logs and AI-assisted evaluation
-        of assessments and training.
-        <strong>Lead contributor, with the most commits on the team</strong> — training-program features,
-        access and progress rules, QA hardening, automated AI-provider checks, and approval
-        briefs for management. Client name withheld under NDA.
-      </p>
-      <div class="case-facts" aria-label="Internal HR platform contribution summary">
-        <div class="case-fact"><span class="k">Role</span><span class="v">Lead contributor on a small team</span></div>
-        <div class="case-fact"><span class="k">Users</span><span class="v">Candidates, employees and admins</span></div>
-        <div class="case-fact"><span class="k">Evidence</span><span class="v">97 of 158 commits, the largest share</span></div>
-      </div>
-      <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Prisma</span><span class="tag">Tailwind</span><span class="tag">Role-based access</span><span class="tag">AI evaluation</span><span class="tag">Internal tools</span></div>
-    </div>
-
-    <div class="proj">
-      <div class="proj-head">
-        <h3>WhatsApp + Slack messaging hub — client project</h3>
-        <span class="when">Jun 2026</span>
-      </div>
-      <p>
-        A command center that pulls WhatsApp and Slack conversations into one dashboard with a
-        REST and WebSocket API, running as an always-on cloud service on Railway.
-        <strong>I built the Slack integration</strong> — multi-workspace token auth, Events API
-        webhook, channel and DM discovery, history sync and workspace filters — made WhatsApp
-        message capture reliable, and added a Playwright UI test suite. Client name withheld under NDA.
-      </p>
-      <div class="case-facts" aria-label="Messaging hub contribution summary">
-        <div class="case-fact"><span class="k">Role</span><span class="v">Lead contributor</span></div>
-        <div class="case-fact"><span class="k">Scope</span><span class="v">Slack integration, WhatsApp reliability, UI tests</span></div>
-        <div class="case-fact"><span class="k">Evidence</span><span class="v">67 of 88 commits, the largest share</span></div>
-      </div>
-      <div class="tags"><span class="tag">TypeScript</span><span class="tag">Slack API</span><span class="tag">WebSockets</span><span class="tag">Playwright</span><span class="tag">Railway</span><span class="tag">Automation</span></div>
-    </div>
-
-    <div class="proj">
-      <div class="proj-head">
-        <h3>BranDoor — AI brand identity studio</h3>
-        <span class="when">2026 · live on Vercel</span>
-      </div>
-      <p>
-        An independent brand identity studio that turns a short business questionnaire
-        into a strategy brief, distinct visual directions and editable vector marks.
-        I built the Next.js product, its staged AI workflow, a library of thirteen
-        sample identities and photographic case studies that show each brand in use.
-        Deployed on Vercel, with Google sign-in being added.
-      </p>
-      <div class="case-facts" aria-label="BranDoor summary">
-        <div class="case-fact"><span class="k">Role</span><span class="v">Product build and staged AI workflow</span></div>
-        <div class="case-fact"><span class="k">Library</span><span class="v">13 sample identities with case studies</span></div>
-        <div class="case-fact"><span class="k">Status</span><span class="v">Live on Vercel</span></div>
-      </div>
-      <a class="proj-live" href="https://brandor-phi.vercel.app" target="_blank" rel="noopener">Open the live app ↗</a>
-      <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Prisma</span><span class="tag">AI workflow</span><span class="tag">Brand systems</span></div>
-      <div class="shot-rail">
-        <div class="shot-rail-head">
-          <span class="label">Product views · scroll to explore</span>
-          <div class="rail-controls" aria-label="BranDoor screenshot controls">
-            <button class="rail-btn" type="button" data-rail-dir="-1" aria-label="Previous screenshot">←</button>
-            <button class="rail-btn" type="button" data-rail-dir="1" aria-label="Next screenshot">→</button>
-          </div>
-        </div>
-        <div class="shots" tabindex="0" aria-label="BranDoor product screenshots">
-          <figure class="shot">
-            <img src="assets/brandor-home.webp" alt="BranDoor homepage with its introduction and invitation to explore brand identities." width="1440" height="900" loading="lazy">
-            <figcaption>BranDoor — brand identity studio homepage</figcaption>
-          </figure>
-          <figure class="shot">
-            <img src="assets/brandor-case-study.webp" alt="Dayfold sample brand case study showing its wordmark on coffee packaging and a takeaway bag." width="1440" height="900" loading="lazy">
-            <figcaption>Dayfold — one of thirteen sample brand case studies</figcaption>
-          </figure>
-        </div>
-      </div>
-    </div>
-
-    <div class="proj">
-      <div class="proj-head">
-        <h3>Scale With System CRM</h3>
+        <div class="proj-title"><span class="proj-name">Scale With System CRM · co-founder</span><h3>Built and run 2 commercial SaaS tiers with live paying customers</h3></div>
         <span class="when">Ongoing</span>
       </div>
       <p>
@@ -1117,6 +966,156 @@ html.desk-capable .navlinks a[data-desk]{display:inline}
       </div>
     </div>
 
+    <div class="proj">
+      <div class="proj-head">
+        <div class="proj-title"><span class="proj-name">Internal HR &amp; training platform · client project</span><h3>Led an internal HR &amp; training platform — 97 of 158 commits, the largest share</h3></div>
+        <span class="when">Jan – Aug 2026</span>
+      </div>
+      <p>
+        A staff-facing internal tool covering candidate assessment,
+        employee onboarding, training programs and learning paths, with admin dashboards,
+        role-based admin access, email invitations, audit logs and AI-assisted evaluation
+        of assessments and training.
+        <strong>Lead contributor, with the most commits on the team</strong> — training-program features,
+        access and progress rules, QA hardening, automated AI-provider checks, and approval
+        briefs for management. Client name withheld under NDA.
+      </p>
+      <div class="case-facts" aria-label="Internal HR platform contribution summary">
+        <div class="case-fact"><span class="k">Role</span><span class="v">Lead contributor on a small team</span></div>
+        <div class="case-fact"><span class="k">Users</span><span class="v">Candidates, employees and admins</span></div>
+        <div class="case-fact"><span class="k">Evidence</span><span class="v">97 of 158 commits, the largest share</span></div>
+      </div>
+      <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Prisma</span><span class="tag">Tailwind</span><span class="tag">Role-based access</span><span class="tag">AI evaluation</span><span class="tag">Internal tools</span></div>
+    </div>
+
+    <div class="proj">
+      <div class="proj-head">
+        <div class="proj-title"><span class="proj-name">WhatsApp + Slack messaging hub · client project</span><h3>Built the Slack integration for a WhatsApp + Slack hub — 67 of 88 commits</h3></div>
+        <span class="when">Jun 2026</span>
+      </div>
+      <p>
+        A command center that pulls WhatsApp and Slack conversations into one dashboard with a
+        REST and WebSocket API, running as an always-on cloud service on Railway.
+        <strong>I built the Slack integration</strong> — multi-workspace token auth, Events API
+        webhook, channel and DM discovery, history sync and workspace filters — made WhatsApp
+        message capture reliable, and added a Playwright UI test suite. Client name withheld under NDA.
+      </p>
+      <div class="case-facts" aria-label="Messaging hub contribution summary">
+        <div class="case-fact"><span class="k">Role</span><span class="v">Lead contributor</span></div>
+        <div class="case-fact"><span class="k">Scope</span><span class="v">Slack integration, WhatsApp reliability, UI tests</span></div>
+        <div class="case-fact"><span class="k">Evidence</span><span class="v">67 of 88 commits, the largest share</span></div>
+      </div>
+      <div class="tags"><span class="tag">TypeScript</span><span class="tag">Slack API</span><span class="tag">WebSockets</span><span class="tag">Playwright</span><span class="tag">Railway</span><span class="tag">Automation</span></div>
+    </div>
+
+    <div class="proj">
+      <div class="proj-head">
+        <div class="proj-title"><span class="proj-name">BranDoor · AI brand identity studio</span><h3>Shipped an AI brand studio — live, with 13 sample identities</h3></div>
+        <span class="when">2026 · live on Vercel</span>
+      </div>
+      <p>
+        An independent brand identity studio that turns a short business questionnaire
+        into a strategy brief, distinct visual directions and editable vector marks.
+        I built the Next.js product, its staged AI workflow, a library of thirteen
+        sample identities and photographic case studies that show each brand in use.
+        Deployed on Vercel, with Google sign-in being added.
+      </p>
+      <div class="case-facts" aria-label="BranDoor summary">
+        <div class="case-fact"><span class="k">Role</span><span class="v">Product build and staged AI workflow</span></div>
+        <div class="case-fact"><span class="k">Library</span><span class="v">13 sample identities with case studies</span></div>
+        <div class="case-fact"><span class="k">Status</span><span class="v">Live on Vercel</span></div>
+      </div>
+      <a class="proj-live" href="https://brandor-phi.vercel.app" target="_blank" rel="noopener">Open the live app ↗</a>
+      <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Prisma</span><span class="tag">AI workflow</span><span class="tag">Brand systems</span></div>
+      <div class="shot-rail">
+        <div class="shot-rail-head">
+          <span class="label">Product views · scroll to explore</span>
+          <div class="rail-controls" aria-label="BranDoor screenshot controls">
+            <button class="rail-btn" type="button" data-rail-dir="-1" aria-label="Previous screenshot">←</button>
+            <button class="rail-btn" type="button" data-rail-dir="1" aria-label="Next screenshot">→</button>
+          </div>
+        </div>
+        <div class="shots" tabindex="0" aria-label="BranDoor product screenshots">
+          <figure class="shot">
+            <img src="assets/brandor-home.webp" alt="BranDoor homepage with its introduction and invitation to explore brand identities." width="1440" height="900" loading="lazy">
+            <figcaption>BranDoor — brand identity studio homepage</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="assets/brandor-case-study.webp" alt="Dayfold sample brand case study showing its wordmark on coffee packaging and a takeaway bag." width="1440" height="900" loading="lazy">
+            <figcaption>Dayfold — one of thirteen sample brand case studies</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== CLIENTS ==================== -->
+<section class="wrap rv" id="clients">
+  <p class="kicker"><s>02</s> / <b>Clients</b></p>
+  <h2>What they said.</h2>
+  <div class="quotes">
+    <div class="panel quote">
+      <blockquote>They went well beyond the web and funnel work — taking on responsibilities closer to a project manager.</blockquote>
+      <div class="src">Jonathan E. — CEO, Step Up To Care</div>
+    </div>
+    <div class="panel quote">
+      <blockquote>I can now take vacations without any worries.</blockquote>
+      <div class="src">Marielle T. — CEO, Good Diva Marketing</div>
+    </div>
+    <div class="panel quote">
+      <blockquote>The consultations were valuable enough that I offered to pay before the project even began.</blockquote>
+      <div class="src">Yvonne R. — CEO, Investahomes Realty</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROOF ==================== -->
+<section class="wrap rv" id="hire">
+  <p class="kicker"><s>03</s> / <b>Hire me</b></p>
+  <h2>Hire me for</h2>
+  <p class="sub">Scoped engagements, senior execution, no hand-holding. Everything below is work I do for clients today.</p>
+
+  <div class="offer-meta">
+    <span>Calabarzon, PH · remote worldwide</span>
+    <span>APAC · EU · US overlap</span>
+    <span>Full-time · contract · fixed-scope</span>
+    <span>7 industries served</span>
+  </div>
+
+  <div class="offers">
+    <a class="offer" href="mailto:degz12348@gmail.com?subject=LLM%20applications">
+      <span class="n">01</span>
+      <h3>LLM applications &amp; agent systems</h3>
+      <p>Apps on Claude and other LLM APIs with structured I/O contracts, role-based instruction frameworks, and evaluation passes that hold behaviour steady under real load.</p>
+      <div class="tags"><span class="tag">agents</span><span class="tag">prompt architecture</span><span class="tag">evals</span></div>
+      <span class="go">ask about this →</span>
+    </a>
+
+    <a class="offer" href="mailto:degz12348@gmail.com?subject=Automation%20infrastructure">
+      <span class="n">02</span>
+      <h3>Automation infrastructure</h3>
+      <p>The layer underneath — backend logic, API and webhook integrations, job queues, and modular components wiring AI into CRMs and operational tooling.</p>
+      <div class="tags"><span class="tag">APIs</span><span class="tag">queues</span><span class="tag">CRM</span></div>
+      <span class="go">ask about this →</span>
+    </a>
+
+    <a class="offer" href="mailto:degz12348@gmail.com?subject=AI%20enablement">
+      <span class="n">03</span>
+      <h3>AI enablement &amp; training</h3>
+      <p>Getting a team productive with AI coding agents — workflow design, prompt standards, and live training. I run this weekly for complete beginners.</p>
+      <div class="tags"><span class="tag">workshops</span><span class="tag">workflow design</span><span class="tag">standards</span></div>
+      <span class="go">ask about this →</span>
+    </a>
+
+    <a class="offer" href="mailto:degz12348@gmail.com?subject=Internal%20tools">
+      <span class="n">04</span>
+      <h3>Internal tools &amp; dashboards</h3>
+      <p>Lightweight staff apps built around how your team already works — admin dashboards, role-based access, Google Workspace sign-in, and cheap hosting with a handoff guide your team can follow.</p>
+      <div class="tags"><span class="tag">dashboards</span><span class="tag">access control</span><span class="tag">deploy &amp; docs</span></div>
+      <span class="go">ask about this →</span>
+    </a>
   </div>
 </section>
 
@@ -1243,29 +1242,9 @@ html.desk-capable .navlinks a[data-desk]{display:inline}
   </div>
 </section>
 
-<!-- ==================== CLIENTS ==================== -->
-<section class="wrap rv" id="clients">
-  <p class="kicker"><s>07</s> / <b>Clients</b></p>
-  <h2>What they said.</h2>
-  <div class="quotes">
-    <div class="panel quote">
-      <blockquote>They went well beyond the web and funnel work — taking on responsibilities closer to a project manager.</blockquote>
-      <div class="src">Jonathan E. — CEO, Step Up To Care</div>
-    </div>
-    <div class="panel quote">
-      <blockquote>I can now take vacations without any worries.</blockquote>
-      <div class="src">Marielle T. — CEO, Good Diva Marketing</div>
-    </div>
-    <div class="panel quote">
-      <blockquote>The consultations were valuable enough that I offered to pay before the project even began.</blockquote>
-      <div class="src">Yvonne R. — CEO, Investahomes Realty</div>
-    </div>
-  </div>
-</section>
-
 <!-- ==================== FAQ ==================== -->
 <section class="wrap rv" id="faq">
-  <p class="kicker"><s>08</s> / <b>FAQ</b></p>
+  <p class="kicker"><s>07</s> / <b>FAQ</b></p>
   <h2>What teams usually ask.</h2>
 
   <div class="faq">
@@ -1310,7 +1289,7 @@ html.desk-capable .navlinks a[data-desk]{display:inline}
 
 <!-- ==================== AGENTS ==================== -->
 <section class="wrap rv" id="agents">
-  <p class="kicker"><s>09</s> / <b>Agents</b></p>
+  <p class="kicker"><s>08</s> / <b>Agents</b></p>
   <h2>Read me from your agent.</h2>
   <p class="sub">
     This site publishes machine-readable surfaces, so automated screeners and AI agents
@@ -1338,7 +1317,7 @@ Calabarzon, Philippines · remote · APAC / EU / US overlap
 
 <!-- ==================== CONTACT ==================== -->
 <section class="wrap rv" id="contact">
-  <p class="kicker"><s>10</s> / <b>Contact</b></p>
+  <p class="kicker"><s>09</s> / <b>Contact</b></p>
   <h2>Need someone who ships AI from spec to production?</h2>
   <p class="sub">Open to contract work, fractional AI engineering, and full-time roles. Email is fastest — I reply within a day.</p>
 
@@ -1897,7 +1876,7 @@ function laptopIn(w, h){
   if (h1Words) intro.from(h1Words, {yPercent:115, rotate:5, stagger:.05, duration:1.25}, .2);
   intro.from('.typed', {opacity:0, y:14}, .55)
        .from('.lede', {opacity:0, y:18}, .62)
-       .from('.hero-proof span', {opacity:0, y:12, stagger:.07}, .7)
+       .from('.hero-stats .hs', {opacity:0, y:12, stagger:.07}, .7)
        .from('.cta .pill', {opacity:0, y:16, stagger:.08}, .78)
        .from('.agentpill', {opacity:0, y:12}, .9);
   var boot = document.getElementById('boot'), played = false;
@@ -2060,9 +2039,9 @@ function laptopIn(w, h){
   var NS = 'http://www.w3.org/2000/svg';
 
   /* stage names: what each section is, as a step in a pipeline */
-  var STAGES = {hire:'input', proof:'eval gate', work:'deploy', history:'context', stack:'toolchain',
-                teaching:'enablement', clients:'feedback', faq:'docs', agents:'api', contact:'output → you'};
-  var GATE = 'proof', OUT = 'contact';
+  var STAGES = {work:'eval gate', clients:'feedback', hire:'input', history:'context', stack:'toolchain',
+                teaching:'enablement', faq:'docs', agents:'api', contact:'output → you'};
+  var GATE = 'work', OUT = 'contact';
 
   function el(tag, cls, parent){
     var e = document.createElementNS(NS, tag);
