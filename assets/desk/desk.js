@@ -100,25 +100,25 @@ function drawScreen(){
   const g = sx, W = SCR.w, H = SCR.h, mono = '"JetBrains Mono", Consolas, monospace';
   g.fillStyle = '#010503'; g.fillRect(0, 0, W, H);
   const grd = g.createRadialGradient(W / 2, H / 2, 80, W / 2, H / 2, W * .7);
-  grd.addColorStop(0, 'rgba(0,255,65,.07)'); grd.addColorStop(1, 'rgba(0,0,0,0)');
+  grd.addColorStop(0, 'rgba(60,245,176,.07)'); grd.addColorStop(1, 'rgba(0,0,0,0)');
   g.fillStyle = grd; g.fillRect(0, 0, W, H);
   g.textBaseline = 'top';
 
   if (screenMode === 'standby' || screenMode === 'open'){
     g.textAlign = 'center';
-    g.font = '700 58px ' + mono; g.fillStyle = '#00ff41'; g.shadowColor = 'rgba(0,255,65,.8)'; g.shadowBlur = 18;
+    g.font = '700 58px ' + mono; g.fillStyle = '#3cf5b0'; g.shadowColor = 'rgba(60,245,176,.8)'; g.shadowBlur = 18;
     g.fillText('degz@arbiz', W / 2, H / 2 - 46);
     g.font = '22px ' + mono; g.shadowBlur = 6; g.fillStyle = '#5fdc85';
     const sub = screenMode === 'open' ? 'opening portfolio' : 'standby';
     g.fillText(sub + (blink ? ' ▌' : '  '), W / 2, H / 2 + 32);
     g.textAlign = 'left'; g.shadowBlur = 0;
   } else {
-    g.font = TL.head + 'px ' + mono; g.fillStyle = '#1f9a45';
+    g.font = TL.head + 'px ' + mono; g.fillStyle = '#13a477';
     g.fillText(MOBILE ? 'DEGZ-OS v1.0' : 'DEGZ-OS v1.0  ·  portfolio.sys', 56, TL.headY);
-    g.fillStyle = '#00ff41'; g.textAlign = 'right'; g.fillText('● online', W - 56, TL.headY); g.textAlign = 'left';
-    g.fillStyle = 'rgba(0,255,65,.25)'; g.fillRect(56, TL.rule, W - 112, 1);
+    g.fillStyle = '#3cf5b0'; g.textAlign = 'right'; g.fillText('● online', W - 56, TL.headY); g.textAlign = 'left';
+    g.fillStyle = 'rgba(60,245,176,.25)'; g.fillRect(56, TL.rule, W - 112, 1);
 
-    g.font = TL.font + 'px ' + mono; g.shadowColor = 'rgba(0,255,65,.55)'; g.shadowBlur = 8;
+    g.font = TL.font + 'px ' + mono; g.shadowColor = 'rgba(60,245,176,.55)'; g.shadowBlur = 8;
     let left = typed, y = TL.y0, lastX = 56, lastY = y;
     for (let i = 0; i < LINES.length && left >= 0; i++){
       const full = FULL[i], part = full.slice(0, Math.min(full.length, left)), kind = LINES[i][0];
@@ -128,21 +128,21 @@ function drawScreen(){
         g.fillStyle = '#d9ffe3'; g.fillText(part.slice(k), 56 + g.measureText(full.slice(0, k)).width, y);
       } else if (kind === 'cmd'){
         const p = LINES[i][1];
-        g.fillStyle = '#00ff41'; g.fillText(part.slice(0, p.length), 56, y);
+        g.fillStyle = '#3cf5b0'; g.fillText(part.slice(0, p.length), 56, y);
         g.fillStyle = '#ffffff'; g.fillText(part.slice(p.length), 56 + g.measureText(p).width, y);
-      } else { g.fillStyle = kind === 'dim' ? '#1f9a45' : '#00ff41'; g.fillText(part, 56, y); }
+      } else { g.fillStyle = kind === 'dim' ? '#13a477' : '#3cf5b0'; g.fillText(part, 56, y); }
       lastX = 56 + g.measureText(part).width; lastY = y;
       left -= full.length + 1; y += TL.lh;
     }
     const done = typed >= TOTAL;
-    if (blink || !done){ g.fillStyle = '#00ff41'; g.fillRect(lastX + 4, lastY + 3, TL.caretW, TL.caretH); }
+    if (blink || !done){ g.fillStyle = '#3cf5b0'; g.fillRect(lastX + 4, lastY + 3, TL.caretW, TL.caretH); }
     if (done){
       const bx = (W - BTN.w) / 2, by = BTN.y;
-      g.shadowBlur = hover ? 26 : 14; g.shadowColor = 'rgba(0,255,65,.85)';
-      g.fillStyle = hover ? '#00ff41' : 'rgba(0,255,65,.08)'; g.fillRect(bx, by, BTN.w, BTN.h);
-      g.strokeStyle = '#00ff41'; g.lineWidth = 2; g.strokeRect(bx, by, BTN.w, BTN.h);
+      g.shadowBlur = hover ? 26 : 14; g.shadowColor = 'rgba(60,245,176,.85)';
+      g.fillStyle = hover ? '#3cf5b0' : 'rgba(60,245,176,.08)'; g.fillRect(bx, by, BTN.w, BTN.h);
+      g.strokeStyle = '#3cf5b0'; g.lineWidth = 2; g.strokeRect(bx, by, BTN.w, BTN.h);
       g.font = '700 ' + TL.btnFont + 'px ' + mono; g.textAlign = 'center'; g.textBaseline = 'middle';
-      g.fillStyle = hover ? '#001a08' : '#00ff41';
+      g.fillStyle = hover ? '#001a08' : '#3cf5b0';
       g.fillText('[ START ]', W / 2, by + BTN.h / 2 + 2); g.textBaseline = 'top';
       g.textAlign = 'left';
     }
@@ -346,9 +346,9 @@ async function main(){
   scene.add(new THREE.HemisphereLight(0x2a4a3a, 0x0a0c0b, .42));
   /* the screen lights the room the way a real monitor does: a soft rectangle */
   RectAreaLightUniformsLib.init();
-  const screenLight = new THREE.RectAreaLight(0x3dff7a, 9, SCREEN.w, SCREEN.h);
+  const screenLight = new THREE.RectAreaLight(0x4dffc0, 9, SCREEN.w, SCREEN.h);
   screenLight.position.set(SCREEN.cx, SCREEN.cy, SCREEN.z + .004); screenLight.lookAt(SCREEN.cx, SCREEN.cy, 2); scene.add(screenLight);
-  const glow = new THREE.PointLight(0x2bff66, .22, 2.6, 2);
+  const glow = new THREE.PointLight(0x35f5b0, .22, 2.6, 2);
   glow.position.set(SCREEN.cx, SCREEN.cy, SCREEN.z + .16); scene.add(glow);
   /* warm bulb under the lamp shade */
   const bulb = new THREE.Mesh(new THREE.SphereGeometry(.013, 16, 12), new THREE.MeshBasicMaterial({color:0xffd9a0, toneMapped:false}));
@@ -390,7 +390,7 @@ async function main(){
   const dotC = document.createElement('canvas'); dotC.width = dotC.height = 32;
   const dg = dotC.getContext('2d'), rg = dg.createRadialGradient(16, 16, 0, 16, 16, 16);
   rg.addColorStop(0, 'rgba(255,255,255,1)'); rg.addColorStop(1, 'rgba(255,255,255,0)'); dg.fillStyle = rg; dg.fillRect(0, 0, 32, 32);
-  const dust = new THREE.Points(dGeo, new THREE.PointsMaterial({size:.011, map:new THREE.CanvasTexture(dotC), color:0x9dffb8,
+  const dust = new THREE.Points(dGeo, new THREE.PointsMaterial({size:.011, map:new THREE.CanvasTexture(dotC), color:0xa8ffe0,
     transparent:true, opacity:.32, depthWrite:false, blending:THREE.AdditiveBlending, sizeAttenuation:true}));
   scene.add(dust);
 
